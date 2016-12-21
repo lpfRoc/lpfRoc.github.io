@@ -17,12 +17,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 @font-face {
-  font-family: font-icomoon;
+  font-family: iconfont;
   src: url("fonts/iconfont/icomoon.eot?t=1476587789");
   src: url("fonts/iconfont/icomoon.eot?t=1476587789#iefix") format('embedded-opentype'), url("fonts/iconfont/icomoon.woff?t=1476587789") format('woff'), url("fonts/iconfont/icomoon.ttf?t=1476587789") format('truetype'), url("fonts/iconfont/icomoon.svg?t=1476587789#iconfont") format('svg');
 }
 .icomoon {
-  font-family: font-icomoon !important;
+  font-family: iconfont !important;
   font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
@@ -30,12 +30,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 @font-face {
-  font-family: font-icomoondot;
+  font-family: iconfont;
   src: url("fonts/iconfont/icomoondot.eot?t=1476587789");
   src: url("fonts/iconfont/icomoondot.eot?t=1476587789#iefix") format('embedded-opentype'), url("fonts/iconfont/icomoondot.woff?t=1476587789") format('woff'), url("fonts/iconfont/icomoondot.ttf?t=1476587789") format('truetype'), url("fonts/iconfont/icomoondot.svg?t=1476587789#iconfont") format('svg');
 }
 .icomoondot {
-  font-family: font-icomoondot !important;
+  font-family: iconfont !important;
   font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
@@ -688,9 +688,9 @@ article .post-body ol li:before {
 }
 article .post-body ul li:before {
   color: #efefef;
-  font-size: 11px;
-  font-size: 0.6875rem;
-  content: "\e900";
+  font-size: 20px;
+  font-size: 1.2rem;
+  content: "\e999";
   font-family: iconfont;
 }
 article .post-body ol {
