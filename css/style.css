@@ -134,8 +134,7 @@ table,
 fieldset,
 figure,
 pre {
-  margin-bottom: 30px;
-  margin-bottom: 1.875rem;
+  margin-bottom: 4px;
 }
 ol,
 li {
@@ -616,7 +615,7 @@ article .post-body img {
   height: auto;
 }
 article .post-body p {
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 article .post-body p + h1,
 article .post-body p + h2,
