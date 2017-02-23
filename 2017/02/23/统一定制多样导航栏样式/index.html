@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <title>统一定制多样导航栏样式 | Roc</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    
+      <link rel="icon" href="/favicon.png">
+    
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="/js/google-code-prettify/tomorrow-night.css">
+
+  </head>
+
+  <body>
+
+<header>
+	<a id="logo" href="/" title="Roc">
+	<img src="/favicon.png" alt="Roc"></a>
+	
+	
+
+	
+		<!--侧边导航栏-->
+		<a id="nav-toggle" href="#"><span></span></a>
+
+<nav>
+	<div class="menu-top-container">
+		<ul id="menu-top" class="menu">
+			
+				
+				<li class="current-menu-item">
+					<a href="https://github.com/lpfRoc" target="_blank">github</a>
+				</li>
+			
+		</ul>
+	</div>
+</nav>
+	
+
+</header>
+<div class="m-header ">
+	<section id="hero1" class="hero">
+		<div class="inner">
+		</div>
+	</section>
+	
+		<figure class="top-image" data-enable=true></figure>
+	
+</div>
+
+<!--文章列表-->
+<div class="wrapper">
+  
+    <!--文章-->
+<article>
+	
+  
+    <h1 class="post-title" itemprop="name">
+      统一定制多样导航栏样式
+    </h1>
+  
+
+	<div class='post-body mb mt'>
+		<p>此篇文章使用Swift简单实现了统一定制多样导航栏样式的功能， 而不必每次都在对应的导航控制器内对导航栏就行重复样式操作。</p>
+<h2 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h2><p>如标题所示，关键功能在统一和多样。那么下面就具体说说如何实现统一和多样功能。</p>
+<ul>
+<li><p><strong>统一</strong></p>
+<p>要做到统一处理导航栏，首先会想到自定义一个LPFNavigationController继承自UINavigationController，然后在LPFNavigationController内统一设置导航栏。这样仅仅做到了统一设置固定的导航栏样式，还无法实现根据不同控制器定制不同样式的导航栏。</p>
+</li>
+</ul>
+<ul>
+<li><strong>多样</strong></li>
+</ul>
+<p>上面做到了统一处理导航栏，那么多样怎么做呢？在实现多样之前，我先介绍下导航控制器push和pop的机制：</p>
+<p>（1）导航控制器初始化的时候一般都有一个根视图控制器，导航控制器相当于一个栈，里面装的是视图控制器，最先进去的在最下面，最后进去的在最上面。在最上面的那个视图控制器的视图就是这个导航控制器对外展示的界面，也就是用户看到的界面。</p>
+<p>（2）我们需要把导航控制器加载到APP中，需要把这个导航控制器设置为window的根视图控制器（都是控制器类，可以赋值），这样就相当于加载到了window里。</p>
+<p>（3）我们要在栈中新增或者删除一个视图控制器，就需要得到导航控制器，一般在栈中得所有视图控制器都有一个self.navigationController，意思是我的导航控制器，也就是这个视图控制器所在的导航控制器，这样就拿到了导航控制器。</p>
+<p>（4）栈中新增视图控制器用pushViewController，其实就是push进去一个，这样对于用户而言就是打开一个新界面了。</p>
+<p>（5）栈中删除一个视图控制器用popViewControllerAnimated，当然这个pop只能pop最上面的那个，对于用户而言相当于从当前视图回到上一级视图。</p>
+<p>（6）其实这个push和pop对于用户而言都是打开和跳转页面的一个操作。而pop由更多地操作方法，如一下子pop掉只剩下一个根视图控制器，那么就相当于从好几层直接回到最原始的主页面。也可以指定pop几个，以跳转到指定的页面。</p>
+<p>（7）最重要的应该就是这个push和pop方法，push只有一种而pop有很多种。</p>
+<p>经过以上的讲解，我们就不难想到如何多样的处理导航控制器导航栏的样式了。没错，我们可以重写系统导航控制器push和pop方法，在方法内部根据self.childViewControllers.count的个数以及与跟控制器的比较来区分不同的视图控制器，做到多样定制。值得注意的是对于pop操作我们需要分别重写popViewController，popToRootViewController，popToViewController三个方法（函数）。</p>
+<p>多说无益，代码链接奉上：<a href="https://github.com/lpfRoc/LPFRootNav" target="_blank" rel="external"><em>LPFNavigationController</em></a>。</p>
+
+	</div>
+	<div class="meta split">
+		<time class="post-datel" datetime="2017-02-23T07:00:00.000Z" itemprop="datePublished">2017-02-23</time>
+	</div>
+</article>
+
+<!--评论-->
+
+	
+<div class="ds-thread" data-thread-key="统一定制多样导航栏样式" data-title="统一定制多样导航栏样式" data-url="http://yoursite.com/2017/02/23/统一定制多样导航栏样式/"></div>
+<script type="text/javascript">
+
+var duoshuoQuery = {short_name:"yumemor"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0]
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+
+
+  
+</div>
+
+
+  <svg id="bigTriangleColor" width="100%" height="40" viewBox="0 0 100 102" preserveAspectRatio="none">
+    <path d="M0 0 L50 100 L100 0 Z"></path>
+  </svg>
+
+  
+
+
+  <div class="wrapper"></div>
+
+
+
+
+
+<div class="fat-footer">
+	<div class="wrapper">
+		<div class="layout layout--center">
+			<div class="layout__item palm-mb">
+				<div class="media">
+					<img class="headimg" src='/images/logo.jpg' alt='roc' +'text'>
+					<div class="media__body">
+						<h4>Roc</h4>
+						<p class='site-description'>鹏之徙于南冥也，水击三千里，抟扶摇而上者九万里，去以六月息者也！</p>
+					</div>
+				</div>
+				<div class="author-contact">
+					<ul>
+						
+							
+							<li>
+				        		<a href="https://github.com/lpfRoc" target="_blank">
+				        			
+				        				<i class="iconfont icon-github"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="https://www.zhihu.com/people/roc-35-89" target="_blank">
+				        			
+										<i class="iconfont icon-zhihu"></i>
+                                    
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="http://www.jianshu.com/users/e9979fbf50cf/timeline" target="_blank">
+				        			
+                                       <i class="icomoon icon-jianshu jianshu"></i>
+                                   
+				        		</a>
+				        	</li>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<footer class="footer" role="contentinfo">
+	<div class="wrapper wrapper--wide split split--responsive">
+		<span>Theme by <a href="http://github.com/yumemor">Yumemor</a>. Powered by <a href="http://hexo.io">Hexo</a></span>
+	</div>
+</footer>
+
+	<!-－这里导入了 lib.js 里面涵盖了 jQuery 等框架 所以注释掉-->
+	<!--<script src="http://lib.sinaapp.com/js/jquery/2.0/jquery.min.js"></script>-->
+	<script src="/js/lib.js"></script>
+	<script src="/js/google-code-prettify/prettify.js"></script>
+	<script src="/js/module.js"></script>
+	<script src="/js/script.js"></script>
+	<script type='text/javascript'>
+		//代码高亮
+		$(document).ready(function(){
+	 		$('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+   			prettyPrint();
+		});
+	</script>
+	</body>
+</html>
