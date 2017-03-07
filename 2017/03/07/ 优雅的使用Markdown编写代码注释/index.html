@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <title>优雅的使用Markdown编写代码注释 | Roc</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    
+      <link rel="icon" href="/favicon.png">
+    
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="/js/google-code-prettify/tomorrow-night.css">
+
+  </head>
+
+  <body>
+
+<header>
+	<a id="logo" href="/" title="Roc">
+	<img src="/favicon.png" alt="Roc"></a>
+	
+	
+
+	
+		<!--侧边导航栏-->
+		<a id="nav-toggle" href="#"><span></span></a>
+
+<nav>
+	<div class="menu-top-container">
+		<ul id="menu-top" class="menu">
+			
+				
+				<li class="current-menu-item">
+					<a href="https://github.com/lpfRoc" target="_blank">github</a>
+				</li>
+			
+		</ul>
+	</div>
+</nav>
+	
+
+</header>
+<div class="m-header ">
+	<section id="hero1" class="hero">
+		<div class="inner">
+		</div>
+	</section>
+	
+		<figure class="top-image" data-enable=true></figure>
+	
+</div>
+
+<!--文章列表-->
+<div class="wrapper">
+  
+    <!--文章-->
+<article>
+	
+  
+    <h1 class="post-title" itemprop="name">
+      优雅的使用Markdown编写代码注释
+    </h1>
+  
+
+	<div class='post-body mb mt'>
+		<p>做为伴随Swift 3发布的API设计指南中的要求，使用Swift Markdown为代码编写注释已经进一步从一个道义提升为了一种行为准则。一方面，Markdown对开发者来说，足够熟悉，学习难度并不高；另一方面，Xcode可以在Playground和代码提示中，对Markdown注释进行漂亮的渲染，让代码在开发者之间交流起来更加容易。下面我会带着大家快速过一遍Swift中的Markdown注释机制，了解它们在Xcode哪些地方会被渲染出来。并在文章最后附上Demo。话不多说，抓紧坐稳，发车喽。</p>
+<h1 id="发车准备"><a href="#发车准备" class="headerlink" title="发车准备"></a>发车准备</h1><p>发车前，我们需要知道Xcode在项目源代码和Playground中使用里两种不同的Markdown注释格式，为了快速切换Markdown在Playground中的渲染效果，我们需要先配置下快捷键：<br>首先，我们 <strong> command + , </strong> 进入偏好设置中，选择Key Bindings 搜索 show rendered ，双击 Show Rendered Markup 的key 输入 快捷键，我这里使用的是 <strong> option + M </strong>。</p>
+<p><img src="/images/mdSet.png" alt="图片描述"></p>
+<p>之后我们需要使用Xcode创建一个Swift工程，并在工程里创建一个Playground文件，如果你问我啥事Playground，那我会告诉你，度娘比我清楚。完成上述准备后，我们就真的发车啦！</p>
+<h1 id="Markdown之Playground"><a href="#Markdown之Playground" class="headerlink" title="Markdown之Playground"></a>Markdown之Playground</h1><p>上面已经提到Xcode在项目源代码和Playground中使用里两种不同的Markdown注释格式，首先，我们先从Playground中学起：</p>
+<h3 id="Playground之单行注释：以-后面紧跟-组成"><a href="#Playground之单行注释：以-后面紧跟-组成" class="headerlink" title="Playground之单行注释：以//后面紧跟:组成"></a>Playground之单行注释：以<strong>//</strong>后面紧跟<strong>:</strong>组成</h3><pre><code class="bash">//: 单行注释
+</code></pre>
+<p>上面就是使用Markdown在Playground中写的单行注释。我们按下之前设置好的Markdown渲染快捷键<strong> option + M </strong>，渲染效果如下：</p>
+<p><img src="/images/md14.png" alt="图片描述"><br>是不是很帅！！！</p>
+<p>我们可以使用 # 来设置标题等级</p>
+<pre><code class="bash">//: # 一级标题
+//: ## 二级标题
+//: ### 三级标题
+</code></pre>
+<p>渲染效果：</p>
+<p><img src="/images/md13.png" alt="图片描述"></p>
+<p><strong>需要注意的是这个</strong>#<strong>后面必须留一空格间距，且 </strong>#<strong> 前面 </strong>: <strong>要紧挨着 </strong>//<strong>，不然不起作用</strong>。</p>
+<h3 id="Playground之多行注释：以-后面紧跟-开始，-结束"><a href="#Playground之多行注释：以-后面紧跟-开始，-结束" class="headerlink" title="Playground之多行注释：以 /* 后面紧跟:开始，  */ 结束"></a>Playground之多行注释：以<strong> /* </strong>后面紧跟<strong>:</strong>开始，<strong>  */ </strong>结束</h3><p>普通多行注释：</p>
+<pre><code class="bash">/*:
+这是一个多行注释这是一个多行注释这是一个多行注释这是一
+个多行注释这是一个多行注释这是一个多行注释这是一个多行注释这是一
+个多行注释这是一个多行注释这是一个多行注释这是一个多行注释这是
+一个多行注释这是一个多行注释这是一个多行注释这是一个多行注释这
+*/
+</code></pre>
+<p>渲染效果：</p>
+<p><img src="/images/md15.png" alt="图片描述"></p>
+<p> 多行无序列表注释：</p>
+<pre><code class="bash">/*:
+* item1
+* item2
+* item3
+*/
+</code></pre>
+<p>渲染效果：<br><img src="/images/md16.png" alt="图片描述"></p>
+<p>这里补充一个Markdown输出 callout，我们可是使用<strong>  -  +  *  </strong>后面跟上important或note来表示，来实现更加醒目的注释效果代码如下：</p>
+<pre><code class="bash">/*:
+- important: 包含callout的多行注释
++ important: 包含callout的多行注释
+* important: 包含callout的多行注释
+- note: 包含callout的多行注释
++ note: 包含callout的多行注释
+* note: 包含callout的多行注释
+*/
+</code></pre>
+<p>渲染效果：<br><img src="/images/md17.png" alt="图片描述"></p>
+<p>在学习了单行多行注释后，我们来做一个综合的文档注释</p>
+<pre><code class="bash">/*:
+&gt;# IMPORTANT: 重要提示    (使用** &gt; ** 来表示后面是一个重要提示信息)
+内容摘要：这是一个注释说明。(内容摘要）
+1. item2   (事项列表)
+2. item3
+---    (--- 来表示分割线)
+[More info - MarkDown链接](https://developer.apple.com/library/content/documentation/Xcode/Reference/xcode_markup_formatting_ref/) （一个链接）
+*/
+</code></pre>
+<p>渲染效果：<br><img src="/images/md08.png" alt="图片描述"></p>
+<p>看着上面那么大一坨注释代码，老司机们是不是想偷懒下，做到快捷注释一次编写终身使用呢，简单，我们只要把它做成代码块放到Xcode中就行。为了做到快捷注释 ，我们需要做个注释模版，使用&lt;#    # &gt;(为了显示我故意在右边#后留了空格)来包裹住我们需要变动的注释信息，来做成模版参数，然后选中全部模版代码，把它拖到xcode右下方的Sinppet library里，填写代码块信息，即可做成快捷注释代码块.之后只需写入你填写的代码块快捷信息Xcode就会有提示,按下enter就自动生成对应代码块。<br>效果如下：</p>
+<pre><code class="bash">/*:
+&gt; # IMPORTANT: 重要提示
+&lt;#内容摘要：这是一个注释说明#&gt;
+1. &lt;#item2#&gt;
+2. &lt;#item3#&gt;
+---
+[More info - &lt;#MarkDown链接#&gt;](&lt;#链接地址#&gt;)
+*/
+</code></pre>
+<h3 id="Markdown在Playgroud中其他好玩的"><a href="#Markdown在Playgroud中其他好玩的" class="headerlink" title="Markdown在Playgroud中其他好玩的"></a>Markdown在Playgroud中其他好玩的</h3><p>有时我们可能会在工程中使用多个Playgroud，具体的例子，就如我现在负责的项目里，使用多个Playgroud来实现项目说明文档，Playgroud加上Markdown语法可以清晰帅气的使新接手此工程的开发伙伴快速熟悉项目框架，省去了不必要的沟通，加快了开发进度，新来的小伙伴再也不用担心，看不懂项目构建啦！使用多个Playgroud，我们可以做到多Playgroud的关联跳转，哪里不懂点哪里，就可以进入详情页或下一页了，是不是等不急了，哈哈 下面我们进入好玩的Playgroud。<br>首先我们选中之前创建的Playgroud文件，单击右键 New Playground Page 来创建第二个Playground，并取名为Page2，把之前的创建的改为Page1，再类似的创建一个Page3，如图：</p>
+<p><img src="/images/md11.png" alt="图片描述"></p>
+<p><img src="/images/md18.png" alt="图片描述"></p>
+<p>我们会在新建的Page2，Page3中看到如下Markdown注释</p>
+<pre><code class="bash">//: [Previous](@previous)
+
+//: [Next](@next)
+</code></pre>
+<p>渲染效果：</p>
+<p><img src="/images/md19.png" alt="图片描述"></p>
+<p>点击 Previous 会跳转的上一个Playground，点击Next下一个Playground。</p>
+<p>接下来我们在实现从Page1跳转到Page3，在Page1内写入：</p>
+<pre><code class="bash">//: [To Page3](Page3)
+</code></pre>
+<p>Page3即为我们创建的第三个Playground文件名。</p>
+<p>渲染效果：</p>
+<p><img src="/images/md20.png" alt="图片描述"></p>
+<p>这样我们点击Page1内的 To Page3 就跳转到了Page3内。以此类似，我们就可以实现点击某个Playground来跳转的自定页面了，也可以跳转到指定链接。<br>好了，Markdown在Playground内的使用说的差不多，下面进入项目代码中的使用。</p>
+<hr>
+<h1 id="Markdown之项目源代码"><a href="#Markdown之项目源代码" class="headerlink" title="Markdown之项目源代码"></a>Markdown之项目源代码</h1><p>  Markdown注释在源代码查看方式：</p>
+<ol>
+<li>光标移到函数名上按  option + command + 2 可在右侧Quick Help 看到Markdown的渲染效果.</li>
+<li>按下option并点击函数名，可在弹出的帮助中看到Markdown的渲染效果.</li>
+</ol>
+<h3 id="源代码之单行注释"><a href="#源代码之单行注释" class="headerlink" title="源代码之单行注释"></a>源代码之单行注释</h3><p> 在项目单行注 <strong> // </strong> 后面再加一个<strong>  / </strong> 来表示Markdown的单行注释，但是这样并会不立刻被Markdown渲染出来，我们需要写个函数，并按照Markdown渲染查看方式来查看。</p>
+<pre><code class="bash"> /// **demo** 注释
+    func demo()  {}
+</code></pre>
+<p>渲染效果：<br>查看方式1:<br><img src="/images/md05.png" alt="图片描述"><br>查看方式2:<br><img src="/images/md06.png" alt="图片描述"></p>
+<h3 id="源代码之多行注释"><a href="#源代码之多行注释" class="headerlink" title="源代码之多行注释"></a>源代码之多行注释</h3><p>在项目多行注释 <strong> /* </strong>  的后面再加一个<strong>  *  </strong>来表示Markdown多行注释，同样我们需要创建一个函数来查看。</p>
+<pre><code class="bash">/**
+* item1
+* item2
+* item3
+*/
+func listDemo()  {}
+</code></pre>
+<p>渲染效果：<br><img src="/images/md02.png" alt="图片描述"></p>
+<p>但是按照上面方式被渲染出来的并不是我们想要的效果，它并没有多行按列表显示。为了正确显示我们需要按下面的方式来写，避免列表出现在注释第一行，我们可以在注释第一行加一段说明，这样就可以正确渲染出我们要的多行效果了。</p>
+<pre><code class="bash">/**
+这是一个列表的多行注释
+* item1
+* item2
+* item3
+*/
+func listDemo1()  {}
+</code></pre>
+<p>这样就达到了我们的要求：<br><img src="/images/md03.png" alt="图片描述"></p>
+<p>当然如果你就不需要多余的注释，仅仅就想要一个列表，我们也是可以实现的，这就需要我们在每一个列表item前至少留一个空格的间距，这样就可以实现多行渲染效果</p>
+<pre><code class="bash">/**
+ * item1
+ * item2
+ * item3
+*/
+func listDemo2()  {}
+</code></pre>
+<p>渲染效果：<br><img src="/images/md04.png" alt="图片描述"></p>
+<p>下面说一下源代码中的多行重要文档注释怎样书写，我们与Playground重要文档注释做个比较如图：</p>
+<p><img src="/images/md01.png" alt="图片描述"><br>即：在源代码中我们需要把Playground中起始的 <strong> /* </strong> 后面跟的 <strong> : </strong>字符更换为<strong> * </strong>，并去掉 右尖括号 ,因为在此是不能识别的。<br>改过后的注释代码如下：</p>
+<pre><code class="bash">/**
+# IMPORTANT: 重要提示
+描述信息：这是一个重要的注释说明
+1. item2
+2. item3
+---
+[More info - MarkDown链接](https://developer.apple.com/library/content/documentation/Xcode/Reference/xcode_markup_formatting_ref/)
+*/
+func listDemo3()  {}
+</code></pre>
+<p>渲染效果：<br><img src="/images/md10.png" alt="图片描述"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结:"></a>总结:</h1><p>在Playground中Markdown注释的起始第三个字符都是一个<strong>  : </strong>，而在项目源代码中Markdown注释起始的第三个字符分别是一个 <strong> / </strong> (单行注释)或 <strong> * </strong>  (多行注释)。<br>Talk is cheap. Show me the code.  <a href="https://github.com/lpfRoc/LPFMarkdownProject" target="_blank" rel="external"><em>GitHub</em></a><br>更多Markdown用法请看<a href="https://developer.apple.com/library/content/documentation/Xcode/Reference/xcode_markup_formatting_ref/" target="_blank" rel="external"><em>苹果官方文档</em></a></p>
+
+	</div>
+	<div class="meta split">
+		<time class="post-datel" datetime="2017-03-07T07:00:00.000Z" itemprop="datePublished">2017-03-07</time>
+	</div>
+</article>
+
+<!--评论-->
+
+	
+<div class="ds-thread" data-thread-key=" 优雅的使用Markdown编写代码注释" data-title="优雅的使用Markdown编写代码注释" data-url="http://yoursite.com/2017/03/07/ 优雅的使用Markdown编写代码注释/"></div>
+<script type="text/javascript">
+
+var duoshuoQuery = {short_name:"yumemor"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0]
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+
+
+  
+</div>
+
+
+  <svg id="bigTriangleColor" width="100%" height="40" viewBox="0 0 100 102" preserveAspectRatio="none">
+    <path d="M0 0 L50 100 L100 0 Z"></path>
+  </svg>
+
+  
+
+
+  <div class="wrapper"></div>
+
+
+
+
+
+<div class="fat-footer">
+	<div class="wrapper">
+		<div class="layout layout--center">
+			<div class="layout__item palm-mb">
+				<div class="media">
+					<img class="headimg" src='/images/logo.jpg' alt='roc' +'text'>
+					<div class="media__body">
+						<h4>Roc</h4>
+						<p class='site-description'>鹏之徙于南冥也，水击三千里，抟扶摇而上者九万里，去以六月息者也！</p>
+					</div>
+				</div>
+				<div class="author-contact">
+					<ul>
+						
+							
+							<li>
+				        		<a href="https://github.com/lpfRoc" target="_blank">
+				        			
+				        				<i class="iconfont icon-github"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="https://www.zhihu.com/people/roc-35-89" target="_blank">
+				        			
+										<i class="iconfont icon-zhihu"></i>
+                                    
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="http://www.jianshu.com/users/e9979fbf50cf/timeline" target="_blank">
+				        			
+                                       <i class="icomoon icon-jianshu jianshu"></i>
+                                   
+				        		</a>
+				        	</li>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<footer class="footer" role="contentinfo">
+	<div class="wrapper wrapper--wide split split--responsive">
+		<span>Theme by <a href="http://github.com/yumemor">Yumemor</a>. Powered by <a href="http://hexo.io">Hexo</a></span>
+	</div>
+</footer>
+
+	<!-－这里导入了 lib.js 里面涵盖了 jQuery 等框架 所以注释掉-->
+	<!--<script src="http://lib.sinaapp.com/js/jquery/2.0/jquery.min.js"></script>-->
+	<script src="/js/lib.js"></script>
+	<script src="/js/google-code-prettify/prettify.js"></script>
+	<script src="/js/module.js"></script>
+	<script src="/js/script.js"></script>
+	<script type='text/javascript'>
+		//代码高亮
+		$(document).ready(function(){
+	 		$('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+   			prettyPrint();
+		});
+	</script>
+	</body>
+</html>
