@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <title>多类型UITableViewCell重用的正确姿态 | Roc</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    
+      <link rel="icon" href="/favicon.png">
+    
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="/js/google-code-prettify/tomorrow-night.css">
+
+  </head>
+
+  <body>
+
+<header>
+	<a id="logo" href="/" title="Roc">
+	<img src="/favicon.png" alt="Roc"></a>
+	
+	
+
+	
+		<!--侧边导航栏-->
+		<a id="nav-toggle" href="#"><span></span></a>
+
+<nav>
+	<div class="menu-top-container">
+		<ul id="menu-top" class="menu">
+			
+				
+				<li class="current-menu-item">
+					<a href="https://github.com/lpfRoc" target="_blank">github</a>
+				</li>
+			
+		</ul>
+	</div>
+</nav>
+	
+
+</header>
+<div class="m-header ">
+	<section id="hero1" class="hero">
+		<div class="inner">
+		</div>
+	</section>
+	
+		<figure class="top-image" data-enable=true></figure>
+	
+</div>
+
+<!--文章列表-->
+<div class="wrapper">
+  
+    <!--文章-->
+<article>
+	
+  
+    <h1 class="post-title" itemprop="name">
+      多类型UITableViewCell重用的正确姿态
+    </h1>
+  
+
+	<div class='post-body mb mt'>
+		<p>对于iOS开发者，UITableViewCell的重用是最基本的技能，初学者都应该掌握的。对于它的原理我就不在此啰嗦了，这里我重点说下，如何以正确的姿态来重用多类型的UITableViewCell，正确重用cell不仅仅要重用cell视图，还需要好好重用cell的子视图。你是否做到了呢？</p>
+<hr>
+<h2 id="单一类型cell重用"><a href="#单一类型cell重用" class="headerlink" title="单一类型cell重用"></a>单一类型cell重用</h2><p>对于简单单一cell的tableView来讲，它的重用我们大多会在代理方法里这样写：</p>
+<pre><code>- (UITableViewCell *)tableView:(UITableView *)tableView
+cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+//设置重用标识符
+static NSString * Identifier = @&quot;MineCell&quot;;
+//通过Identifier取到cell
+MineTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:Identifier];
+//若cell不存在，在进行创建
+if (!cell) {
+cell =[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier: Identifier];
+}
+//用set方法取到对应的model对cell赋值
+[cell cellModel:self.cellModelArr[indexPath.row]];
+return cell;
+}
+</code></pre><p>或者使用需要注册cell的写法：</p>
+<pre><code>- (UITableViewCell *)tableView:(UITableView *)tableView
+cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+//设置重用标识符
+static NSString *Identifier = @&quot;MineCell&quot;;
+MineTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: CellIdentifier forIndexPath:indexPath];
+//用set方法取到对应的model对cell赋值
+[cell setCellModel:self.cellModelArr[indexPath.row]];
+return cell;
+}
+</code></pre><p>上面的两种写法都很简单，由于是单一类型的cell重用，不会涉及到子视图的重用，所以没什么可讲的。</p>
+<h2 id="多类型cell重用"><a href="#多类型cell重用" class="headerlink" title="多类型cell重用"></a>多类型cell重用</h2><p>在很多情况下，UITableView并不是单一的一种cell，而会包含多种cell，每种cell类型样式布局都有明显区别。这样来我们就不能用上面单一的cell重用方式了。 对于多类型cell你当然可以对每个类型的cell创建对应的.h .m文件，并在使用时引入该 cell的头文件即可。但可能是出于偷懒，我更习惯统一处理这些cell。把这些cell都写在一个.h .m文件内，通过对不同类型cell设置对应对cellStyle枚举状态来辨别他们，这样以来，一个文件就足够了。<br>下面就重点说下单文件下多类型cell的重用。主要代码如下：</p>
+<pre><code>- (UITableViewCell *)tableView:(UITableView *)tableView
+cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+static NSString * MineCellIdentifier = @&quot;MineCellIdentifier&quot;;
+
+//通过注册的cell获取MineTableViewCell
+MineTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:MineCellIdentifier forIndexPath:indexPath];
+
+//根据不同row或者也可以根据model内容来区分cellStyle
+if (indexPath.row == 0) {
+//通过setMineCellStyle:方法对cell就行类型赋值，我们会在 setMineCellStyle:方法里对cell就行布局等定制化处理。
+cell.mineCellStyle = MineTableViewCellStyleOne;
+}else
+{
+cell.mineCellStyle = MineTableViewCellStyleTow;
+}
+//用set方法取到对应的model对cell赋值
+[cell setCellModel:self.cellModelArr[indexPath.row]];
+return cell;
+}
+</code></pre><p>我们一般会在MineTableViewCell.h里定义类似MineTableViewCellStyle的枚举类型，并实现mineCellStyle属性，这样就可以在对应的tableView代理方法里通过setMineCellStyle：方法来针对不同cellStyle布局了。setMineCellStyle：方法内部实现大概如下：</p>
+<pre><code>- (void)setMineCellStyle:(MineTableViewCellStyle)mineCellStyle
+{
+_mineCellStyle = mineCellStyle;
+//为了避免cell重用引起的子视图错乱，我们会先把cell的子视图给全不移除，下面会在对应的cellStyle内重新创建并添加到cell的contentView内。
+for (UIView *view in self.contentView.subviews) {
+[view removeFromSuperview];
+}
+//对不同的类型进行针对性的布局绘制操作
+switch (mineCellStyle) {
+case MineTableViewCellStyleOne:
+{
+//这里省略了布局约束的代码
+NSArray *viewArray = @[self.bankNumTitleLb, self.bankNumLb];
+for (UIView *view in viewArray) {
+[self.contentView addSubview:view];
+}
+//进行布局操作（此处省略不是本文重点）
+}
+break;
+case MineTableViewCellStyleTow:
+{
+//这里省略了布局约束的代码
+NSArray *viewArray = @[self.phoneNumTitleLb, self.phoneNumTextField];
+for (UIView *view in viewArray) {
+[self.contentView addSubview:view];
+}
+//进行布局操作（此处省略不是本文重点）
+}
+break;
+case MineTableViewCellStyleDefault:
+{
+//这里省略了布局约束的代码
+NSArray *viewArray = @[self.verificationCodeTitleLb,
+self.phoneNumTextField,self.verificationCodeButton];
+for (UIView *view in viewArray) {
+[self.contentView addSubview:view];
+}
+//进行布局操作（此处省略不是本文重点）
+}
+break;
+}
+}
+</code></pre><p>到这里也许你觉得一切都没什么问题。但有经验的开发者可能已经看出来问题所在。问题出在setMineCellStyle:方法里的这句代码：</p>
+<pre><code>for (UIView *view in self.contentView.subviews) {
+[view removeFromSuperview];
+}
+</code></pre><p>这句代码很简单，就是前面说到为了解决cell重用时会出现子视图的重用。可是”解决”了子视图的重用问题，那么新问题来了，每次都把子视图移除，重新创建既消耗内存还占用时间，严重会出现滑动出现卡顿现象，而且都删除了重建还能叫重用吗？最多是只是留了个cell的’壳’,里面的’肉’可都是新建的啊。</p>
+<h5 id="因此：在通过设置多种cell枚举类型来实现多样式cell布局时，要先判断当前重用的cellStyle-和-需要设置的cellStyle是否一致，不一致时，才需要重新布局绘制。"><a href="#因此：在通过设置多种cell枚举类型来实现多样式cell布局时，要先判断当前重用的cellStyle-和-需要设置的cellStyle是否一致，不一致时，才需要重新布局绘制。" class="headerlink" title="因此：在通过设置多种cell枚举类型来实现多样式cell布局时，要先判断当前重用的cellStyle 和 需要设置的cellStyle是否一致，不一致时，才需要重新布局绘制。"></a>因此：在通过设置多种cell枚举类型来实现多样式cell布局时，要先判断当前重用的cellStyle 和 需要设置的cellStyle是否一致，不一致时，才需要重新布局绘制。</h5><p>修改后的主要代码如下：</p>
+<pre><code>- (UITableViewCell *)tableView:(UITableView *)tableView
+cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+static NSString * MineCellIdentifier = @&quot;MineCellIdentifier&quot;;
+UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:MineCellOneIdentifier forIndexPath:indexPath];
+//获取当前重用cell的类型cellStyle
+MineCellStyle cellStyle = cell.mineCellStyle;
+switch (indexPath.section) {
+case 0:
+{
+//如果当前重用的cellStyle 和 需要设置的cellStyle不一致时，才进行类型重制！
+if (cellStyle !=  MineTableViewCellStyleOne) {
+cell.mineCellStyle = MineTableViewCellStyleOne;
+}
+[cell setCellModel:self.cellModelArr[indexPath.row]];
+}
+break;
+case 1:
+{
+switch (indexPath.row) {
+case 0:
+{
+if (cellStyle !=  MineTableViewCellStyleTow) {
+cell.mineCellStyle = MineTableViewCellStyleTow;
+}
+[cell setCellModel:self.cellModelArr[indexPath.row]];
+}
+break;
+case 1:
+{
+if (cellStyle !=  MineTableViewCellStyleThree) {
+cell.mineCellStyle = MineTableViewCellStyleThree;
+}
+[cell setCellModel:self.cellModelArr[indexPath.row]];
+}
+break;
+}
+}
+break;
+}
+return cell;
+}
+</code></pre><p>这样以来即实现了单文件下实现多cell类型的功能，又完美的解决了多cell的重用及性能问题，如有疏漏不足之处多多指出。</p>
+
+	</div>
+	<div class="meta split">
+		<time class="post-datel" datetime="2017-07-24T07:00:00.000Z" itemprop="datePublished">2017-07-24</time>
+	</div>
+</article>
+
+<!--评论-->
+
+	
+<div class="ds-thread" data-thread-key="多类型UITableViewCell重用的正确姿态" data-title="多类型UITableViewCell重用的正确姿态" data-url="http://yoursite.com/2017/07/24/多类型UITableViewCell重用的正确姿态/"></div>
+<script type="text/javascript">
+
+var duoshuoQuery = {short_name:"yumemor"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0]
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+
+
+  
+</div>
+
+
+  <svg id="bigTriangleColor" width="100%" height="40" viewBox="0 0 100 102" preserveAspectRatio="none">
+    <path d="M0 0 L50 100 L100 0 Z"></path>
+  </svg>
+
+  
+
+
+  <div class="wrapper"></div>
+
+
+
+
+
+<div class="fat-footer">
+	<div class="wrapper">
+		<div class="layout layout--center">
+			<div class="layout__item palm-mb">
+				<div class="media">
+					<img class="headimg" src='/images/logo.jpg' alt='roc' +'text'>
+					<div class="media__body">
+						<h4>Roc</h4>
+						<p class='site-description'>鹏之徙于南冥也，水击三千里，抟扶摇而上者九万里，去以六月息者也！</p>
+					</div>
+				</div>
+				<div class="author-contact">
+					<ul>
+						
+							
+							<li>
+				        		<a href="https://github.com/lpfRoc" target="_blank">
+				        			
+				        				<i class="iconfont icon-github"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="https://www.zhihu.com/people/roc-35-89" target="_blank">
+				        			
+										<i class="iconfont icon-zhihu"></i>
+                                    
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="http://www.jianshu.com/users/e9979fbf50cf/timeline" target="_blank">
+				        			
+                                       <i class="icomoon icon-jianshu jianshu"></i>
+                                   
+				        		</a>
+				        	</li>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<footer class="footer" role="contentinfo">
+	<div class="wrapper wrapper--wide split split--responsive">
+		<span>Theme by <a href="http://github.com/yumemor">Yumemor</a>. Powered by <a href="http://hexo.io">Hexo</a></span>
+	</div>
+</footer>
+
+	<!-－这里导入了 lib.js 里面涵盖了 jQuery 等框架 所以注释掉-->
+	<!--<script src="http://lib.sinaapp.com/js/jquery/2.0/jquery.min.js"></script>-->
+	<script src="/js/lib.js"></script>
+	<script src="/js/google-code-prettify/prettify.js"></script>
+	<script src="/js/module.js"></script>
+	<script src="/js/script.js"></script>
+	<script type='text/javascript'>
+		//代码高亮
+		$(document).ready(function(){
+	 		$('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+   			prettyPrint();
+		});
+	</script>
+	</body>
+</html>
