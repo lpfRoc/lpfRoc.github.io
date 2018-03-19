@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <title>是时候放弃UIWebView | Roc</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    
+      <link rel="icon" href="/favicon.png">
+    
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="/js/google-code-prettify/tomorrow-night.css">
+
+  </head>
+
+  <body>
+
+<header>
+	<a id="logo" href="/" title="Roc">
+	<img src="/favicon.png" alt="Roc"></a>
+	
+	
+
+	
+		<!--侧边导航栏-->
+		<a id="nav-toggle" href="#"><span></span></a>
+
+<nav>
+	<div class="menu-top-container">
+		<ul id="menu-top" class="menu">
+			
+				
+				<li class="current-menu-item">
+					<a href="https://github.com/lpfRoc" target="_blank">github</a>
+				</li>
+			
+		</ul>
+	</div>
+</nav>
+	
+
+</header>
+<div class="m-header ">
+	<section id="hero1" class="hero">
+		<div class="inner">
+		</div>
+	</section>
+	
+		<figure class="top-image" data-enable=true></figure>
+	
+</div>
+
+<!--文章列表-->
+<div class="wrapper">
+  
+    <!--文章-->
+<article>
+	
+  
+    <h1 class="post-title" itemprop="name">
+      是时候放弃UIWebView
+    </h1>
+  
+
+	<div class='post-body mb mt'>
+		<p>随着苹果系统的不断升级，如今iOS11发布已经有段时间了，虽然此版本被吐槽为BUG版。但不可否认苹果爸爸还是积极向上，勇于创新的，系统还是在快速开发更新中的。此时我觉得是放弃UIWebView最佳时刻，首先，根据苹果官方统计，目前iOS设备，90%以上都已经升级到iOS9，因此对于远古时代的iOS7可以果断放弃。适配iOS8及以上即可。其次，虽然UIWebView伴随我们很久，但其表现却不尽如人意，内存性能暂且不说，最近公司前端同学使用新框架Vue.js开发之后，各种BUG层出不穷，如：网页title获取不到，web控件位置错乱，无法满足h5新增特性，等等。综合以上两方面，我觉得是时候放弃UIWebView，来重用WKWebView了！</p>
+<h1 id="WKWebView"><a href="#WKWebView" class="headerlink" title="WKWebView"></a>WKWebView</h1><p>iOS8之后苹果推荐使用WKWebView替代UIWebView，其主要特点：</p>
+<p>1.在性能、稳定性、内存占用上有很大的提升。<br>2.将UIWebViewDelegate与UIWebView拆分成了14类与3个协议（更加强大，专业）<br>3.支持更多的HTML5特性<br>4.高达60fps的滚动刷新率以及内置手势；<br>5.可以通过KVO监控网络加载的进度，获取网页title；<br>虽然很多人反应WKWebView存在Cookie以及post参数等坑的存在（目前我还未发现），但瑕不掩瑜，更何况坑是可以填的，苹果也会不断升级更新的。</p>
+<h1 id="WKWebView于UIWebView使用上的区别"><a href="#WKWebView于UIWebView使用上的区别" class="headerlink" title="WKWebView于UIWebView使用上的区别"></a>WKWebView于UIWebView使用上的区别</h1><p>此处我主要讲述WKWebView和UIWebView使用上的不同之处，不在过多的讲述简单使用。<br>使用时先要导入：WebKit/WebKit.h</p>
+<p>WKWebView主要新增以下几种协议：<br>1.WKNavigationDelegate：类似于UIWebView的加载成功、失败、是否允许跳转等<br>2.WKUIDelegate：主要是一些alert、打开新窗口之类的（不实现会有问题哦）<br>3.WKScriptMessageHandler：JS交互</p>
+<p>首先，与UIWebView创建不同，每个WKWebView都需要一个WKWebViewConfiguration配置对象代码如下：</p>
+<pre><code>// 创建配置
+WKWebViewConfiguration *cofiguration = [[WKWebViewConfiguration alloc] init];
+// 创建UserContentController（提供JavaScript向webView发送消息的方法）
+cofiguration.userContentController = [[WKUserContentController alloc] init];
+// 添加消息处理，注意：self指代的对象需要遵守WKScriptMessageHandler协议，结束时需要移除
+#pragma mark - JS调用OC
+[cofiguration.userContentController addScriptMessageHandler:self name:@&quot;NativeMethod&quot;];
+// 将UserConttentController设置到配置文件
+// 高端的自定义配置创建WKWebView
+WKWebView *webView = [[WKWebView alloc] initWithFrame:[UIScreen mainScreen].bounds configuration:cofiguration];
+</code></pre><p>可以看到WKWebView自己提供了和JS交互的方法，不再像UIWebView那样要通过拦截url或者导入JC框架来实现了。（WKWebView仍可以使用拦截url来实现，但不建议使用）</p>
+<p>我们提供了方法给JS调用，方法回调在WKScriptMessageHandler完成：</p>
+<pre><code>- (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message {
+// 判断是否是调用原生的
+if ([@&quot;NativeMethod&quot; isEqualToString:message.name]) {
+NSDictionary *jsReturn = message.body;
+NSLog(@&quot;JS调用了 方法 ：%@&quot;,message.name);
+NSLog(@&quot;JS返回值： %@&quot;, jsReturn[@&quot;body&quot;])
+}
+</code></pre><p>注意：上面将当前ViewController设置为MessageHandler之后需要在当前ViewController销毁前将其移除，否则会造成内存泄漏。</p>
+<pre><code>
+- (void)dealloc {
+[webView.configuration.userContentController removeScriptMessageHandlerForName:@&quot;NativeMethod&quot;];
+}
+</code></pre><p>有的同学可能发现Controller根本就没调用dealloc。后检查了ViewController中所有使用到self的地方，发现WKUserContentController的下面这个方法有使用到self</p>
+<pre><code>[cofiguration.userContentController addScriptMessageHandler:self name:@&quot;NativeMethod&quot;];
+</code></pre><p>可能造成循环引用无法释放。解决方法：自己创建一个WeakScriptMessageDelegate，实现如下：<br>.h</p>
+<pre><code>@interface OCTWeakScriptMessageDelegate :NSObject&lt;WKScriptMessageHandler&gt;
+@property (nonatomic, weak) id&lt;WKScriptMessageHandler&gt; scriptDelegate;
+
+- (instancetype)initWithDelegate:(id&lt;WKScriptMessageHandler&gt;)scriptDelegate;
+@end
+</code></pre><p>.m</p>
+<pre><code>
+@implementation OCTWeakScriptMessageDelegate
+- (instancetype)initWithDelegate:(id&lt;WKScriptMessageHandler&gt;)scriptDelegate {
+self = [super init];
+if (self) {
+_scriptDelegate = scriptDelegate;
+}
+return self;
+}
+
+- (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message {
+[self.scriptDelegate userContentController:userContentController didReceiveScriptMessage:message];
+}
+@end
+</code></pre><p>新的调用：</p>
+<pre><code>[cofiguration.userContentController addScriptMessageHandler:[[WeakScriptMessageDelegate alloc] initWithDelegate:self] name:@&quot;NativeMethod&quot;];
+</code></pre><p>之后dealloc就会正常调用了。</p>
+<p>OC调用JS可以直接使用下面方法调用,需要注意的一点必须放在加载完成之后调用。</p>
+<pre><code>- (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation
+{
+//获取title
+[webView evaluateJavaScript:@&quot;document.title&quot; completionHandler:^(id _Nullable title, NSError * _Nullable error) {
+NSLog(@&quot;调用evaluateJavaScript异步获取title：%@&quot;, title);
+}];
+
+}
+</code></pre><p>WKWebView可以通过KVO来坚听进度条和title别忘了也要移除：</p>
+<pre><code>//监听开始加载
+[webView addObserver:self
+forKeyPath:@&quot;loading&quot;
+options:NSKeyValueObservingOptionNew
+context:nil];
+
+//监听开始加载进度
+[webView addObserver:self
+forKeyPath:@&quot;estimatedProgress&quot;
+options:NSKeyValueObservingOptionNew
+context:nil];
+
+//监听开始网页title
+[webView addObserver:self
+forKeyPath:@&quot;title&quot;
+options:NSKeyValueObservingOptionNew
+context:nil];
+
+//KVO实现
+- (void)observeValueForKeyPath:(NSString *)keyPath
+ofObject:(id)object
+change:(NSDictionary&lt;NSString *,id&gt; *)change
+context:(void *)context
+{
+if ([keyPath isEqualToString:@&quot;loading&quot;])
+{
+NSLog(@&quot;loading&quot;);
+
+} else if ([keyPath isEqualToString:@&quot;title&quot;])
+{
+self.title = self.webView.title;
+} else if ([keyPath isEqualToString:@&quot;estimatedProgress&quot;])
+{
+NSLog(@&quot;progress: %f&quot;, self.webView.estimatedProgress);
+}
+
+// 加载完成
+if (!self.webView.loading)
+{
+//        [UIView animateWithDuration:0.5 animations:^{
+//
+//        }];
+//        NSLog(@&quot;progress加载完成: %f&quot;, self.webView.estimatedProgress);
+
+}
+}
+</code></pre><p>移除KVO</p>
+<pre><code>- (void)dealloc
+{
+NSLog(@&quot;%@==&gt; dealloc&quot;,[self class]);
+[webView removeObserver:self forKeyPath:@&quot;loading&quot; context:nil];//移除kvo
+[webView removeObserver:self forKeyPath:@&quot;title&quot; context:nil];
+[webView removeObserver:self forKeyPath:@&quot;estimatedProgress&quot; context:nil];
+}
+</code></pre><p>对于WKUIDelegate需要我们自己重新实现否则js系统弹框会无效！固定代码如下：</p>
+<pre><code>- (void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(nonnull void (^)(void))completionHandler
+{
+//js 里面的alert实现，如果不实现，网页的alert函数无效
+UIAlertController *alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
+[alertController addAction:[UIAlertAction actionWithTitle:@&quot;确定&quot; style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+completionHandler();
+}]];
+[self presentViewController:alertController animated:YES completion:^{}];
+}
+
+- (void)webView:(WKWebView *)webView runJavaScriptConfirmPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(BOOL))completionHandler {
+//  js 里面的alert实现，如果不实现，网页的alert函数无效  ,
+UIAlertController *alertController = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
+[alertController addAction:[UIAlertAction actionWithTitle:@&quot;取消&quot; style:UIAlertActionStyleCancel handler:^(UIAlertAction *action){
+completionHandler(NO);
+}]];
+[alertController addAction:[UIAlertAction actionWithTitle:@&quot;确定&quot; style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+completionHandler(YES);
+}]];
+[self presentViewController:alertController animated:YES completion:^{}];
+}
+
+- (void)webView:(WKWebView *)webView runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt defaultText:(NSString *)defaultText initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSString *))completionHandler
+{
+//用于和JS交互，弹出输入框
+UIAlertController *alertController = [UIAlertController alertControllerWithTitle:prompt message:nil preferredStyle:UIAlertControllerStyleAlert];
+[alertController addAction:[UIAlertAction actionWithTitle:@&quot;取消&quot; style:UIAlertActionStyleCancel handler:^(UIAlertAction *action){
+completionHandler(nil);
+}]];
+[alertController addAction:[UIAlertAction actionWithTitle:@&quot;确定&quot; style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+UITextField *textField = alertController.textFields.firstObject;
+completionHandler(textField.text);
+}]];
+[alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+textField.text = defaultText;
+}];
+[self presentViewController:alertController animated:YES completion:NULL];
+}
+</code></pre><p>对于可能引起的白屏问题解决方法：</p>
+<pre><code>//WKWebView 白屏问题
+- (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView
+{
+[webView reload];
+}
+</code></pre><p> 还有User-Agent修改，我们可以仍然使用UIWebView修改全局的userAgent需要在app启动时调用，方法如下：</p>
+<pre><code> - (void)configUserAgent{
+ UIWebView *webView = [[UIWebView alloc]initWithFrame:CGRectZero];
+ NSString* secretAgent = [webView stringByEvaluatingJavaScriptFromString:@&quot;navigator.userAgent&quot;];
+ NSMutableString * mutableSecretAgent = [NSMutableString stringWithString:secretAgent];
+ if ([mutableSecretAgent rangeOfString:@&quot;拼接版本号&quot;].location == NSNotFound) {
+ NSDictionary * info = [[NSBundle mainBundle] infoDictionary];
+ NSString *version =[NSString stringWithFormat:@&quot;拼接版本号%@&quot;,info[@&quot;CFBundleShortVersionString&quot;]];
+ [mutableSecretAgent appendString:version];
+ NSDictionary *dictionary = [[NSDictionary alloc]
+ initWithObjectsAndKeys:mutableSecretAgent, @&quot;UserAgent&quot;, nil];
+ [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
+ }
+ webView = nil;
+ }
+</code></pre><p>此方法的不足就是这样app内所有的webview都被修改。</p>
+<p>WKWebView可以使用下面方法：</p>
+<pre><code>//   获取默认User-Agent(iOS9 之后可用 self.webView.customUserAgent)
+[self.webView evaluateJavaScript:@&quot;navigator.userAgent&quot; completionHandler:^(id result, NSError *error) {
+NSString *oldAgent = result;
+
+// 给User-Agent添加额外的信息
+NSString *newAgent = [NSString stringWithFormat:@&quot;%@;%@&quot;, oldAgent, @&quot;extra_user_agent&quot;];
+// 设置global User-Agent
+NSDictionary *dictionary = [NSDictionary dictionaryWithObjectsAndKeys:newAgent, @&quot;UserAgent&quot;, nil];
+[[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
+}];
+</code></pre><h1 id="总结"><a href="#总结" class="headerlink" title="总结:"></a>总结:</h1><p>在废弃UIWebView，使用WKWebView以后，避免了很多由HTML5新特性引起的bug，也提高了网页性能，提高了开发效率，总之在iOS11之后，是时候和UIWebView说再见了。</p>
+
+	</div>
+	<div class="meta split">
+		<time class="post-datel" datetime="2018-03-15T07:00:00.000Z" itemprop="datePublished">2018-03-15</time>
+	</div>
+</article>
+
+<!--评论-->
+
+	
+<div class="ds-thread" data-thread-key="是时候放弃UIWebView" data-title="是时候放弃UIWebView" data-url="http://yoursite.com/2018/03/15/是时候放弃UIWebView/"></div>
+<script type="text/javascript">
+
+var duoshuoQuery = {short_name:"yumemor"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0]
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+
+
+  
+</div>
+
+
+  <svg id="bigTriangleColor" width="100%" height="40" viewBox="0 0 100 102" preserveAspectRatio="none">
+    <path d="M0 0 L50 100 L100 0 Z"></path>
+  </svg>
+
+  
+
+
+  <div class="wrapper"></div>
+
+
+
+
+
+<div class="fat-footer">
+	<div class="wrapper">
+		<div class="layout layout--center">
+			<div class="layout__item palm-mb">
+				<div class="media">
+					<img class="headimg" src='/images/logo.jpg' alt='roc' +'text'>
+					<div class="media__body">
+						<h4>Roc</h4>
+						<p class='site-description'>鹏之徙于南冥也，水击三千里，抟扶摇而上者九万里，去以六月息者也！</p>
+					</div>
+				</div>
+				<div class="author-contact">
+					<ul>
+						
+							
+							<li>
+				        		<a href="https://github.com/lpfRoc" target="_blank">
+				        			
+				        				<i class="iconfont icon-github"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="https://www.zhihu.com/people/roc-35-89" target="_blank">
+				        			
+										<i class="iconfont icon-zhihu"></i>
+                                    
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="http://www.jianshu.com/users/e9979fbf50cf/timeline" target="_blank">
+				        			
+                                       <i class="icomoon icon-jianshu jianshu"></i>
+                                   
+				        		</a>
+				        	</li>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<footer class="footer" role="contentinfo">
+	<div class="wrapper wrapper--wide split split--responsive">
+		<span>Theme by <a href="http://github.com/yumemor">Yumemor</a>. Powered by <a href="http://hexo.io">Hexo</a></span>
+	</div>
+</footer>
+
+	<!-－这里导入了 lib.js 里面涵盖了 jQuery 等框架 所以注释掉-->
+	<!--<script src="http://lib.sinaapp.com/js/jquery/2.0/jquery.min.js"></script>-->
+	<script src="/js/lib.js"></script>
+	<script src="/js/google-code-prettify/prettify.js"></script>
+	<script src="/js/module.js"></script>
+	<script src="/js/script.js"></script>
+	<script type='text/javascript'>
+		//代码高亮
+		$(document).ready(function(){
+	 		$('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+   			prettyPrint();
+		});
+	</script>
+	</body>
+</html>
