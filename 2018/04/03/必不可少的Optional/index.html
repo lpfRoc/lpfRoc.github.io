@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     
-    <title>archive_a: 2018 | Roc</title>
+    <title>必不可少的Optional | Roc</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     
@@ -56,41 +56,66 @@
 <!--文章列表-->
 <div class="wrapper">
   
-    <ul class="posts-list mb+ js-posts">
-      
-                <!--<div class="type">
-          <div class="mask">
-            <i class="iconfont"></i>
-          </div>
-          </div>-->
-        <li class="post">
-          
-            <i class="post-status iconfont icon-icon"></i>  
-          
-          <h2 class="no-background"  >
-            <span><a href="/2018/04/03/必不可少的Optional/">必不可少的Optional</a></span>
-            <time class="post-time" datetime="2018-04-03T07:00:00.000Z" itemprop="datePublished">2018-04-03</time>
-          </h2>
-        </li>
-      
-                <!--<div class="type">
-          <div class="mask">
-            <i class="iconfont"></i>
-          </div>
-          </div>-->
-        <li class="post">
-          
-          <h2 class="no-background"  >
-            <span><a href="/2018/03/15/是时候放弃UIWebView/">是时候放弃UIWebView</a></span>
-            <time class="post-time" datetime="2018-03-15T07:00:00.000Z" itemprop="datePublished">2018-03-15</time>
-          </h2>
-        </li>
-      
-    </ul>
-    
+    <!--文章-->
+<article>
+	
+  
+    <h1 class="post-title" itemprop="name">
+      必不可少的Optional
+    </h1>
+  
+
+	<div class='post-body mb mt'>
+		<p>“Optional”译为可选择的，随意的。但在Swift里，我认为它是必不可少的。在项目里往往对各种值为”空”的情况处理不当，就会出现各种bug。而当我们访问一个变量时，我们有太多情况无法意识到一个变量有可能为空，进而最终在程序中埋藏了一个个闪退的隐患。因此，Swift里，明确区分了”变量”和”值有可能为空的变量”这两种情况，以时刻警告你：”哦，它的值有可能为空，我应该谨慎处理它。而对于后者，谨慎不仅仅是精神层面的，Swift还从语法层面上，帮助你在处理空值时，游刃有余。那就是今天主角Optional</p>
+<h1 id="未必安全的“哨兵值”"><a href="#未必安全的“哨兵值”" class="headerlink" title="未必安全的“哨兵值”"></a>未必安全的“哨兵值”</h1><p>在编程中，无论是编写还是调用函数，一个最普遍的情况，就是在某些情况下，函数并不总是可以返回我们期望的值。我们不妨先来看个Objective-C的例子：</p>
+<pre><code class="bash">NSString *tmp = nil;
+
+if ([tmp rangeOfString: @&quot;Swift&quot;].location != NSNotFound) {
+// Will print out for nil string
+NSLog(@&quot;Something about swift&quot;);
+}
+</code></pre>
+<p>在我们的例子里，尽管tmp的值是nil，但调用tmp的rangeOfString方法却是合法的，它会返回一个值为0的NSRange，因此，location的值也是0。</p>
+<p>但是，NSNotFound的值却是NSIntegerMax。于是，尽管tmp的值为nil，我们还可以在控制台看到<em>Something about swift</em>这样的输出。</p>
+<p>怎么样？现在你应该彻底对这个“哨兵值”没什么好感了吧。</p>
+<p>既然“哨兵值”不是一个好方法，又该如何解决函数有可能返回错误的情况呢？</p>
+
+	</div>
+	<div class="meta split">
+		<time class="post-datel" datetime="2018-04-03T07:00:00.000Z" itemprop="datePublished">2018-04-03</time>
+	</div>
+</article>
+
+<!--评论-->
+
+	
+<div class="ds-thread" data-thread-key="必不可少的Optional" data-title="必不可少的Optional" data-url="http://yoursite.com/2018/04/03/必不可少的Optional/"></div>
+<script type="text/javascript">
+
+var duoshuoQuery = {short_name:"yumemor"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0]
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+
 
   
 </div>
+
+
+  <svg id="bigTriangleColor" width="100%" height="40" viewBox="0 0 100 102" preserveAspectRatio="none">
+    <path d="M0 0 L50 100 L100 0 Z"></path>
+  </svg>
+
+  
+
+
+  <div class="wrapper"></div>
 
 
 
