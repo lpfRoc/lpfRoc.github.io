@@ -116,8 +116,9 @@ let view = UIImageView(image: image)
 <hr>
 <p><br></p>
 <ul>
-<li><strong>while let</strong><br>除了在条件分支中使用let绑定optional，我们也可以在循环中，使用类似的形式。例如，为了遍历一个数组，我们可以这样：</li>
+<li><strong>while let</strong></li>
 </ul>
+<p>除了在条件分支中使用let绑定optional，我们也可以在循环中，使用类似的形式。例如，为了遍历一个数组，我们可以这样：</p>
 <pre><code class="bash">let numbers = [1, 2, 3, 4, 5, 6]
 var iterator = numbers.makeIterator()
 while let element = iterator.next() {
@@ -128,8 +129,9 @@ print(element)
 <p>在这里强调一下：在Swift里，for…in循环是其实是通过while模拟出来的。这也就意味着，for循环中的循环变量在每次迭代的时候，都是一个全新的对象，而不是对上一个循环变量的修改。</p>
 <h3 id="guard的使用"><a href="#guard的使用" class="headerlink" title="guard的使用"></a>guard的使用</h3><p>通常情况下，我们只能在optional被unwrapping的作用域内，来访问它的值。</p>
 <ul>
-<li><strong>理解optional unwrapping的作用域</strong><br>例如，在下面这个arrayProcess函数里：</li>
+<li><strong>理解optional unwrapping的作用域</strong></li>
 </ul>
+<p>例如，在下面这个arrayProcess函数里：</p>
 <pre><code class="bash">func arrayProcess(array: [Int]) {
 if let first = array.first {
 print(first)
@@ -151,8 +153,9 @@ print(first)
 <hr>
 <p><br></p>
 <ul>
-<li><strong>一个特殊情况</strong><br>在Swift里，有一类特殊的函数，它们返回Never，表示这类方法直到程序执行结束都不会返回。Swift管这种类型叫做uninhabited type。</li>
+<li><strong>一个特殊情况</strong></li>
 </ul>
+<p>在Swift里，有一类特殊的函数，它们返回Never，表示这类方法直到程序执行结束都不会返回。Swift管这种类型叫做uninhabited type。</p>
 <p>什么情况会使用Never呢？其实并不多，一种是崩溃前，例如，使用fatalError返回一些用于排错的消息；另一种，是类似dispatchMain这样，在进程生命周期中一直需要执行的方法。</p>
 <p>当我们在返回Never的函数中，使用guard时，else语句并不需要离开当前作用域，而是最后一行必须调用另外一个返回Never的函数就好了。例如下面的例子：</p>
 <pre><code class="bash">func toDo(item: String?) -&gt; Never {
@@ -164,8 +167,9 @@ fatalError(&quot;Implement \(item) later&quot;)
 </code></pre>
 <p>在toDo的实现里，如果我们没有指定要完成的内容，就在else里调用fatalError显示一个错误。在这里，fatalError也是一个返回Never的函数。</p>
 <ul>
-<li><strong>一个伪装的optional</strong><br>除了使用真正的optional变量之外，有时，我们还是利用编译器对optional的识别机制来为变量的访问创造一个安全的使用环境。例如，为了把数组中第一个元素转换为String，我们可以这样：</li>
+<li><strong>一个伪装的optional</strong></li>
 </ul>
+<p>除了使用真正的optional变量之外，有时，我们还是利用编译器对optional的识别机制来为变量的访问创造一个安全的使用环境。例如，为了把数组中第一个元素转换为String，我们可以这样：</p>
 <pre><code class="bash">func arrayProcess(array: [Int]) -&gt; String? {
 let firstNumber: Int
 
