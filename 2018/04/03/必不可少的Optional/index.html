@@ -67,7 +67,7 @@
 
 	<div class='post-body mb mt'>
 		<p>“Optional”译为可选择的，随意的。但在Swift里，我认为它是必不可少的。在项目里往往对各种值为”空”的情况处理不当，就会出现各种bug。而当我们访问一个变量时，我们有太多情况无法意识到一个变量有可能为空，进而最终在程序中埋藏了一个个闪退的隐患。因此，Swift里，明确区分了”变量”和”值有可能为空的变量”这两种情况，以时刻警告你：”哦，它的值有可能为空，我应该谨慎处理它。而对于后者，谨慎不仅仅是精神层面的，Swift还从语法层面上，帮助你在处理空值时，游刃有余。那就是今天主角Optional</p>
-<h1 id="未必安全的“哨兵值”"><a href="#未必安全的“哨兵值”" class="headerlink" title="未必安全的“哨兵值”"></a>未必安全的“哨兵值”</h1><p>在编程中，无论是编写还是调用函数，一个最普遍的情况，就是在某些情况下，函数并不总是可以返回我们期望的值。我们不妨先来看个Objective-C的例子：</p>
+<h3 id="未必安全的“哨兵值”"><a href="#未必安全的“哨兵值”" class="headerlink" title="未必安全的“哨兵值”"></a>未必安全的“哨兵值”</h3><p>在编程中，无论是编写还是调用函数，一个最普遍的情况，就是在某些情况下，函数并不总是可以返回我们期望的值。我们不妨先来看个Objective-C的例子：</p>
 <pre><code class="bash">NSString *tmp = nil;
 
 if ([tmp rangeOfString: @&quot;Swift&quot;].location != NSNotFound) {
@@ -78,7 +78,111 @@ NSLog(@&quot;Something about swift&quot;);
 <p>在我们的例子里，尽管tmp的值是nil，但调用tmp的rangeOfString方法却是合法的，它会返回一个值为0的NSRange，因此，location的值也是0。</p>
 <p>但是，NSNotFound的值却是NSIntegerMax。于是，尽管tmp的值为nil，我们还可以在控制台看到<em>Something about swift</em>这样的输出。</p>
 <p>怎么样？现在你应该彻底对这个“哨兵值”没什么好感了吧。</p>
-<p>既然“哨兵值”不是一个好方法，又该如何解决函数有可能返回错误的情况呢？</p>
+<p>既然“哨兵值”不是一个好方法，又该如何解决函数有可能返回错误的情况呢？一个思路：让编译器强制我们处理可能发生错误的情况。为了做到这点，我们得满足下面这几个条件：</p>
+<p>首先，作为一个函数的返回值，它仍旧得是一个独立的类型；<br>其次，对于所有成功的情况，这个类型得有办法包含正确的结果；<br>最后，对于所有错误的情况，这个类型得有办法用一个和正确情况类型不同的值来表达；<br>做到这些，当我们把一个错误情况的值用在正常的业务逻辑之后，编译器就可以由于类型错误，给我们予以警告了。<br>幸运的是Swift中Optional内部已经帮我们实现了上述功能。下面我们就来看下optional类型在Swift中的常用使用范式。</p>
+<h3 id="optional使用范式"><a href="#optional使用范式" class="headerlink" title="optional使用范式"></a>optional使用范式</h3><p>既然optional类型表达了有可能失败这样含义，因此，它最频繁出现的场景当然就是各种条件分支和循环语句。</p>
+<ul>
+<li><strong>if let</strong></li>
+</ul>
+<p>如果我们要表达“当optional不等于nil时，则执行某些操作”这样的语义，最朴素的写法，是这样的：</p>
+<pre><code class="bash">let number: Int? = 1
+if number != nil {
+print(number!)
+}
+</code></pre>
+<p>其中，number!这样的写法叫做force unwrapping，用于强行读取optional变量中的值，此时，如果optional的值为nil就会触发运行时错误。所以，通常，我们会事先判断optional的值是否为nil。</p>
+<p>但这样写有一个弊端，如果我们需要在if代码块中包含多个访问number的语句，就要在每一处使用number!，这显得很啰嗦。我们明知此时number的值不为nil，应该可以直接使用它的值才对。为此，Swift提供了if let的方式，像这样：</p>
+<pre><code class="bash">if let number = number {
+print(number)
+}
+</code></pre>
+<p>在上面的代码里，我们使用if let直接在if代码块内部，定义了一个新的变量number，它的值是之前number?的值。然后，我们就可以在if代码块内部，直接通过新定义的number来访问之前number?的值了。</p>
+<p>这里用了一个小技巧，就是在if let后面新定义变量的名字，和之前的optional是一样的。这不仅让代码看上去就像是访问optional自身一样，而且，通常为一个optional的值另取一个新的名字，也着实没什么必要。</p>
+<p>除了可以直接在if let中绑定optional的value，我们还可以通过布尔表达式进一步约束optional的值，这也是一个常见的用法，例如，我们希望number为奇数</p>
+<pre><code class="bash">if let number = number, number % 2 != 0 {
+print(number)
+}
+</code></pre>
+<p>我们之前讲到过逗号操作符在if中的用法，在这里，number % 2 != 0中的number，指的是在if代码块中新定义的变量，理解了这点，上面的代码就不存在任何问题了。</p>
+<p>有了optional的这种用法之后，对于那些需要一连串有可能失败的行为都成功时才执行的动作，只要这些行为都返回optional，我们就有了一种非常漂亮的解决方法。</p>
+<p>例如，为了从某个url加载一张jpg的图片，我们可以这样：</p>
+<pre><code class="bash">if let url = URL(string: imageUrl), url.pathExtension == &quot;jpg&quot;,
+let data = try? Data(contentsOf: url),
+let image = UIImage(data: data) {
+let view = UIImageView(image: image)
+}
+</code></pre>
+<p>在上面的例子里，从生成URL对象，到根据url创建Data，到用data创建一个UIImage，每一步的继续都依赖于前一步的成功，而每一步调用的方法又都返回一个optional，因此，通过串联多个if let，我们就把每一步成功的结果绑定在了一个新的变量上并传递给下一步，这样比我们在每一步不断的去判断optional是否为nil简单多了。</p>
+<hr>
+<p><br></p>
+<ul>
+<li><strong>while let</strong><br>除了在条件分支中使用let绑定optional，我们也可以在循环中，使用类似的形式。例如，为了遍历一个数组，我们可以这样：</li>
+</ul>
+<pre><code class="bash">let numbers = [1, 2, 3, 4, 5, 6]
+var iterator = numbers.makeIterator()
+while let element = iterator.next() {
+print(element)
+}
+</code></pre>
+<p>在这里，iterator.next()会返回一个Optional<int>，直到数组的最后一个元素遍历完之后，会返回nil。然后，我们用while let绑定了数组中的每一个值，并把它们打印在了控制台上。</int></p>
+<p>在这里强调一下：在Swift里，for…in循环是其实是通过while模拟出来的。这也就意味着，for循环中的循环变量在每次迭代的时候，都是一个全新的对象，而不是对上一个循环变量的修改。</p>
+<h3 id="guard的使用"><a href="#guard的使用" class="headerlink" title="guard的使用"></a>guard的使用</h3><p>通常情况下，我们只能在optional被unwrapping的作用域内，来访问它的值。</p>
+<ul>
+<li><strong>理解optional unwrapping的作用域</strong><br>例如，在下面这个arrayProcess函数里：</li>
+</ul>
+<pre><code class="bash">func arrayProcess(array: [Int]) {
+if let first = array.first {
+print(first)
+}
+}
+</code></pre>
+<p>我们只能在if代码块内部，访问被unwrapping之后的值。但这样做有一个麻烦，就是如果我们要在函数内部的多个地方使用array.first，就要在每个地方都进行某种形式的unwrapping，这不仅写起来很麻烦，还会让代码看上去非常凌乱。</p>
+<p>实际上，面对这种在多处访问同一个optional的情况，更多的时候，我们需要的是一个确保optional一定不为nil的环境。如果，我们能在一个地方统一处理optional为nil的情况，就可以在这个地方之外，安全的访问optional的值了。</p>
+<p>好在，Swift在语法上，对这个操作进行了支持，这就是guard的用法：</p>
+<pre><code class="bash">func arrayProcess(array: [Int]) {
+guard let first = array.first else {
+return
+}
+print(first)
+}
+</code></pre>
+<p>在上面的例子里，我们使用guard let绑定了array.first的非nil值。如果array.first为nil，就会转而执行else代码块里的内容。这样，我们就可以在else内部，统一处理array.first为nil的情况。在这里，我们可以编写任意多行语句，唯一的要求，就是else的最后一行必须离开当前作用域，对于函数来说，就是从函数返回，或者调用fatalError表示一个运行时错误。</p>
+<p>而这，也是为数不多的，我们可以在value binding作用域外部，来访问optional value的情况。<br><br></p>
+<hr>
+<p><br></p>
+<ul>
+<li><strong>一个特殊情况</strong><br>在Swift里，有一类特殊的函数，它们返回Never，表示这类方法直到程序执行结束都不会返回。Swift管这种类型叫做uninhabited type。</li>
+</ul>
+<p>什么情况会使用Never呢？其实并不多，一种是崩溃前，例如，使用fatalError返回一些用于排错的消息；另一种，是类似dispatchMain这样，在进程生命周期中一直需要执行的方法。</p>
+<p>当我们在返回Never的函数中，使用guard时，else语句并不需要离开当前作用域，而是最后一行必须调用另外一个返回Never的函数就好了。例如下面的例子：</p>
+<pre><code class="bash">func toDo(item: String?) -&gt; Never {
+guard let item = item else {
+fatalError(&quot;Nothing to do&quot;)
+}
+fatalError(&quot;Implement \(item) later&quot;)
+}
+</code></pre>
+<p>在toDo的实现里，如果我们没有指定要完成的内容，就在else里调用fatalError显示一个错误。在这里，fatalError也是一个返回Never的函数。</p>
+<ul>
+<li><strong>一个伪装的optional</strong><br>除了使用真正的optional变量之外，有时，我们还是利用编译器对optional的识别机制来为变量的访问创造一个安全的使用环境。例如，为了把数组中第一个元素转换为String，我们可以这样：</li>
+</ul>
+<pre><code class="bash">func arrayProcess(array: [Int]) -&gt; String? {
+let firstNumber: Int
+
+if let first = array.first {
+firstNumber = first
+} else {
+return nil
+}
+
+// `firstNumber` could be used here safely
+return String(firstNumber)
+}
+</code></pre>
+<p>在上面的代码里，有两点值得说明：</p>
+<p>首先，我们使用了Swift中延迟初始化的方式，在if let中，才初始化常量firstNumber；<br>其次，从程序的执行路径分析，对于firstNumber来说，要不我们已经在if let中完成了初始化；要不，我们已经从else返回。因此，只要程序的执行逻辑来到了if…else…之后，访问firstNumber就一定是安全的了。</p>
+<p>实际上，Swift编译器也可以识别这样的执行逻辑。firstNumber就像一个伪装的optional一样，在if let分支里被初始化成具体的值，在else分支里，被认为值是nil。因此，在else代码块之后，就像在之前guard语句之后一样，我们也可以认为firstNumber一定是包含值的，因此安全的访问它。</p>
+<p>以上，就是在各种不同的作用域，访问optional unwrapping结果的话题。在下一篇博客里，我会更深入的介绍optional的其他使用。（此篇博客是学习 <a href="https://boxueio.com" target="_blank" rel="external"><em>泊学</em></a>网站的总结）</p>
 
 	</div>
 	<div class="meta split">
