@@ -186,7 +186,103 @@ return String(firstNumber)
 <p>在上面的代码里，有两点值得说明：</p>
 <p>首先，我们使用了Swift中延迟初始化的方式，在if let中，才初始化常量firstNumber；<br>其次，从程序的执行路径分析，对于firstNumber来说，要不我们已经在if let中完成了初始化；要不，我们已经从else返回。因此，只要程序的执行逻辑来到了if…else…之后，访问firstNumber就一定是安全的了。</p>
 <p>实际上，Swift编译器也可以识别这样的执行逻辑。firstNumber就像一个伪装的optional一样，在if let分支里被初始化成具体的值，在else分支里，被认为值是nil。因此，在else代码块之后，就像在之前guard语句之后一样，我们也可以认为firstNumber一定是包含值的，因此安全的访问它。</p>
-<p>以上，就是在各种不同的作用域，访问optional unwrapping结果的话题。在下一篇博客里，我会更深入的介绍optional的其他使用。（此篇博客是学习 <a href="https://boxueio.com" target="_blank" rel="external"><em>泊学</em></a>网站的总结）</p>
+<p>以上，就是在各种不同的作用域，访问optional unwrapping结果的话题。</p>
+<h3 id="map和flatMap的应用和实现"><a href="#map和flatMap的应用和实现" class="headerlink" title="map和flatMap的应用和实现"></a>map和flatMap的应用和实现</h3><p>在之前的内容里，我们提到过，当我们要在optional的值不为nil时，执行一些操作，可以使用if let绑定optional的值，然后，就可以在if语句内部，直接访问它了，例如，我们要把一个String?的内容在非空时，转换为大写，可以这样：</p>
+<pre><code class="bash">let swift: String? = &quot;swift&quot;
+var SWIFT: String? = nil
+if let swift = swift {
+SWIFT = swift.uppercased()
+}
+</code></pre>
+<p>然后，一个似曾相识的问题就来了，如果需要SWIFT是一个常量怎么办呢？如果，你把一个optional理解为是一个包含值和nil的集合类型，就自然会有更好的解决办法了。<br><br></p>
+<hr>
+<p><br></p>
+<ul>
+<li><strong>Optional map-</strong></li>
+</ul>
+<p>既然map可以用在集合类型里转换元素，当然也可以用在Optional类型上：</p>
+<pre><code class="bash">let SWIFT = swift.map { $0.uppercased() }
+// Optional(&quot;SWIFT&quot;)
+</code></pre>
+<p>这样，我们就得到了一个新的Optional<string>，值是“SWIFT”。对于optional类型来说，如果它的值非nil，map就会把unwrapping的结果传递给它的closure参数，否则，就直接返回nil。我们完全可以按照这个思路，自己给Optional实现一个myMap：</string></p>
+<pre><code class="bash">extension Optional {
+    func myMap&lt;T&gt;(_ transform: (Wrapped) -&gt; T) -&gt; T? {
+       if let value = self {
+           return transform(value)
+       }
+       return nil
+    }
+}
+</code></pre>
+<p>在这个实现里，唯一要说明的，就是Wrapped，这是Optional类型的泛型参数，表示optional实际包装的值的类型。理解了这个之后，myMap的实现就完全都是套路了。</p>
+<p>然后，我们用之前的例子试一下：</p>
+<pre><code class="bash">let SWIFT = swift.myMap { $0.uppercased() }
+// Optional(&quot;SWIFT&quot;)
+</code></pre>
+<p>结果和之前，应该是一样的。</p>
+<p>理解了这个方式之后，当你再要返回一个optional的时候，除了使用if…else…对非空情况单独处理之外，直接使用map通常会是个更好的方法。<br><br></p>
+<hr>
+<p><br></p>
+<ul>
+<li><strong>Optional flatMap-</strong></li>
+</ul>
+<p>介绍完了map，我们不难联想到，如果map方法返回的也是一个optional，我们是否也应该有flatMap来处理双层嵌套optional类型的变换呢？</p>
+<p>当然，Swift已经在标准库中，为你实现了一个。来看下面的例子</p>
+<pre><code class="bash">let stringOne: String? = &quot;1&quot;
+let ooo = stringOne.map { Int($0) }
+type(of: ooo) // Optional&lt;Optional&lt;Int&gt;&gt;
+</code></pre>
+<p>此时，由于Int($0)返回一个Int?，而map又会返回一个optional类型，因此，ooo的类型，就变成了Int??，也就是Optional<optional<int>&gt;。但我们只是尝试把stringOne变成一个整数，因此，应该是一个把Optional<string>变成Optional<int>的操作。这时，flatMap就派上用场了：</int></string></optional<int></p>
+<pre><code class="bash">let oo = stringOne.flatMap { Int($0) }
+type(of: oo) // Optional&lt;Int&gt;
+</code></pre>
+<p>相比于map来说，flatMap会对它的closure参数的返回值进行处理，当返回非nil时，就直接把这个返回值返回；否则，就返回nil。这样，我们就获得了一个新的单层optional对象。</p>
+<p>当然，为了避免双层嵌套的optional，我们也可以用if let来实现类似的效果：</p>
+<pre><code class="bash">if let stringOne = stringOne, let o = Int(stringOne) {
+    print(o)    // 1
+    type(of: o) // Int
+}
+</code></pre>
+<p>在上面的代码里，我们用第一个if let绑定了stringOne中的非nil值，并尝试把这个值转换成整数。由于这个转换结果也是一个optional，我们再次使用了if let绑定了转换后的非nil结果。</p>
+<p>实际上，Optional.flatMap就完全是基于if let来实现的：</p>
+<pre><code class="bash">extension Optional {
+    func myFlatMap&lt;T&gt;(_ transform: (Wrapped) -&gt; T?) -&gt; T? {
+        if let value = self,
+           let mapped = transform(value) {
+           return mapped
+        }
+
+        return nil
+    }
+}
+</code></pre>
+<p>看到了吧，flatMap和if let简直如出一辙。<br><br></p>
+<hr>
+<p><br></p>
+<ul>
+<li><strong>遍历一个包含optional的集合-</strong></li>
+</ul>
+<p>在理解了集合和optional类型各自的map和flatMap之后，我们来看一个稍复杂一些的例子：如何遍历一个包含optional的数组，并对每个元素做一些操作呢？</p>
+<p>假设，我们有一个包含数字的字符串数组：</p>
+<pre><code class="bash">let ints = [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;five&quot;]
+</code></pre>
+<p>现在，要把ints中的元素转换成Int然后求和，该怎么做呢？最“朴素”的做法，当然是先对ints调用map把[String]变成[Int?]</p>
+<pre><code class="bash">ints.map ({ Int($0) })
+</code></pre>
+<p>然后，在for…in中，使用value binding读取数组中的每一个非nil值，并且求和：</p>
+<pre><code class="bash">var all = 0
+for case let int? in ints.map({ Int($0) }) {
+    all += int
+}
+</code></pre>
+<p>仔细分析上面的过程，实际上分成四个独立的步骤：</p>
+<p>把ints中所有的元素变形，形成新的序列；<br>在第一步的结果中剔除所有的nil；<br>在第二步的结果中unwrapping所有的optional；<br>对第三步的结果执行reduce求和；</p>
+<p>实际上，Swift标准库中，已经为序列类型提供了一个flatMap方法，专门用来处理“在序列中变换并筛选所有非nil元素”的任务：</p>
+<pre><code class="bash">let intOnes = ints.flatMap { Int($0) }.reduce(0, +)
+//10
+</code></pre>
+<p>以上，就是针对optional类型map和flatMap的常见应用场景以及实现原理。</p>
+<p>在下一篇博客里，我会更深入的介绍optional的其他使用。（此篇博客是学习 <a href="https://boxueio.com" target="_blank" rel="external"><em>泊学</em></a>网站的总结）</p>
 
 	</div>
 	<div class="meta split">
