@@ -198,7 +198,7 @@ SWIFT = swift.uppercased()
 <hr>
 <p><br></p>
 <ul>
-<li><strong>Optional map-</strong></li>
+<li><strong>Optional map</strong></li>
 </ul>
 <p>既然map可以用在集合类型里转换元素，当然也可以用在Optional类型上：</p>
 <pre><code class="bash">let SWIFT = swift.map { $0.uppercased() }
@@ -224,7 +224,7 @@ SWIFT = swift.uppercased()
 <hr>
 <p><br></p>
 <ul>
-<li><strong>Optional flatMap-</strong></li>
+<li><strong>Optional flatMap</strong></li>
 </ul>
 <p>介绍完了map，我们不难联想到，如果map方法返回的也是一个optional，我们是否也应该有flatMap来处理双层嵌套optional类型的变换呢？</p>
 <p>当然，Swift已经在标准库中，为你实现了一个。来看下面的例子</p>
@@ -260,7 +260,7 @@ type(of: oo) // Optional&lt;Int&gt;
 <hr>
 <p><br></p>
 <ul>
-<li><strong>遍历一个包含optional的集合-</strong></li>
+<li><strong>遍历一个包含optional的集合</strong></li>
 </ul>
 <p>在理解了集合和optional类型各自的map和flatMap之后，我们来看一个稍复杂一些的例子：如何遍历一个包含optional的数组，并对每个元素做一些操作呢？</p>
 <p>假设，我们有一个包含数字的字符串数组：</p>
