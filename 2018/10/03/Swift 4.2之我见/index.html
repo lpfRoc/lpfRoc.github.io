@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <title>Swift 4.2之我见 | Roc</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    
+      <link rel="icon" href="/favicon.png">
+    
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="/js/google-code-prettify/tomorrow-night.css">
+
+  </head>
+
+  <body>
+
+<header>
+	<a id="logo" href="/" title="Roc">
+	<img src="/favicon.png" alt="Roc"></a>
+	
+	
+
+	
+		<!--侧边导航栏-->
+		<a id="nav-toggle" href="#"><span></span></a>
+
+<nav>
+	<div class="menu-top-container">
+		<ul id="menu-top" class="menu">
+			
+				
+				<li class="current-menu-item">
+					<a href="https://github.com/lpfRoc" target="_blank">github</a>
+				</li>
+			
+		</ul>
+	</div>
+</nav>
+	
+
+</header>
+<div class="m-header ">
+	<section id="hero1" class="hero">
+		<div class="inner">
+		</div>
+	</section>
+	
+		<figure class="top-image" data-enable=true></figure>
+	
+</div>
+
+<!--文章列表-->
+<div class="wrapper">
+  
+    <!--文章-->
+<article>
+	
+  
+    <h1 class="post-title" itemprop="name">
+      Swift 4.2之我见
+    </h1>
+  
+
+	<div class='post-body mb mt'>
+		<p>十一期间闲来无事，想想好久未写东西了，就总结下最近学习Swift 4.2中新的改变。我们知道Swift 4.2只是Swift 5 ABI稳定版本的一个中间过渡，但这个版本却为我们带来了诸多改进，例如：Optional一致性、更统一的随机数API、遍历enum case、编译器警告等等，上篇博文也提到了“Optional”，那么我们就先从Optional的改变讲起。</p>
+<h3 id="IUO到底是什么？"><a href="#IUO到底是什么？" class="headerlink" title="IUO到底是什么？"></a>IUO到底是什么？</h3><p>Implicitly Unwrapped Optional，也就是我们常说的IUO，对于这个类型可能有些困惑，在Swift 4.2中，简单来说IUO从一个独立的类型，变成了Optional类型的一个修饰。看好了，我说的是<strong>类型修饰</strong>。看下面代码：</p>
+<pre><code class="bash">var a: Int?
+var b: Int!
+</code></pre>
+<p>在Swift 4.2之前，a的类型是Optional<int>，而b的类型则是ImplicitlyUnwrappedOptional<int>。而在Swift 4.2之后，a和b的类型，都变成了Optional<int>，只不过，对b来说，编译器会给它做一个标记，在必要的时候自动unwrap它包含的值。也就是说，在4.2版本之后，无论是!还是?，代码中都只有一个optional类型，就是Optional<t>。</t></int></int></int></p>
+<p>尽管Swift官方声明Swift 4.1和4.2是源代码兼容的，但事实上并不完全如此，那么下面总结下这个改动，带来的源代码兼容性相关的变化。</p>
+<h3 id="编译器对T-的警告"><a href="#编译器对T-的警告" class="headerlink" title="编译器对T!的警告"></a>编译器对T!的警告</h3><p>这类是Swift 4.2之后，我们最常见到的变化。</p>
+<p><img src="/images/OP1.png" alt="图片描述"></p>
+<p>尽管b的定义是Int!，但从编译器给出的提示中，b实际的定义则是Int?。对于这类问题，绝大多数时候，我们都可以直接把T!变成T?解决。</p>
+<h3 id="类型转换引起的问题"><a href="#类型转换引起的问题" class="headerlink" title="类型转换引起的问题"></a>类型转换引起的问题</h3><p>由于T!已经不再是个独立的类型，因此，所有对T!的转型行为，都会被定义成废弃操作</p>
+<p><img src="/images/OP2.png" alt="图片描述"></p>
+<p>编译器会提示我们as T!已经被废弃，会在未来的某个Swift版本中被删除。T!变成了类型修饰之后，转型到T!应该是不被允许的，所有转型到optional的操作都应该明确使用as T?这样的用法。</p>
+<p>在Swift 4.2里，任何一个把T!当作类型的用法，理论上都是不允许的：</p>
+<p><img src="/images/OP3.png" alt="图片描述"></p>
+<p>对于数组来说，我们只能定义包含Array<optional<int>&gt;类型的数组，而不能定义“包含ImplicitlyUnwrappedOptional<int>的数组”。类似的，对于sum来说，我们只能定义，接受两个Optional<int>为参数的函数，而不能定义接受两个“可以自动解值的Optional<int>”作为参数的函数。“自动解值”，只是optional的某种特性，而不是类型的一部分，它不是个类型。</int></int></int></optional<int></p>
+<p>那么什么情况是可以使用T！的呢？是在函数的参数和返回值中，可以使用T!：</p>
+<pre><code class="bash">func sum(_ m: Int!, _ n: Int!) -&gt; Int! {
+    return m + n
+}
+</code></pre>
+<p>这说明，sum接受两个Optional<int>参数，并返回一个Optional<int>，只不过允许编译器自动解出optional的值而已。但是typealias却不行呢？假设它的定义是合法的，按照规则，它也会被编译器处理成：typealias sum = (Int?, Int?) -&gt; Int?。而我们的目的是要定义一个支持参数和返回值都可以自动解值的函数。这样毫无意义，与其这样费力不讨好，还不如就不允许这样的行为。</int></int></p>
+<h3 id="不能推导一个不是类型的类型"><a href="#不能推导一个不是类型的类型" class="headerlink" title="不能推导一个不是类型的类型"></a>不能推导一个不是类型的类型</h3><p>于此同时我们也不难想到，当IUO不是一个独立的类型之后，所有与之有关的类型自动推导规则也发生了对应的变化。</p>
+<pre><code class="bash">var x: Int!
+let y = x // Int?
+
+func Test&lt;T&gt;(_ value: T) -&gt; T { return value }
+print( type(of: Test(x)) ) // Int?
+}
+</code></pre>
+<p>这里，尽管x的定义是Int!，但是无论是y的类型，还是Test(x)的返回值的类型，都是Optional<int>，也就是说，type inference推导不出来Int!这样的的类型，因为它不是一个类型。</int></p>
+<h3 id="IUO对方法匹配的影响"><a href="#IUO对方法匹配的影响" class="headerlink" title="IUO对方法匹配的影响"></a>IUO对方法匹配的影响</h3><ul>
+<li><strong>对[T]!使用map方法</strong></li>
+</ul>
+<pre><code class="bash">let values: [Any]! = [1]
+_ = values.map { $0 as! Int }
+</code></pre>
+<p>在Swift 4.2之前的版本里，会先对values的值进行unwrap，得到一个[Any]，然后再调用[Any]的map方法对数组中元素进行变换，即使你是否对ImplicitlyUnwrappedOptional这个类型扩展了map方法也是如此。</p>
+<p>但到了4.2之后，就不是这样了。values的类型已经变成了Optional&lt;[Any]&gt;,values.map调用的会是Optional<t>.map方法，因此这时的$0的类型就变成了[Any]。把[Any]强制转型成Int，总是失败的，于是，我们会看到这样一条编译器警告</t></p>
+<p><img src="/images/OP4.png" alt="图片描述"></p>
+<p>为此，我们有两种处理方法：<br>第一种，是利用optional chaining，在values非nil的情况下调用map，此时就会调用Array的map方法了。这样，我们会得到一个Optional&lt;[Int]&gt;</p>
+<pre><code class="bash">_ = values?.map { $0 as! Int }
+</code></pre>
+<p>第二种，当然就是简单粗暴的直接把optional unwrap出来。这样，我们就会冒着崩溃的风险，直接得到一个[Int]：</p>
+<pre><code class="bash">_ = values!.map { $0 as! Int }
+</code></pre>
+<ul>
+<li><strong>nil值桥接方式的改变</strong></li>
+</ul>
+<p>在Swift 4.2之前，Swift中的nil桥接到OC中，会导致运行时错误，进而导致程序崩溃。在4.2之后，桥接nil会得到NSNull对象。来看下面这个例子：</p>
+<pre><code class="bash">class A: NSObject {}
+
+let iuoElement: A! = nil
+let array: [Any] = [iuoElement as Any]
+let nsArray = array as NSArray
+let element = nsArray[0]
+</code></pre>
+<p>上面的代码，在Swift 4.2之前，nsArray[0]会因为访问了nil导致运行时错误。但在Swift 4.2之后，我们可以这样：</p>
+<pre><code class="bash">if let value = element as? NSNull {
+    print(&quot;Nil value&quot;)
+}
+else {
+    print(&quot;Non nil value&quot;)
+}
+</code></pre>
+<p>以上，就是有关IUO改动相关的内容。整体上说，这些改动让optional类型的表现更为统一，并且，进一步限制了IUO的应用范围。Swift正在变得越来越好！</p>
+<p>在下一篇博客里，我会介绍Swift 4.2其他有用的改变。</p>
+
+	</div>
+	<div class="meta split">
+		<time class="post-datel" datetime="2018-10-03T07:00:00.000Z" itemprop="datePublished">2018-10-03</time>
+	</div>
+</article>
+
+<!--评论-->
+
+	
+<div class="ds-thread" data-thread-key="Swift 4.2之我见" data-title="Swift 4.2之我见" data-url="http://yoursite.com/2018/10/03/Swift 4.2之我见/"></div>
+<script type="text/javascript">
+
+var duoshuoQuery = {short_name:"yumemor"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0]
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+
+
+  
+</div>
+
+
+  <svg id="bigTriangleColor" width="100%" height="40" viewBox="0 0 100 102" preserveAspectRatio="none">
+    <path d="M0 0 L50 100 L100 0 Z"></path>
+  </svg>
+
+  
+
+
+  <div class="wrapper"></div>
+
+
+
+
+
+<div class="fat-footer">
+	<div class="wrapper">
+		<div class="layout layout--center">
+			<div class="layout__item palm-mb">
+				<div class="media">
+					<img class="headimg" src='/images/logo.jpg' alt='roc' +'text'>
+					<div class="media__body">
+						<h4>Roc</h4>
+						<p class='site-description'>鹏之徙于南冥也，水击三千里，抟扶摇而上者九万里，去以六月息者也！</p>
+					</div>
+				</div>
+				<div class="author-contact">
+					<ul>
+						
+							
+							<li>
+				        		<a href="https://github.com/lpfRoc" target="_blank">
+				        			
+				        				<i class="iconfont icon-github"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="https://www.zhihu.com/people/roc-35-89" target="_blank">
+				        			
+										<i class="iconfont icon-zhihu"></i>
+                                    
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="http://www.jianshu.com/users/e9979fbf50cf/timeline" target="_blank">
+				        			
+                                       <i class="icomoon icon-jianshu jianshu"></i>
+                                   
+				        		</a>
+				        	</li>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<footer class="footer" role="contentinfo">
+	<div class="wrapper wrapper--wide split split--responsive">
+		<span>Theme by <a href="http://github.com/yumemor">Yumemor</a>. Powered by <a href="http://hexo.io">Hexo</a></span>
+	</div>
+</footer>
+
+	<!-－这里导入了 lib.js 里面涵盖了 jQuery 等框架 所以注释掉-->
+	<!--<script src="http://lib.sinaapp.com/js/jquery/2.0/jquery.min.js"></script>-->
+	<script src="/js/lib.js"></script>
+	<script src="/js/google-code-prettify/prettify.js"></script>
+	<script src="/js/module.js"></script>
+	<script src="/js/script.js"></script>
+	<script type='text/javascript'>
+		//代码高亮
+		$(document).ready(function(){
+	 		$('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+   			prettyPrint();
+		});
+	</script>
+	</body>
+</html>
