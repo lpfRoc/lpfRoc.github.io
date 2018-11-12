@@ -258,7 +258,17 @@ NSString *newAgent = [NSString stringWithFormat:@&quot;%@;%@&quot;, oldAgent, @&
 NSDictionary *dictionary = [NSDictionary dictionaryWithObjectsAndKeys:newAgent, @&quot;UserAgent&quot;, nil];
 [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
 }];
-</code></pre><h1 id="总结"><a href="#总结" class="headerlink" title="总结:"></a>总结:</h1><p>在废弃UIWebView，使用WKWebView以后，避免了很多由HTML5新特性引起的bug，也提高了网页性能，提高了开发效率，总之在iOS11之后，是时候和UIWebView说再见了。</p>
+</code></pre><h3 id="h5页面内打开新网页无法响应问题"><a href="#h5页面内打开新网页无法响应问题" class="headerlink" title="h5页面内打开新网页无法响应问题"></a>h5页面内打开新网页无法响应问题</h3><p>最近遇到点击h5某些跳转按钮无法跳转到相应网页，经调试发现点击按钮未走任何web代理，最后得知是h5跳出了本页面打开了新页面所至，解决办法实现如下代理：</p>
+<pre><code class="bash">-(WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures
+{
+//如果是跳转一个新页面
+if (!navigationAction.targetFrame.isMainFrame || navigationAction.targetFrame == nil) {
+[webView loadRequest:navigationAction.request];
+}
+return nil;
+}
+</code></pre>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结:"></a>总结:</h1><p>在废弃UIWebView，使用WKWebView以后，避免了很多由HTML5新特性引起的bug，也提高了网页性能，提高了开发效率，总之在iOS11之后，是时候和UIWebView说再见了。</p>
 
 	</div>
 	<div class="meta split">
