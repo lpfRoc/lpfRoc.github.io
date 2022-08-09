@@ -385,11 +385,12 @@ header.scrolled .js-toggle-search {
 }
 #nav-toggle.active span {
   background-color: transparent;
+  background: #333;
 }
 #nav-toggle.active span:after,
 #nav-toggle.active span:before {
   top: 0;
-  background: #8cc9ad;
+  background: #fff;
 }
 #nav-toggle.active span:before {
   -webkit-transform: rotate(45deg);
@@ -407,7 +408,7 @@ nav {
   top: 0;
   height: 100%;
   width: 300px;
-  background: rgba(244,251,244,0.8);
+  background: #333;
   right: -300px;
   z-index: 9;
   padding: 6em 0 0;
@@ -685,8 +686,7 @@ article .post-author a {
 article .post-body p {
   font-size: 15px;
   line-height: 27px;
-  text-indent: 2em;
-  color: #1d1d1d;
+  color: rgba(2,0,0,0.6);
 }
 article .post-body >:last-child {
   margin-bottom: 0;
@@ -696,7 +696,7 @@ article .post-body img {
   height: auto;
 }
 article .post-body p {
-  margin-bottom: 1em;
+  margin-bottom: 30px;
 }
 article .post-body p + h1,
 article .post-body p + h2,
@@ -1145,9 +1145,9 @@ a[data-tooltip][data-placement="top"]::after {
 }
 .author-contact {
   width: 20%;
+  display: inline-block;
   float: right;
   margin-top: -50px;
-  margin-right: 80px;
 }
 .author-contact ul {
   list-style: none;
