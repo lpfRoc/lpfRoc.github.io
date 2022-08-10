@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!--Description-->
+
+    
+
+    
+        <meta name="description" content="本文主要面向初学swift的同学们，大神们可略过。主要总结了一些Swift与OC相同关键词的差异，避免熟悉OC的同学们因经验主义引起的错误。
+Swift之协议熟悉objective-c语言的同学们肯定对协议都不陌生，在Swift中苹果将protocol这种语法发扬的更加深入和彻底。这里不对OC的pr"/>
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Roc"/>
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="初见Swift之我不懂"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="本文主要面向初学swift的同学们，大神们可略过。主要总结了一些Swift与OC相同关键词的差异，避免熟悉OC的同学们因经验主义引起的错误。
+Swift之协议熟悉objective-c语言的同学们肯定对协议都不陌生，在Swift中苹果将protocol这种语法发扬的更加深入和彻底。这里不对OC的pr"/>
+    
+
+    <!--Open Graph Site Name-->
+        <meta property="og:site_name" content="Roc的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article"/>
+    
+
+    <!--Page Cover-->
+    
+    
+        <meta property="og:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+        <meta name="twitter:card" content="summary_large_image"/>
+
+    
+
+    
+        <meta name="twitter:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+    <!-- Title -->
+    
+    <title>初见Swift之我不懂 - Roc的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet"/>
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Configurable Title</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://github.com/lpfRoc">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/images/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>初见Swift之我不懂</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2016-09-10
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>本文主要面向初学swift的同学们，大神们可略过。主要总结了一些Swift与OC相同关键词的差异，避免熟悉OC的同学们因经验主义引起的错误。</p>
+<h2 id="Swift之协议"><a href="#Swift之协议" class="headerlink" title="Swift之协议"></a>Swift之协议</h2><p>熟悉objective-c语言的同学们肯定对协议都不陌生，在Swift中苹果将protocol这种语法发扬的更加深入和彻底。这里不对OC的protocol过多介绍，主要来讲protocol在Swift与OC中的主要差异。</p>
+<h3 id="Swift协议定义"><a href="#Swift协议定义" class="headerlink" title="Swift协议定义"></a>Swift协议定义</h3><p>协议为方法、属性、以及其他特定的任务需求或功能定义蓝图。协议可被类、结构体、或枚举类型采纳以提供所需功能的具体实现。满足了协议中需求的任意类型都叫做遵循了该协议（引自文档官方文档）。<br>可以看到在Swift中协议不仅为类提供功能的具体实现，也同样可以为结构体、或枚举类型所提供。喵神也在自己博文 <strong>《面向协议编程与 Cocoa 的邂逅》</strong>中说到：Swift中几乎所有的实际类型都是满足若干协议的。protocol 是 Swift 语言的底座，语言的其他部分正是在这个底座上组织和建立起来的。Swift是更面向protocol的语言，比起OC面向对象有很大不同。由此看来protocol在Swift中的地位。</p>
+<p>一个简单的Swift协议定义如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">protocol Student &#123;</span><br><span class="line">　　//定义一个可读可写的 name 属性</span><br><span class="line">　　var name: String &#123; get <span class="built_in">set</span> &#125;</span><br><span class="line">　　//定义一个只读的 score 属性</span><br><span class="line">　　static var score: Float &#123; get &#125;</span><br><span class="line">　　//定义study 方法</span><br><span class="line">　　func study()</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>值得注意的是Swift协议内的属性需要明确规定该属性是可读的get、还是可读可写的get set。另外还可以通过关键字static声明一个类型属性（下面我会单独分析Swift与OC中static关键字的区别）。</p>
+<h3 id="Swift协议扩展"><a href="#Swift协议扩展" class="headerlink" title="Swift协议扩展"></a>Swift协议扩展</h3><p>所谓协议扩展，就是我们可以为一个协议提供默认的实现。对于 Student，可以在 extension Student 中为 study的方法 添加一个doHomeWork的实现如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">extension Student &#123;</span><br><span class="line">  func <span class="function"><span class="title">study</span></span>() &#123;</span><br><span class="line">  doHomeWork()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不仅如此，除了已经定义过的方法，我们甚至可以在扩展中添加协议里没有定义过的方法。在这些额外的方法中，我们可以依赖协议定义过的方法进行操作。</p>
+<p>说到这里，我相信有的同学已经发现了协议扩展的作用了，没错使用Swift协议和协议扩展，我们可以很好地共享代码，完美解决了OC面向对象引起的横切关注点的问题，不熟悉的同学可以参考 喵神的<strong>《面向协议编程与 Cocoa 的邂逅》</strong>这篇文章。通过协议扩展，我们只需要把所需要的公共方法，写到协议扩展内，这样接受协议的对象就都拥有了此方法，不必像OC那样再通过继承或者创建基类来实现了。</p>
+<h3 id="Swift关键字之static和class"><a href="#Swift关键字之static和class" class="headerlink" title="Swift关键字之static和class"></a>Swift关键字之static和class</h3><p>这里我主要谈一下Swift中static和class的区别，以及这两个关键字在Swift和OC里的差异。</p>
+<p><strong>Swift中static和class的区别</strong><br>在Swift方法的func关键字之前加上关键字static或者class都可以用于指定类方法。不同的是用class关键字指定的类方法可以被子类重写，但是用static关键字指定的类方法是不能被子类重写的, 根据报错信息: Class method overrides a ‘final’ class method.<br>我们可以知道被static指定的类方法包含final关键字的特性–防止被重写.（此处不是我所讲重点，详细可参考这篇博客）</p>
+<p><strong>static在Swift和OC里的区别</strong><br>首先请博友和我一起复习下，OC里static的作用：</p>
+<p><strong>static修饰局部变量：</strong><br>在static修饰局部变量时，可以延长局部变量的生命周期，只要程序运行中，局部变量就会一直存在。<br>用static修饰的局部变量，只会分配一次内存，只有在程序第一次启动时执行一次，以后不会再次执行。<br><strong>static修饰全局变量：</strong><br>static修饰全局变量时，只会修改全局变量的作用域，表示只能在当前文件内使用。</p>
+<p>以上是我初步对static在OC内主要作用的总结，如有忽略处还请博友提出以便完善。<br>写到这里我们已经可以明显看出static在Swift和OC里的区别了，我也就不再废话了。<em>（此篇博客是小主首次尝试，还希望各位博友多多批评指教）</em>。</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/lpfRoc" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2022 Roc<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
