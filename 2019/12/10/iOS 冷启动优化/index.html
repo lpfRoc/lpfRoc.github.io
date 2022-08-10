@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!--Description-->
+
+    
+
+    
+        <meta name="description" content="背景冷启动时长是App性能的重要指标, 随着功能迭代, 项目越来越庞大, 冷启动时间也越来越长. 本文将为大家介绍项目里冷启动优化遇到的问题、方案和收获.
+冷启动定义: app第一次启动的过程(或者app被kill后, 重新启动的过程)一般而言, 大家把iOS冷启动的过程定义为: 从用户点击App图"/>
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Roc"/>
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="iOS 冷启动优化"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="背景冷启动时长是App性能的重要指标, 随着功能迭代, 项目越来越庞大, 冷启动时间也越来越长. 本文将为大家介绍项目里冷启动优化遇到的问题、方案和收获.
+冷启动定义: app第一次启动的过程(或者app被kill后, 重新启动的过程)一般而言, 大家把iOS冷启动的过程定义为: 从用户点击App图"/>
+    
+
+    <!--Open Graph Site Name-->
+        <meta property="og:site_name" content="Roc的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article"/>
+    
+
+    <!--Page Cover-->
+    
+    
+        <meta property="og:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+        <meta name="twitter:card" content="summary_large_image"/>
+
+    
+
+    
+        <meta name="twitter:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+    <!-- Title -->
+    
+    <title>iOS 冷启动优化 - Roc的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet"/>
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="images/logo.jpg"/>
+    
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://github.com/lpfRoc">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/images/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>iOS 冷启动优化</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2019-12-10
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>冷启动时长是App性能的重要指标, 随着功能迭代, 项目越来越庞大, 冷启动时间也越来越长. 本文将为大家介绍项目里冷启动优化遇到的问题、方案和收获.</p>
+<h3 id="冷启动定义-app第一次启动的过程-或者app被kill后-重新启动的过程"><a href="#冷启动定义-app第一次启动的过程-或者app被kill后-重新启动的过程" class="headerlink" title="冷启动定义: app第一次启动的过程(或者app被kill后, 重新启动的过程)"></a>冷启动定义: app第一次启动的过程(或者app被kill后, 重新启动的过程)</h3><p>一般而言, 大家把iOS冷启动的过程定义为: 从用户点击App图标开始到appDelegate didFinishLaunching方法执行完成为止. 这个过程主要分为两个阶段：<br><strong>1. pre-main阶段大致做了如下事情:</strong><br>    1.1 加载应用的可执行文件(比如Mach-o文件)<br>    1.2 加载动态链接库加载器dyld(dynamic loader)<br>    1.3 dyld递归加载应用所有依赖的dylib(dynamic library 动态链接库), 包括iOS系<br>     统的以及APP依赖的第三方库<br>    1.4 dyld调用main()</p>
+<p><img src="/resource/lanch01.png" alt="图片"></p>
+<p><strong>2. main阶段:</strong><br>    2.1 调用UIApplicationMain()<br>    2.2 调用applicationWillFinishLaunching(一般用不到)<br>    2.3 调用didFinishLaunchingWithOptions<br>    2.4 从AppDelegate的didFinishLaunch到第一个页面的viewDidAppear(当didFinishLaunchingWithOptions执行完成时，用户还没有看到App的主界面, 用户真正看到数据内容并开始使用，我们认为这个时候冷启动才算完成)</p>
+<h3 id="App冷启动现状分析"><a href="#App冷启动现状分析" class="headerlink" title="App冷启动现状分析"></a>App冷启动现状分析</h3><p><img src="/resource/lanch02.jpeg" alt="图片"></p>
+<p>三. 现存问题<br><img src="/resource/lanch03.png" alt="图片"><br>在App早期阶段, 冷启动不会有明显的性能问题. 冷启动性能问题也不是在某个版本突然出现的, 随着版本迭代, App功能越来越复杂, 启动任务越来越多, 冷启动时间也一点点延长. App的冷启动性能问题增量主要来自冷启动阶段管理混乱和启动项的增加, 随着版本迭代和各个业务方的需求, 启动项任务简单粗暴地堆积在启动流程中.</p>
+<h3 id="四-解决思路"><a href="#四-解决思路" class="headerlink" title="四. 解决思路"></a>四. 解决思路</h3><p><strong>1. 冷启动阶段管理:</strong><br>现状: 之前YppLoadService的思路是在plist文件中设置类名列表, +load方法中预埋这些类以及对应的时机, 冷启动到一定阶段触发对应的方法, 这种方案的缺点在于I&#x2F;O操作和初始化实例变量比较频繁. 在整理过程中还发现有嵌套现象发生, 某个实例在执行冷启动某个时机方法中触发了另一个时机.<br>解决方案: 使用Arthur替换原有YppLoadService管理APP冷启动阶段方式, 梳理每个场景的触发时机是否合理, 统一收归冷启动所有触发的场景, 禁止嵌套行为, 尽量保证主线程中顺序执行的逻辑清晰.<br>Arthur介绍:<br>之前说过, 冷启动pre_main阶段中有加载可执行文件, 最常见的是Mach-O文件类型, 简单来讲就是Clang编译器, 编译出的一个产物.<br>当App启动时, 会将Mach-O加载到内存中(其实内存中是对该Mach-O文件的映射). 它只是二进制字节流, 里面有不同的包含元信息的数据块, 比如字节顺序, cpu 类型, 块大小等. 文件内容是不可以修改的, 因为在 .app 目录中有个 _CodeSignature 的目录, 里面包含了程序代码的签名, 这个签名的作用就是保证签名后 .app 里的文件, 包括资源文件, Mach-O 文件都不能更改.<br>Mach-O 的内容：</p>
+<ul>
+<li>Mach-O Header: 包含字节顺序, magic, cpu 类型, 加载指令的数量等</li>
+<li>Load Commands: 包含很多内容的表, 包括区域的位置, 符号表, 动态符号表等. 每个加载指令包含一个元信息, 比如指令类型, 名称, 在二进制中的位置等</li>
+<li>原始段数据（Raw segment data）: 可以拥有多个段（segment）, 每个段可以拥有零个或多个区域（section）. 每一个段（segment）都拥有一段虚拟地址映射到进程</li>
+</ul>
+<p><img src="/resource/lanch04.png" alt="图片"></p>
+<p>编译器提供了我们一种__attribute__((section(“xxx段，xxx节”)的方式让我们将一个指定的数据储存到我们需要的节当中.<br>ArThur的核心思想就是在编译时把数据（如函数指针）写入到可执行文件的__DATA段中, 运行时再从__DATA段取出数据进行相应的操作（调用函数）<br>核心代码:<br>① 宏定义: </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#define _AT_DATA_DEFINE(HEADER, VALUE)   \</span></span><br><span class="line">    __attribute__((used, section(AT_SEGMENT_SECTION))) static const AT_DATA AT_UNIQUE_IDENTIFIER = (AT_DATA)&#123;HEADER, VALUE&#125;</span><br></pre></td></tr></table></figure>
+<p>② 读取函数地址: </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">+ (void)readSectionWithName:(char *)sectionName fromAllImageWithStep:(size_t)step usingBlock:(nonnull ATImageReadingBlock)block &#123;</span><br><span class="line">    uint32_t count = _dyld_image_count();</span><br><span class="line">    <span class="keyword">for</span> (uint32_t i = 0; i &lt; count; i++) &#123;</span><br><span class="line">        const struct mach_header* image_header = _dyld_get_image_header(i);</span><br><span class="line">        Dl_info info;</span><br><span class="line">        <span class="keyword">if</span> (dladdr(image_header, &amp;info) == 0) &#123;</span><br><span class="line">            <span class="built_in">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        // Segment Name</span><br><span class="line">        const void *mach_header = info.dli_fbase;</span><br><span class="line">        const ATSection *section = at_getSectByNameFromHeader((void *)mach_header, segmentName, sectionName);</span><br><span class="line">        <span class="keyword">if</span> (section == NULL) <span class="built_in">return</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (ATValue offset = section-&gt;offset; offset &lt; section-&gt;offset + section-&gt;size; offset += step) &#123;</span><br><span class="line">            block((const void **)(mach_header + offset));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>2. +load治理:</strong><br>通过插桩的方式获取+load方法耗时, 排查每个+load的方法是否合理, 对于不合理的可以延迟调用时机或者移除. 可以使用工具A4LoadMeasure实现打印所有和每个+load方法耗时.</p>
+<p><img src="/resource/lanch05.png" alt="图片"></p>
+<p><strong>3. 移除不需要的逻辑和冗余代码.</strong><br><strong>4. 之前路由和其他基础类使用plist文件的形式加载数据源, 替换加载方式减少I&#x2F;O操作.</strong><br><strong>5. 冷启动阶段管理:</strong><br>基于Arthur重新定义冷启动阶段, 梳理每个冷启动阶段需要执行的启动项任务, 规范初始化SDK、全局设置以及业务方调用的接口等行为. 这个过程比较繁琐, 一是之前阶段比较混乱, 二是业务逻辑比较多, 要和各个业务方对接, 确定合理的调用时机.<br><strong>6. 对冷启动时长和每个阶段进行监控, 方便排查异常情况.</strong></p>
+<h3 id="五-其他优化手段之二进制重排"><a href="#五-其他优化手段之二进制重排" class="headerlink" title="五. 其他优化手段之二进制重排"></a>五. 其他优化手段之二进制重排</h3><p>进程如果能直接访问物理内存无疑是很不安全的, 所以操作系统在物理内存的上又建立了一层虚拟内存. 为了提高效率和方便管理, 又对虚拟内存和物理内存又进行分页（Page）. 当进程访问一个虚拟内存Page而对应的物理内存却不存在时, 会触发一次缺页中断（Page Fault）, 分配物理内存, 有需要的话会从磁盘mmap读人数据.<br>通过App Store渠道分发的App, Page Fault还会进行签名验证, 所以一次Page Fault的耗时比想象的要多: </p>
+<p><img src="/resource/lanch06.png" alt="图片"></p>
+<p>编译器在生成二进制代码的时候, 默认按照链接的Object File(.o)顺序写文件, 按照Object File内部的函数顺序写函数. 静态库文件.a就是一组.o文件的ar包, 可以用ar -t查看.a包含的所有.o<br>假设我们只有两个page：page1&#x2F;page2, 其中绿色的method1和method3启动时候需要调用, 为了执行对应的代码, 系统必须进行两个Page Fault.<br><img src="/resource/lanch07.png" alt="图片"><br>但如果我们把method1和method3排布到一起, 那么只需要一个Page Fault即可, 这就是二进制文件重排的核心原理.<br><img src="/resource/lanch08.png" alt="图片"><br>这里推荐一个工具<a target="_blank" rel="noopener" href="https://github.com/yulingtianxia/AppOrderFiles">AppOrderFiles</a>, 本质上通过插桩记录调用的函数, 并生成order文件. 将order文件配置到主工程下, 并在xcode中指定对应路径即可.<br>可以查看LinkMap内容确定当前的函数布局, 验证重排是否成功<br>使用System Trace验证重排的效果, 对于项目重排前而言, page in的次数4000多次:</p>
+<p><img src="/resource/lanch09.jpeg" alt="图片"></p>
+<p>重排后page in的次数为900多次, debug下的时间不是特别准确, 但也可以粗略看到效果</p>
+<p><img src="/resource/lanch10.jpeg" alt="图片"></p>
+<h3 id="六-总结"><a href="#六-总结" class="headerlink" title="六. 总结"></a>六. 总结</h3><p>治理前项目的冷启动均值1600ms, 治理后可以达到900ms以内. 其中某一个版本将Arthur管理冷启动阶段和二进制重排接入项目上线数据稳定后, 冷启动减少了300ms的时间. 治理的过程中嵌入了监控的逻辑, 在优化过程中需要验证每个方案的可行性, 对于一些异常数据的分析和问题排查也很有意思. 冷启动流程也是一个比较复杂的过程, 我们可以根据App自身的特点, 配合工具的使用, 从多方面、多角度进行优化. 启动的优化也不是一次性的, 后期维护也同样重要.</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/lpfRoc" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2022 Roc<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
