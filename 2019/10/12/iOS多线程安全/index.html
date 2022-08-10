@@ -170,8 +170,23 @@
                 <p>由于工作变动，停更了很久，现在安定下后，总结下iOS多线程安全的思考。</p>
 <h3 id="为什么要用多线程"><a href="#为什么要用多线程" class="headerlink" title="为什么要用多线程"></a>为什么要用多线程</h3><p>多线程，作为实现软件并发执行的一个重要的方法,它能够在时间片里被CPU快速切换，来提高cup资源利用率，但多线程常常伴有资源抢夺的问题，作为一个高级开发人员并发编程那是必须要的，同时解决线程安全也成了我们必须要要掌握的基础。</p>
 <h3 id="多线程安全"><a href="#多线程安全" class="headerlink" title="多线程安全"></a>多线程安全</h3><p>当我们在讨论多线程安全的时候，具体讨论的是什么？</p>
-<p>当我们讨论多线程安全的时候，其实是在讨论多个线程同时访问一个内存区域(非数值类型及指针类型)的安全问题。下面我主要从以下两方面阐述：</p>
-<h4 id="一，线程同步安全方案"><a href="#一，线程同步安全方案" class="headerlink" title="一，线程同步安全方案"></a>一，线程同步安全方案</h4><p>本质是不让多个线程同时访问同一个资源，只要按顺序访问资源</p>
+<p>当我们讨论多线程安全的时候，其实是在讨论多个线程同时访问一个内存区域(非数值类型及指针类型)的安全问题。</p>
+<p>为什么多线程访问一个内存区域就不安全了？</p>
+<p>我们可以看一个简单例子，从汇编角度的看下这个问题。首先我们要知道，CPU不能直接从内存中读取数据，会先将内存中的数据存储到通用寄存器中，然后再对通用寄存器中的数据进行运算.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">  int count = 0; </span><br><span class="line">  count++;</span><br><span class="line">  ///汇编代码</span><br><span class="line">  0x1059f2f46 &lt;+86&gt;:   movl   <span class="variable">$0x0</span>, -0x24(%rbp) </span><br><span class="line">  0x1059f2f4d &lt;+93&gt;:   movl   -0x24(%rbp), %eax </span><br><span class="line">  0x1059f2f50 &lt;+96&gt;:   addl   <span class="variable">$0x1</span>, %eax </span><br><span class="line">  0x1059f2f53 &lt;+99&gt;:   movl   %eax, -0x24(%rbp) </span><br></pre></td></tr></table></figure>
+<p>我们可以看到完成一次count++并不是简单的一步完成，而是三步：</p>
+<ul>
+<li><p>取出count存放到临时寄存器上</p>
+</li>
+<li><p>对寄存器的值+1</p>
+</li>
+<li><p>将计算后的值存放回count的内存</p>
+</li>
+</ul>
+<p>在三步未完成前，多线程如果操作了count，都可能造成数据损坏。</p>
+<p>下面我主要从以下两方面阐述多线程安全：</p>
+<p><strong>一，线程同步安全方案</strong></p>
+<p>本质是不让多个线程同时访问同一个资源，只要按顺序访问资源</p>
 <p><strong>1.iOS中的锁</strong></p>
 <ul>
 <li>自旋锁和互斥锁</li>
@@ -202,7 +217,7 @@
 </ul>
 <p><strong>2.atomic属性</strong><br>atomic用于保证属性setter、getter的原子性操作，相当于在getter和setter内部加了线程同步的锁(使用了自旋锁，iOS 10以后，底层换成了os_unfair_lock)。<br>atomic是线程安全的吗？<br>这样说是片面的不准确的。<br>首先我们要了解：<br>64位系统的地址总线对于读写指令可以支持8个字节的长度，所以对于BOOL的读和写操作我们可以认为是原子的，所以当我们声明BOOL类型的property的时候，从原子性的角度看，使用atomic和nonatomic并没有实际上的区别<br>如果读写（load or store）的内存长度小于等于地址总线的长度，那么读写的操作是原子的，一次完成。比如bool，int，long在64位系统下的单次读写都是原子操作。<br>很多文章谈到atomic和nonatomic的区别时,都说atomic是线程安全,其实这个说法是不准确的.<br>atomic属性保证的属性的值修改(包括数值类型及指针类型)线程安全，但不保证指针指向的内存的安全及多部操作的原子性<br>atomic只是对属性的getter&#x2F;setter方法进行了加锁操作,这种安全仅仅是set&#x2F;get的读写安全,并非真正意义上的线程安全,因为线程安全还有读写之外的其他操作(比如:如果当一个线程正在get或set时,又有另一个线程同时在进行release操作,可能会直接crash，又比如一个属性array，atomic的话只能保证在外面set和get的时候线程安全，但是不能保证array addObject、removeObject线程安全)<br>简而言之，atomic的作用只是给getter和setter加了个锁，atomic只能保证代码进入getter或者setter函数内部时是安全的，一旦出了getter和setter，多线程安全只能靠程序员自己保障了</p>
 <p><strong>锁的粒度</strong><br>同时我们还需要注意锁定粒度，粒度过大，造成不必要的性能损失，粒度过小，锁失效。</p>
-<h4 id="二，资源读写安全方案"><a href="#二，资源读写安全方案" class="headerlink" title="二，资源读写安全方案"></a>二，资源读写安全方案</h4><p>本质就是多读单写，单位时间内读写操作只允许存在一种。<br><strong>读写锁 （共享锁）-&gt; pthread_rwlock</strong></p>
+<p><strong>二，资源读写安全方案</strong><br>本质就是多读单写，单位时间内读写操作只允许存在一种。<br><strong>读写锁 （共享锁）-&gt; pthread_rwlock</strong></p>
 <ul>
 <li>当读写锁被一个线程以读模式占用的时候，写操作的其他线程会被阻塞，读操作的其他线程还可以继续进行。</li>
 <li>当读写锁被一个线程以写模式占用的时候，写操作的其他线程会被阻塞，读操作的其他线程也被阻塞。</li>
