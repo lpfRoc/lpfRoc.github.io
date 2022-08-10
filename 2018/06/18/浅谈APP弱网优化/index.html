@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!--Description-->
+
+    
+
+    
+        <meta name="description" content="当一个APP迭代完善到一定程度，就不得不考虑用户体验及性能优化。今天我们主要讨论弱网络环境下APP如何优化以达到更好的用户体验。
+何为弱网络环境从字面意来讲，就是在网速不好的情况下使用APP来处理网络请求操作。如3G、4G网络，在网络信号不好的情况下用户的网络速度维持在较低的水平。当然在WI-FI下"/>
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Roc"/>
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="浅谈APP弱网优化"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="当一个APP迭代完善到一定程度，就不得不考虑用户体验及性能优化。今天我们主要讨论弱网络环境下APP如何优化以达到更好的用户体验。
+何为弱网络环境从字面意来讲，就是在网速不好的情况下使用APP来处理网络请求操作。如3G、4G网络，在网络信号不好的情况下用户的网络速度维持在较低的水平。当然在WI-FI下"/>
+    
+
+    <!--Open Graph Site Name-->
+        <meta property="og:site_name" content="Roc的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article"/>
+    
+
+    <!--Page Cover-->
+    
+    
+        <meta property="og:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+        <meta name="twitter:card" content="summary_large_image"/>
+
+    
+
+    
+        <meta name="twitter:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+    <!-- Title -->
+    
+    <title>浅谈APP弱网优化 - Roc的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet"/>
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="images/logo.jpg"/>
+    
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://github.com/lpfRoc">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/images/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>浅谈APP弱网优化</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2018-06-18
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>当一个APP迭代完善到一定程度，就不得不考虑用户体验及性能优化。今天我们主要讨论弱网络环境下APP如何优化以达到更好的用户体验。</p>
+<h3 id="何为弱网络环境"><a href="#何为弱网络环境" class="headerlink" title="何为弱网络环境"></a>何为弱网络环境</h3><p>从字面意来讲，就是在网速不好的情况下使用APP来处理网络请求操作。如3G、4G网络，在网络信号不好的情况下用户的网络速度维持在较低的水平。当然在WI-FI下也存在网速差的情况。通常网络延迟Ping值超过200ms。在这样差的网络环境下，如果不对弱网进行优化，APP在使用过程中难免加载缓慢，用户体验肯定大大折扣。</p>
+<h3 id="弱网环境模拟"><a href="#弱网环境模拟" class="headerlink" title="弱网环境模拟"></a>弱网环境模拟</h3><p>那么我们如何在开发工程中测试弱网环境呢？</p>
+<p>我们可以真机器连接xcode后，打开iPhone，选择【设置】-&gt;【开发者】-&gt;【Network Link Conditioner】-&gt;【Enable】-&gt;点亮Enable后的按钮。</p>
+<p>在里面选择对应的网络环境模式进行测试。</p>
+<p><img src="/resource/weekNet.png" alt="图片"></p>
+<h3 id="真实环境下如何检测APP弱网状态"><a href="#真实环境下如何检测APP弱网状态" class="headerlink" title="真实环境下如何检测APP弱网状态"></a>真实环境下如何检测APP弱网状态</h3><p>在开发阶段我们可以利用手机设置弱网环境，那么在APP发布后如何检测APP弱网状态呢？</p>
+<p>首先我们要区分网络状态和弱网络状态的区别。<br>网络状态</p>
+<p>苹果监测网络状态，我们通常使用Reachablity框架或着使用AFNetworking中AFNetworkReachabilityManager来监测当前网络是否可用，是在WAN还是WiFi下。但在这里我可以告诉大家，通过以上方法无法检测实际的网络状态，它只是检测的是本地连接状态。在如下场景下用以上方法行不通的：</p>
+<p>1.现在很流行的公用wifi，需要网页鉴权，鉴权之前无法上网，但本地连接已经建立；</p>
+<p>2.存在了本地网络连接，但信号很差，实际无法连接到服务器；</p>
+<p>3.iOS连接的路由设备本身没有连接外网。</p>
+<p>在上面的情形下，使用上面的两种方法可能仍然返回网络可用。这里推荐一个框架 RealReachability。题外话就不啰嗦了。<br>弱网络状态</p>
+<p>首先可以肯定的是有网的，有流量产生的。我们可以使用Ping值来检测当前网络是否为弱网。</p>
+<p>ping 值是指，从PC对网络服务器发送数据到接收到服务器反馈数据的时间。也就是我们APP数据请求过去，再回来，所需要的时间，就是我们常说的ping值。大家可以查看下面的文章来了解什么是PING值，PING值的计算方法。</p>
+<p>苹果自己提供了 SimplePing 封装了 ping 的功能，它利用 resolve host，create socket(send &amp; recv data), 解析 ICMP 包验证 checksum 等实现了 ping 功能。并且支持 iPv4 和 iPv6。</p>
+<p>这样我们就可以在正式环境中，通过ping值来准确获取当前网络状况了。</p>
+<h3 id="弱网状态下如何优化"><a href="#弱网状态下如何优化" class="headerlink" title="弱网状态下如何优化"></a>弱网状态下如何优化</h3><p>下面就是我们的重头戏，如何做弱网优化。我主要从移动前端以下几个方面说起：<br>接口设计优化</p>
+<p>在于后端设计接口是可以从以下几方面优化：</p>
+<p>1.慢查询监控 2.多查询优化</p>
+<p>3.常用接口cache：对于常用的接口进行缓存处理。</p>
+<p>4.多接口合并：所谓的多接口合并也就是某个页面内请求过多，也可以考虑做一定的请求合并。<br>数据压缩再处理</p>
+<p>1.对数据进行 Gzip 压缩。</p>
+<p>2.精简数据格式,如 JSON 代替 XML，WebP 代替其他图片格式。</p>
+<p>3.针对不同设备不同网络返回不同数据格式。</p>
+<p>如不同分辨率图片大小（可配合七牛）：</p>
+<p>2&#x2F;3G使用低清晰度图片——&gt;下发300X240，精度为80的图片</p>
+<p>4G普通清晰度图片——&gt;下发600X480，精度为80的图片</p>
+<p>WiFi高清晰度图片（最好根据网速来判断，wifi也有慢的）——&gt;下发600X480，精度为100的图片。<br>数据缓存</p>
+<p>对首页及特定一级页面进行数据缓存，在一定的有效时间内再次请求可以直接从缓存读取数据，也可避免空白页出现影响体验。<br>界面优化</p>
+<p>1.针对弱网(移动网络), 不自动加载图片（显示本占位图）。</p>
+<p>2.界面先反馈, 请求延迟提交。例如, 用户点赞操作, 可以直接给出界面的点赞成功的反馈,在网络情况较好的时候再发起请求.（类似支付宝没网也能扫码支付。）</p>
+<h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><p>网络优化, 是App优化中相当重要的一项优化. 除了客户端, 接口的优化外, 很多一部分优化还依赖于服务器端, 包括服务器端的代码开发, 部署方式等。本人学识有限不便多谈。</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/lpfRoc" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2022 Roc<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

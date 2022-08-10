@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!--Description-->
+
+    
+
+    
+        <meta name="description" content="十一期间闲来无事，想想好久未写东西了，就总结下最近学习Swift 4.2中新的改变。我们知道Swift 4.2只是Swift 5 ABI稳定版本的一个中间过渡，但这个版本却为我们带来了诸多改进，例如：Optional一致性、更统一的随机数API、遍历enum case、编译器警告等等，上篇博文也提到"/>
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Roc"/>
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Swift 4.2之我见"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="十一期间闲来无事，想想好久未写东西了，就总结下最近学习Swift 4.2中新的改变。我们知道Swift 4.2只是Swift 5 ABI稳定版本的一个中间过渡，但这个版本却为我们带来了诸多改进，例如：Optional一致性、更统一的随机数API、遍历enum case、编译器警告等等，上篇博文也提到"/>
+    
+
+    <!--Open Graph Site Name-->
+        <meta property="og:site_name" content="Roc的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article"/>
+    
+
+    <!--Page Cover-->
+    
+    
+        <meta property="og:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+        <meta name="twitter:card" content="summary_large_image"/>
+
+    
+
+    
+        <meta name="twitter:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+    <!-- Title -->
+    
+    <title>Swift 4.2之我见 - Roc的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet"/>
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="images/logo.jpg"/>
+    
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://github.com/lpfRoc">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/images/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Swift 4.2之我见</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2018-05-02
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>十一期间闲来无事，想想好久未写东西了，就总结下最近学习Swift 4.2中新的改变。我们知道Swift 4.2只是Swift 5 ABI稳定版本的一个中间过渡，但这个版本却为我们带来了诸多改进，例如：Optional一致性、更统一的随机数API、遍历enum case、编译器警告等等，上篇博文也提到了“Optional”，那么我们就先从Optional的改变讲起。</p>
+<h3 id="IUO到底是什么？"><a href="#IUO到底是什么？" class="headerlink" title="IUO到底是什么？"></a>IUO到底是什么？</h3><p>Implicitly Unwrapped Optional，也就是我们常说的IUO，对于这个类型可能有些困惑，在Swift 4.2中，简单来说IUO从一个独立的类型，变成了Optional类型的一个修饰。看好了，我说的是类型修饰。看下面代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var a: Int?</span><br><span class="line">var b: Int!</span><br></pre></td></tr></table></figure>
+<p>在Swift 4.2之前，a的类型是Optional，而b的类型则是ImplicitlyUnwrappedOptional。而在Swift 4.2之后，a和b的类型，都变成了Optional，只不过，对b来说，编译器会给它做一个标记，在必要的时候自动unwrap它包含的值。也就是说，在4.2版本之后，无论是!还是?，代码中都只有一个optional类型，就是Optional。<br>尽管Swift官方声明Swift 4.1和4.2是源代码兼容的，但事实上并不完全如此，那么下面总结下这个改动，带来的源代码兼容性相关的变化。</p>
+<p><strong>编译器对T!的警告</strong></p>
+<p>这类是Swift 4.2之后，我们最常见到的变化。</p>
+<p><img src="/resource/OP1.png" alt="图片"></p>
+<p>尽管b的定义是Int!，但从编译器给出的提示中，b实际的定义则是Int?。对于这类问题，绝大多数时候，我们都可以直接把T!变成T?解决。</p>
+<p><strong>类型转换引起的问题</strong><br>由于T!已经不再是个独立的类型，因此，所有对T!的转型行为，都会被定义成废弃操作</p>
+<p><img src="/resource/OP2.png" alt="图片"></p>
+<p>编译器会提示我们as T!已经被废弃，会在未来的某个Swift版本中被删除。T!变成了类型修饰之后，转型到T!应该是不被允许的，所有转型到optional的操作都应该明确使用as T?这样的用法。<br>在Swift 4.2里，任何一个把T!当作类型的用法，理论上都是不允许的：</p>
+<p><img src="/resource/OP3.png" alt="图片"></p>
+<p>对于数组来说，我们只能定义包含Array&gt;类型的数组，而不能定义“包含ImplicitlyUnwrappedOptional的数组”。类似的，对于sum来说，我们只能定义，接受两个Optional为参数的函数，而不能定义接受两个“可以自动解值的Optional”作为参数的函数。“自动解值”，只是optional的某种特性，而不是类型的一部分，它不是个类型。<br>那么什么情况是可以使用T！的呢？是在函数的参数和返回值中，可以使用T!：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">func <span class="built_in">sum</span>(_ m: Int!, _ n: Int!) -&gt; Int! &#123;</span><br><span class="line">  <span class="built_in">return</span> m + n</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这说明，sum接受两个Optional参数，并返回一个Optional，只不过允许编译器自动解出optional的值而已。但是typealias却不行呢？假设它的定义是合法的，按照规则，它也会被编译器处理成：typealias sum &#x3D; (Int?, Int?) -&gt; Int?。而我们的目的是要定义一个支持参数和返回值都可以自动解值的函数。这样毫无意义，与其这样费力不讨好，还不如就不允许这样的行为。</p>
+<p><strong>不能推导一个不是类型的类型</strong><br>于此同时我们也不难想到，当IUO不是一个独立的类型之后，所有与之有关的类型自动推导规则也发生了对应的变化。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var x: Int!</span><br><span class="line"><span class="built_in">let</span> y = x // Int?</span><br><span class="line">func Test&lt;T&gt;(_ value: T) -&gt; T &#123; <span class="built_in">return</span> value &#125;</span><br><span class="line">  <span class="built_in">print</span>( <span class="built_in">type</span>(of: Test(x)) ) // Int?</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里，尽管x的定义是Int!，但是无论是y的类型，还是Test(x)的返回值的类型，都是Optional，也就是说，type inference推导不出来Int!这样的的类型，因为它不是一个类型。</p>
+<h3 id="IUO对方法匹配的影响"><a href="#IUO对方法匹配的影响" class="headerlink" title="IUO对方法匹配的影响"></a>IUO对方法匹配的影响</h3><p><strong>对[T]!使用map方法</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> values: [Any]! = [1]</span><br><span class="line">_ = values.map &#123; <span class="variable">$0</span> as! Int &#125;</span><br></pre></td></tr></table></figure>
+<p>在Swift 4.2之前的版本里，会先对values的值进行unwrap，得到一个[Any]，然后再调用[Any]的map方法对数组中元素进行变换，即使你是否对ImplicitlyUnwrappedOptional这个类型扩展了map方法也是如此。<br>但到了4.2之后，就不是这样了。values的类型已经变成了Optional&lt;[Any]&gt;,values.map调用的会是Optional.map方法，因此这时的$0的类型就变成了[Any]。把[Any]强制转型成Int，总是失败的，于是，我们会看到这样一条编译器警告</p>
+<p><img src="/resource/OP4.png" alt="图片"></p>
+<p>为此，我们有两种处理方法：<br>第一种，是利用optional chaining，在values非nil的情况下调用map，此时就会调用Array的map方法了。这样，我们会得到一个Optional&lt;[Int]&gt;</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_ = values?.map &#123; <span class="variable">$0</span> as! Int &#125;</span><br></pre></td></tr></table></figure>
+<p>第二种，当然就是简单粗暴的直接把optional unwrap出来。这样，我们就会冒着崩溃的风险，直接得到一个[Int]：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_ = values!.map &#123; <span class="variable">$0</span> as! Int &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>nil值桥接方式的改变</strong><br>在Swift 4.2之前，Swift中的nil桥接到OC中，会导致运行时错误，进而导致程序崩溃。在4.2之后，桥接nil会得到NSNull对象。来看下面这个例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class A: NSObject &#123;&#125;</span><br><span class="line"><span class="built_in">let</span> iuoElement: A! = nil</span><br><span class="line"><span class="built_in">let</span> array: [Any] = [iuoElement as Any]</span><br><span class="line"><span class="built_in">let</span> nsArray = array as NSArray</span><br><span class="line"><span class="built_in">let</span> element = nsArray[0]</span><br></pre></td></tr></table></figure>
+<p>上面的代码，在Swift 4.2之前，nsArray[0]会因为访问了nil导致运行时错误。但在Swift 4.2之后，我们可以这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">let</span> value = element as? NSNull &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&quot;Nil value&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&quot;Non nil value&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上，就是有关IUO改动相关的内容。整体上说，这些改动让optional类型的表现更为统一，并且，进一步限制了IUO的应用范围。Swift正在变得越来越好！<br>在后面博客里，我会介绍Swift 4.2其他有用的改变。</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/lpfRoc" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2022 Roc<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

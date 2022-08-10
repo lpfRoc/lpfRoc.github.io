@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!--Description-->
+
+    
+
+    
+        <meta name="description" content="春节假期结束，开工前，总结下年前所做的数据埋点的那些事。
+要做啥随着公司业务的发展，需要对用户数据行为进行更深入的定制化，时时性及准确性要求更高。之前所用的第三方，友盟统计，GrowingIO等相继无法满足，因此CPO一声令下：冲啊！（做自己的数据埋点系统）。那就冲吧～～。所做埋点的地方无外乎：页面"/>
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Roc"/>
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="数据埋点的思考—Swift协议篇"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="春节假期结束，开工前，总结下年前所做的数据埋点的那些事。
+要做啥随着公司业务的发展，需要对用户数据行为进行更深入的定制化，时时性及准确性要求更高。之前所用的第三方，友盟统计，GrowingIO等相继无法满足，因此CPO一声令下：冲啊！（做自己的数据埋点系统）。那就冲吧～～。所做埋点的地方无外乎：页面"/>
+    
+
+    <!--Open Graph Site Name-->
+        <meta property="og:site_name" content="Roc的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article"/>
+    
+
+    <!--Page Cover-->
+    
+    
+        <meta property="og:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+        <meta name="twitter:card" content="summary_large_image"/>
+
+    
+
+    
+        <meta name="twitter:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+    <!-- Title -->
+    
+    <title>数据埋点的思考—Swift协议篇 - Roc的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet"/>
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="images/logo.jpg"/>
+    
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://github.com/lpfRoc">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/images/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>数据埋点的思考—Swift协议篇</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2019-02-12
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>春节假期结束，开工前，总结下年前所做的数据埋点的那些事。</p>
+<h3 id="要做啥"><a href="#要做啥" class="headerlink" title="要做啥"></a>要做啥</h3><p>随着公司业务的发展，需要对用户数据行为进行更深入的定制化，时时性及准确性要求更高。之前所用的第三方，友盟统计，GrowingIO等相继无法满足，因此CPO一声令下：冲啊！（做自己的数据埋点系统）。那就冲吧～～。所做埋点的地方无外乎：页面统计（进出，停留时间），用户操作统计（点击，滑动，登录登出），以及特定按钮的上报等用户行为。那么知道了具体需求，下面就谈谈实现的思路。</p>
+<h3 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h3><p>要自己实现数据埋点，该怎么做呢？首先，要确定是使用手动埋点，还是所谓的“无痕埋点”。</p>
+<p><strong>无痕埋点</strong></p>
+<p>GrowingIO就是所谓的无痕埋点。为什么我说是所谓的呢。它无非是前端自动采集全部事件并上报埋点数据，在后端数据计算时过滤出有用数据。而且在集成的过程中你还是需要手动写些东西的。它运用了Runtime运行时方法交换，以及前后端数据埋点相互关联来实现所谓的无痕。（说到这里，可能有的小伙伴会说，你不是要讲Swift的协议吗，怎么又扯到OC了呢。先别急，我这只是在交代下我的思考过程）起初我也是想通过runtime来做此次需求的（由于本公司项目主要用OC开发），但是在实现的过程中，发现由于之前引入了GrowingIO，导致控制器等好多类都已经被动态修改类名，加入了GrowingIO的标示，无法准确获取目标类。而且CPO还要求继续使用GrowingIO，因此通过运行时来做所谓的无痕埋点行不通。那就只能考虑手动埋点了。</p>
+<p><strong>手动埋点</strong></p>
+<p>手动埋点怎么手动，怎么埋呢？这又需要一番思考。我想到了以下方法：</p>
+<p>（1）<strong>继承</strong>：继承多数情况下是创建一个基类，在基类里实现公共方法，子类继承基类来共享方法，并且子类也可重写基类方法来定制。但缺点明显，对于已经存在的类，需手动修改继承对象，不够灵活，且继承对象不唯一，不支持多继承，工作量太过繁琐。</p>
+<p>（2）<strong>分类</strong>：相比继承有其优势，可以在不改变类本身前提下，给其拓展方法。但缺点是分类重写了父类方法后，父类方法不在调用。这可能又会想到重写分类的+ (void)load 方法，使用Method Swizzling来实现交换方法，但前面已经提到runtime对我来说是行不通的。</p>
+<p>（3）<strong>埋点类</strong>：可以创建一个埋点类，它可以为单例的形式存在。再此类中声明实现埋点的方法，外部统一调用此类就行埋点。看似这是最简单的思路，但仔细想想又觉得不太合适。首先需要埋点的类很多，你不得不在此埋点类里引入过多头文件，其次涉及到埋点上报，此类会包含各种上报请求及处理逻辑，使得此类过于臃肿难看。给人一种不专业的感觉。</p>
+<p>（4）<strong>协议</strong>：</p>
+<p><strong>OC中的协议</strong>：实现思路很简单，创建一个埋点协议，声明需要遵守的协议方法，在需要实现埋点的类里接受协议，实现协议方法即可。这样就看起来比较专业，需要埋点的地方就接受协议，实现协议就好。但和Swift里的协议比起来，OC的协议显得就弱小许多，下面就是重头戏Swift中的协议。</p>
+<p><strong>Swift中的协议</strong>：Swift 的协议和 Objective-C 的协议不同。Swift 协议可以被用作代理，也可以让你对接口进行抽象 (比如 IteratorProtocol 和 Sequence)。它们和 Objective-C 协议的最大不同在于我们可以让结构体和枚举类型满足协议。除此之外，Swift 协议还可以有关联类型。我们还可以通过协议扩展的方式为协议添加方法实现以及协议的默认实现。这就是Swift协议的强大之处，我们可以通过 extension 为协议添加拓展，并可以实现默认协议，而无需重复默认的操作。对于埋点，考虑到控制器入屏出屏，时间停留，以及按钮点击操作的上报数据格式基本固定，我们完全可以定制一套协议的默认实现来简化代码。在需要定制埋点的地方，重新实现协议即可。对于事件标示及控件ID我们可以事先于后台定制一套映射关系，前段以配置文件的形式存在本地，需要时直接读取配置文件即可。当然Swift中的协议还有很多强大的功能，这里只提到了我在埋点里涉及到东西。</p>
+<p>以上就是我对数据埋点的思考与小结，由于本人学识浅薄，考虑不妥之处还请大神指出。</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/lpfRoc" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2022 Roc<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

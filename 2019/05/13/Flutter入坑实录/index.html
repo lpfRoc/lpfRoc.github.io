@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!--Description-->
+
+    
+
+    
+        <meta name="description" content="入坑背景作为一个从事p2p行业的iOS移动开发者，今年的行情可谓是灾难性的。公司裁员过半，在我极力要求被裁的前提下，我依然被留了下来，与公司共存亡。在这个大环境下，公司CTO提出了大前端。。。（人都没了还大前端～～）。大概就是搞跨平台开发，节约人员成本摆了。在RN，Weex，Flutter三者竞选中"/>
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Roc"/>
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Flutter入坑实录"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="入坑背景作为一个从事p2p行业的iOS移动开发者，今年的行情可谓是灾难性的。公司裁员过半，在我极力要求被裁的前提下，我依然被留了下来，与公司共存亡。在这个大环境下，公司CTO提出了大前端。。。（人都没了还大前端～～）。大概就是搞跨平台开发，节约人员成本摆了。在RN，Weex，Flutter三者竞选中"/>
+    
+
+    <!--Open Graph Site Name-->
+        <meta property="og:site_name" content="Roc的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article"/>
+    
+
+    <!--Page Cover-->
+    
+    
+        <meta property="og:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+        <meta name="twitter:card" content="summary_large_image"/>
+
+    
+
+    
+        <meta name="twitter:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+    <!-- Title -->
+    
+    <title>Flutter入坑实录 - Roc的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet"/>
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="images/logo.jpg"/>
+    
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://github.com/lpfRoc">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/images/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Flutter入坑实录</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2019-05-13
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h3 id="入坑背景"><a href="#入坑背景" class="headerlink" title="入坑背景"></a>入坑背景</h3><p>作为一个从事p2p行业的iOS移动开发者，今年的行情可谓是灾难性的。公司裁员过半，在我极力要求被裁的前提下，我依然被留了下来，与公司共存亡。在这个大环境下，公司CTO提出了大前端。。。（人都没了还大前端～～）。大概就是搞跨平台开发，节约人员成本摆了。在RN，Weex，Flutter三者竞选中Flutter以大平台，高性能等优势胜出。下面进入正题。</p>
+<h3 id="安装Flutter"><a href="#安装Flutter" class="headerlink" title="安装Flutter"></a>安装Flutter</h3><p>安装前建议你更新到最新的mac系统和xcode。</p>
+<p>1.在MACOS操作系统下安装Flutter，这里直接跳转到官方下载页。</p>
+<p>你也可以去github下载。</p>
+<p>2.解压安装包到你想安装的目录,此路径后面会用到，此用用myPath代替</p>
+<p>3.添加flutter相关工具到path中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH= myPath/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+<p>4.运行 flutter doctor查看是否需要安装其它依赖项来完成安装：：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter doctor</span><br></pre></td></tr></table></figure>
+<p>显示结果可能是这样的：</p>
+<p><img src="/resource/flutter01.png" alt="图片"></p>
+<p>Android的可以先不管，按照给出的解决方法在终端输入命令。这个过程可能会遇到xcode，mac系统版本过低，你需要更新后重新操作。最终结果如下图：</p>
+<p><img src="/resource/flutter02.png" alt="图片"></p>
+<p>这里是我安装了Android Studio等环境后的最终结果，后面编辑dart文件会用到Android Studio。你也可以用其他编辑器来做，但Android Studio编写更加友好。<br>到这里Flutter安装配置已经完成。</p>
+<h3 id="创建第一个Flutter工程"><a href="#创建第一个Flutter工程" class="headerlink" title="创建第一个Flutter工程"></a>创建第一个Flutter工程</h3><p>如果你还没安装Android Studio，你可以通过命令行来安装：</p>
+<p>使用 flutter create 命令创建一个project:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">flutter create myapp</span><br><span class="line"><span class="built_in">cd</span> myapp</span><br></pre></td></tr></table></figure>
+<p>上述命令创建一个项目名为myapp，其中包含一个使用Material 组件的简单演示应用程序。<br>此时你可以进入myapp内iOS文件下通过xcode打开Runner.xcworkspace文件。在 lib&#x2F;main.dart文件下编写代码。<br>跑起来是这个样子：</p>
+<p><img src="/resource/flutter03.png" alt="图片"></p>
+<h3 id="体验热重载"><a href="#体验热重载" class="headerlink" title="体验热重载"></a>体验热重载</h3><p>Flutter 可以通过 热重载（hot reload） 实现快速的开发周期，热重载就是无需重启应用程序就能实时加载修改后的代码，并且不会丢失状态。</p>
+<p>1.打开文件lib&#x2F;main.dart</p>
+<p>2.将字符串</p>
+<p>‘You have pushed the button this many times:’ 随便更改后，不要按“停止”按钮;，让您的应用继续运行.</p>
+<p>3.要查看您的更改，请调用 Save (cmd-s &#x2F; ctrl-s), 或者在Android Studio中点击 热重载按钮 (带有闪电图标的按钮).</p>
+<p>你会立即在运行的应用程序中看到更新的字符串。</p>
+<p>这样一个简单的Flutter工程就跑去来了。</p>
+<h3 id="Flutter混编"><a href="#Flutter混编" class="headerlink" title="Flutter混编"></a>Flutter混编</h3><p>上面讲到的是从零开始如何创建Flutter工程。如果已经有了OC或者Swift写的工程后，如何集成进去Flutter进行混编呢？</p>
+<p><strong>创建Flutter module</strong><br>首先我们要创建一个Flutter module（my_flutter）放在和你已存在工程的同级目录下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> some/path/</span><br><span class="line">flutter create -t module my_flutter</span><br></pre></td></tr></table></figure>
+<p>这将创建一个带有Dart代码的Flutter模块项目，以及一个隐藏的.ios&#x2F; 子文件夹，该子文件夹包装了包含一些cocoapod和一个Ruby脚本的模块项目。</p>
+<p>打开lib&#x2F;main.dart文件如图：</p>
+<p><img src="/resource/flutter04.png" alt="图片"></p>
+<p>这是自动帮我们生成的代码，应该和你上面提到Runner工程是一样的。下面我们会修改这个模版实行Native和Flutter的交互。</p>
+<p><strong>Native工程配置</strong></p>
+<p>集成Flutter module工程到Native需要Cocoapods依赖项管理器，请确保本地安装了cocoapods，如果未安装，可以参考:cocoapods.org&#x2F;</p>
+<p>默认你当前项目已经集成cocoapods，请将下列配置添加到工程的Podfile文件中。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">flutter_application_path = <span class="string">&#x27;some/path/my_flutter/&#x27;</span></span><br><span class="line"><span class="built_in">eval</span>(File.<span class="built_in">read</span>(File.<span class="built_in">join</span>(flutter_application_path, <span class="string">&#x27;.ios&#x27;</span>, <span class="string">&#x27;Flutter&#x27;</span>, <span class="string">&#x27;podhelper.rb&#x27;</span>)), binding)</span><br></pre></td></tr></table></figure>
+<p>像这个样子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">platform :ios, <span class="string">&#x27;9.0&#x27;</span></span><br><span class="line">use_frameworks!</span><br><span class="line">target <span class="string">&#x27;native_Project&#x27;</span> <span class="keyword">do</span></span><br><span class="line">flutter_application_path = <span class="string">&#x27;some/path/my_flutter/&#x27;</span></span><br><span class="line"><span class="built_in">eval</span>(File.<span class="built_in">read</span>(File.<span class="built_in">join</span>(flutter_application_path, <span class="string">&#x27;.ios&#x27;</span>, <span class="string">&#x27;Flutter&#x27;</span>, <span class="string">&#x27;podhelper.rb&#x27;</span>)), binding)</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>配置完成后，执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod install</span><br></pre></td></tr></table></figure>
+<p>确保Flutter.framework安装成功。</p>
+<p>此时使用Xcode打开native_Project.xcworkspace文件。</p>
+<p>进行如下配置：<br>1.禁用bitcode，因为Flutter现在不支持bitcode，需要禁用项目TARGETS的Build Settings-&gt; Build Options-&gt; Enable Bitcode部分中的ENABLE_BITCODE标志。<br>2.找到项目TARGETS的Build Phases，点击左上角+号选择New Run Script Phase添加Run Script，在Shell字段下添加下面两行脚本：</p>
+<p><img src="/resource/flutter05.png" alt="图片"></p>
+<p>执行⌘B构建一下项目。你会在工程里看到多了个Development Pods文件：</p>
+<p><img src="/resource/flutter06.png" alt="图片"></p>
+<p>到此为止项目配置搞定。</p>
+<h3 id="原生与Flutter交互"><a href="#原生与Flutter交互" class="headerlink" title="原生与Flutter交互"></a>原生与Flutter交互</h3><p><strong>OC工程修改：</strong></p>
+<p>首先进入native_Project的AppDelegate.h,引入Flutter头文件，并把AppDelegate改为继承自FlutterAppDelegate。并在头文件中定义FlutterEngine变量供后续使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#import &lt;UIKit/UIKit.h&gt;</span></span><br><span class="line"><span class="comment">#import &lt;Flutter/Flutter.h&gt;</span></span><br><span class="line">@interface AppDelegate : FlutterAppDelegate</span><br><span class="line">@property (nonatomic,strong) FlutterEngine *flutterEngine;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>在AppDelegate.m文件中的完成应用启动的生命周期函数中实现flutterEngine</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#import &lt;FlutterPluginRegistrant/GeneratedPluginRegistrant.h&gt; // Only if you have Flutter Plugins</span></span><br><span class="line"><span class="comment">#import &quot;AppDelegate.h&quot;</span></span><br><span class="line">@implementation AppDelegate</span><br><span class="line">// This override can be omitted <span class="keyword">if</span> you <span class="keyword">do</span> not have any Flutter Plugins.</span><br><span class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions &#123;</span><br><span class="line">  /**</span><br><span class="line">  项目之前代码保留就行，（指定window根控制器等等。。）只需添加下面代码</span><br><span class="line">  */</span><br><span class="line">  self.flutterEngine = [[FlutterEngine alloc] initWithName:@<span class="string">&quot;io.flutter&quot;</span> project:nil];</span><br><span class="line">  [self.flutterEngine runWithEntrypoint:nil];</span><br><span class="line">  [GeneratedPluginRegistrant registerWithRegistry:self.flutterEngine];</span><br><span class="line">  <span class="built_in">return</span> [super application:application didFinishLaunchingWithOptions:launchOptions];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>接下来你可以在原生任意一个地方定义一事件点击跳转到Flutter页面。点击事件实行如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (void)jumpFlutterAction &#123;</span><br><span class="line">  FlutterEngine *flutterEngine = [(AppDelegate *)[[UIApplication sharedApplication] delegate]   flutterEngine];</span><br><span class="line">  FlutterViewController *flutterViewController = [[FlutterViewController alloc]   initWithEngine:flutterEngine nibName:nil bundle:nil];</span><br><span class="line">  [self presentViewController:flutterViewController animated:<span class="literal">false</span> completion:nil];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Swift工程修改：</strong></p>
+<p>修改AppDelegate.swift：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import UIKit</span><br><span class="line">import Flutter</span><br><span class="line">import FlutterPluginRegistrant // Only <span class="keyword">if</span> you have Flutter Plugins.</span><br><span class="line">@UIApplicationMain</span><br><span class="line">class AppDelegate: FlutterAppDelegate &#123;</span><br><span class="line">  var flutterEngine : FlutterEngine?;</span><br><span class="line">  // Only <span class="keyword">if</span> you have Flutter plugins.</span><br><span class="line">  override func application(_ application: UIApplication, didFinishLaunchingWithOptions   launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -&gt; Bool &#123;</span><br><span class="line">    self.flutterEngine = FlutterEngine(name: <span class="string">&quot;io.flutter&quot;</span>, project: nil);</span><br><span class="line">    self.flutterEngine?.run(withEntrypoint: nil);</span><br><span class="line">    GeneratedPluginRegistrant.register(with: self.flutterEngine);</span><br><span class="line">    <span class="built_in">return</span> super.application(application, didFinishLaunchingWithOptions: launchOptions);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>点击跳转事件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@objc func <span class="function"><span class="title">handleButtonAction</span></span>() &#123;</span><br><span class="line">  <span class="built_in">let</span> flutterEngine = (UIApplication.shared.delegate as? AppDelegate)?.flutterEngine;</span><br><span class="line">  <span class="built_in">let</span> flutterViewController = FlutterViewController(engine: flutterEngine, nibName: nil, bundle:   nil)!;</span><br><span class="line">  self.present(flutterViewController, animated: <span class="literal">false</span>, completion: nil)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时基本的原生跳转Flutter已经完成，你可通过点击事件跳转到Flutter默认界面，但是你会发现你无法返回到原生了，因为你还没做Flutter回调原生的交互。</p>
+<p>设置route实现相互多样化<br>我们需要在原生工程指定route<br><strong>OC：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[flutterViewController setInitialRoute:@<span class="string">&quot;route1&quot;</span>];</span><br></pre></td></tr></table></figure>
+<p><strong>Swift：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutterViewController.setInitialRoute(<span class="string">&quot;route1&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>在main.dart文件支持route：</p>
+<p><img src="/resource/flutter07.png" alt="图片"></p>
+<p>你需要引入对应的头文件支持，通过指定route1或者route2来呈现不同的Flutter页面。</p>
+<p>此时你运行后会发现跳转到了Unknown route黑屏页面，也就是进入了dart中的switch语句default内</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">default:</span><br><span class="line"><span class="built_in">return</span> Center(</span><br><span class="line">child: Text(<span class="string">&#x27;Unknown route: $route&#x27;</span>, textDirection: TextDirection.ltr)</span><br></pre></td></tr></table></figure>
+
+<p>官方解释如下：在AppDelegate初始化flutterEngine后，立即调用了[self.flutterEngine runWithEntrypoint:nil]，这句代码是创建Flutter engine环境并启动引擎，这时候其实已经执行了main.dart中的main方法，此时window.defaultRouteName为空，所以展示了上面default分支的Widget，后边创建<em>FlutterViewController</em>后设置的routeName是起不到作用的。</p>
+<p>解决如下：</p>
+<p>我们可以使用<em>FlutterViewController</em>自己创建的<em>FlutterEngine</em>而不去自己创建，这样在按钮点击跳转事件处理时执行如下代码：</p>
+<p><strong>OC</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">FlutterViewController *flutterViewController = [[FlutterViewController alloc] init];</span><br><span class="line">[flutterViewController setInitialRoute:@<span class="string">&quot;route1&quot;</span>];</span><br><span class="line">FlutterMethodChannel* methodChannel = [FlutterMethodChannel</span><br><span class="line">methodChannelWithName:@<span class="string">&quot;com.flutterbus/demo&quot;</span></span><br><span class="line">binaryMessenger:flutterViewController];</span><br><span class="line">[methodChannel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) &#123;</span><br><span class="line">  <span class="keyword">if</span> ([@<span class="string">&quot;iOSFlutterMessage&quot;</span> isEqualToString:call.method]) &#123;</span><br><span class="line">    OCTMessageViewController *nativeViewController = [[OCTMessageViewController alloc] init];</span><br><span class="line">    [flutterViewController.navigationController pushViewController:nativeViewController animated:NO];</span><br><span class="line">    result(@YES);</span><br><span class="line">    &#125; <span class="keyword">if</span>([@<span class="string">&quot;iOSFlutter&quot;</span> isEqualToString:call.method]) &#123;</span><br><span class="line">      [flutterViewController.navigationController popViewControllerAnimated:NO];</span><br><span class="line">      result(@YES);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    result(FlutterMethodNotImplemented);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;];</span><br><span class="line">[self.navigationController pushViewController:flutterViewController animated:NO];</span><br></pre></td></tr></table></figure>
+
+<p><strong>Swift</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@objc func btnAction(btn:UIButton)&#123;</span><br><span class="line">  <span class="built_in">let</span> flutterViewController = FlutterViewController();</span><br><span class="line">  flutterViewController.hidesBottomBarWhenPushed = <span class="literal">true</span></span><br><span class="line">  //设置首次进入Flutter背景色，否则会出现黑屏。</span><br><span class="line">  flutterViewController.view.backgroundColor = UIColor.white</span><br><span class="line">  flutterViewController.setInitialRoute(<span class="string">&quot;route1&quot;</span>)</span><br><span class="line">  <span class="built_in">let</span> methodChannel = FlutterMethodChannel(name: <span class="string">&quot;com.flutterbus/demo&quot;</span>, binaryMessenger:   flutterViewController)</span><br><span class="line">  methodChannel.setMethodCallHandler &#123; (call, result) <span class="keyword">in</span></span><br><span class="line">  <span class="built_in">print</span>(call.method)</span><br><span class="line">  <span class="keyword">if</span> (<span class="string">&quot;iOSFlutterVideo&quot;</span> == call.method)&#123;</span><br><span class="line">    <span class="built_in">let</span> vide = UIViewController()</span><br><span class="line">    vide.view.backgroundColor = UIColor.red</span><br><span class="line">    flutterViewController.navigationController?.pushViewController(vide, animated: <span class="literal">false</span>)</span><br><span class="line">    <span class="built_in">return</span></span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">&quot;iOSFlutter&quot;</span> == call.method)&#123;</span><br><span class="line">    flutterViewController.navigationController?.popViewController(animated: <span class="literal">false</span>)</span><br><span class="line">    <span class="built_in">return</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  self.rootVc?.navigationController?.pushViewController(flutterViewController, animated: <span class="literal">true</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中<em>FlutterMethodChannel</em>是提供接受Flutter回调的信息处理Block，我们可以在这里完成Flutter和原生的交互。</p>
+<p>对应的dart文件代码如下：</p>
+<p><img src="/resource/flutter08.png" alt="图片"></p>
+<p>主要就是创建一个给native的MethodChannel (类似iOS的通知），标示为“com.flutterbus&#x2F;demo”创建两个按钮FlatButton，实现按钮的点击事件_iOSPushToVC，_iOSPushToVC1，并传递方法名和参数供原生拦截使用。</p>
+<p>目前简述不能上传视频，最终效果就没法演示了贴几张图吧：</p>
+<p><img src="/resource/flutter09.png" alt="图片"></p>
+<p>点击进入镶嵌导航控制器的Flutter界面：</p>
+<p><img src="/resource/flutter10.png" alt="图片"></p>
+<p>点击回首页或去音频可以跳转到对应原生界面。</p>
+<p>到期Flutter的基础学习基本完成，剩下的就是学习dart语法，写出漂亮的flutter界面了。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>经过学习Flutter进行混编，在编写dart文件时由于支持热更新，无需编译开发效率不错，但如果你修改了原生工程，再重新编译时明显发现集成如Flutter之后编译时间长了很多。其次上面提供的混编教材来自官方，此方案有一巨大的缺点，就是在原生和Flutter页面叠加跳转时内存不断增大，因为FlutterView和FlutterViewController每次跳转都会新建一个对象，从而Embedder层的AndroidShellHolder和FlutterEngine都会创建新对象，UI Thread、IO Thread、GPU Thread和Shell都创建新的对象，唯独共享的只有DartVM对象，但是RootIsolate也是独立的，所以Flutter页面之前的数据不能共享，这样就很难将一些全局性的公用数据保存在Flutter中，所以这套方案比较适合开发不带有共享数据的独立页面，但是页面又不能太多，因为创建的Flutter页面越多内存就会暴增，尤其是在iOS上还有内存泄露的问题。因此我觉得Flutter还有很长的路要走，但毕竟时谷歌推崇的新星，我还是对Flutter充满了期待。作为一个iOS开发者，我总在幻想苹果何时能推出个跨平台方案来，我想这也就是幻想吧，毕竟苹果粑粑太“保守”了。但幻想还是要有的，万一实现了呢！！！</p>
+<p><em>参考文献：</em><br><a target="_blank" rel="noopener" href="https://doc.flutterchina.club/get-started/install/">官方Flutter</a><br><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/wiki/Add-Flutter-to-existing-apps">Add Flutter to existing apps</a><br><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903827984875527">Flutter编程指南</a></p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/lpfRoc" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2022 Roc<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

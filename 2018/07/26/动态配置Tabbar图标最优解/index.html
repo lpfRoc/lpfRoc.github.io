@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!--Description-->
+
+    
+
+    
+        <meta name="description" content="最近需要实现动态配置TabbarIcon的需求，主要是针对节假日活动时，由后台配置富有节日元素的图标，我们移动端来替换展示。乍看这个需求很简单，就是从后台读取数据，拿到图片url后替换tabbar图标资源。可是在做的过程中发现还是需要思考一些东西的。下面我们一步步来实现。
+实现思路黄铜玩家思路
+黄铜"/>
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Roc"/>
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="动态配置Tabbar图标最优解"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="最近需要实现动态配置TabbarIcon的需求，主要是针对节假日活动时，由后台配置富有节日元素的图标，我们移动端来替换展示。乍看这个需求很简单，就是从后台读取数据，拿到图片url后替换tabbar图标资源。可是在做的过程中发现还是需要思考一些东西的。下面我们一步步来实现。
+实现思路黄铜玩家思路
+黄铜"/>
+    
+
+    <!--Open Graph Site Name-->
+        <meta property="og:site_name" content="Roc的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article"/>
+    
+
+    <!--Page Cover-->
+    
+    
+        <meta property="og:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+        <meta name="twitter:card" content="summary_large_image"/>
+
+    
+
+    
+        <meta name="twitter:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+    <!-- Title -->
+    
+    <title>动态配置Tabbar图标最优解 - Roc的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet"/>
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="images/logo.jpg"/>
+    
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://github.com/lpfRoc">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/images/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>动态配置Tabbar图标最优解</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2018-07-26
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>最近需要实现动态配置TabbarIcon的需求，主要是针对节假日活动时，由后台配置富有节日元素的图标，我们移动端来替换展示。乍看这个需求很简单，就是从后台读取数据，拿到图片url后替换tabbar图标资源。可是在做的过程中发现还是需要思考一些东西的。下面我们一步步来实现。</p>
+<h3 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h3><p><strong>黄铜玩家思路</strong></p>
+<p>黄铜玩家自然指的的是新手，针对于初级开发工程师，他们拿到这个需求后，一般不会考虑太多，就是干。他们可能会在app启动后的首页调用配置tabbar图标的接口，获取后直接赋值给</p>
+<p>UITabBarItem的image和selectedImage。如果后台接口没返回就使用默认图标。伪代码实现可能是这样的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#pragma mark - 网络请求</span></span><br><span class="line">- (void)configTabBarIcons&#123;</span><br><span class="line">  <span class="keyword">if</span>（success）&#123;//请求成功</span><br><span class="line">    NSMutableArray *imagesUrlArr;//网络请求获取的icon的url数组</span><br><span class="line">    <span class="keyword">if</span>（imagesUrlArr.count）&#123; //判断图片url数组是否为空</span><br><span class="line">        NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageUrl]];</span><br><span class="line">        UIImage *image = [UIImage imageWithData:data];</span><br><span class="line">        NSMutableArray *imagesArr;//存放image的数组</span><br><span class="line">        <span class="keyword">for</span> (int i = 0; i &lt; itemArray.count; i ++) &#123;//根据item个数遍历替换图片资源</span><br><span class="line">        UITabBarItem * item = itemArray[i];</span><br><span class="line">        item.image=[[UIImage imageNamed:imagesArr[i]]         imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;//未获取到图片url数组</span><br><span class="line">        //现实默认icon</span><br><span class="line">        <span class="keyword">for</span> (int i = 0; i &lt; itemArray.count; i ++) &#123;//根据item个数遍历替换图片资源</span><br><span class="line">        UITabBarItem * item = itemArray[i];</span><br><span class="line">        item.image=[[UIImage imageNamed:defImageArr[i]]     imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span>&#123;//接口调用失败</span><br><span class="line">    Toast(fail);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个伪代码很丑我真的不想再写了。很明显他根本没有过多考虑多种可能性，比如接口调用时机，调用失败情况，代码性能就更不用提了。我下面就针对上面伪代码进行一次优化。</p>
+<p><strong>黄金玩家思路</strong></p>
+<p>处于这个阶段的开发者接到这个需求后可能会分几步考虑实现步骤：</p>
+<p>（1） 接口的调用时机 ：动态配置tabbar的图标属于应用层的配置，不应该和普通界面接口一个优先级，通常应该在程序启动时进行配置。可以放在AppDelegate里的 didFinishLaunchingWithOptions：方法内。</p>
+<p>（2） 接口的调用失败处理 ：正常调试没问题后，不应该认为此功能开发完毕。需要多考虑下其他非正常情况，比如接口调用失败。此时就不应该像 黄铜玩家 那样，直接toast提示失败信息。因为此接口属于应用级别不同于界面接口。我们不应该告诉用户获取配置icon失败等错误信息，用户也不明白这是什么意思。而且要考虑获取接口失败或者获取不到配置icon的数据是需要设置默认的tabbar图标。绝不简单的toast提示。</p>
+<p>（3） 性能问题 ： 这个阶段开发者都应该具备了代码性能的考虑。针对这个需求，是不是启动应用都需要拉取接口，获取到数据后是不是每次都要通过 dataWithContentsOfURL：方法把Url转为NSData处理，并生成UIImage对象。此时可能会考虑到缓存。思路是在获取到UIImage对象后，写入沙盒 [UIImagePNGRepresentation(image) writeToFile:fullPath atomically:YES]。在需要的时候从沙盒中读取数据 [UIImage imageWithContentsOfFile:fullPath]。期间会发现图片显示问题，查阅资料后通过，图片命名以@2x结尾后存入本地，默认是@1x的。这样以来，每次都先判断沙盒内是否缓存的有对应的图标，有的直接取出使用，没的话再生新的UIImage对象并存入沙盒内。</p>
+<p>这样以来看似好了很多，但深入考虑后还是有改进的地方。</p>
+<p><strong>钻石玩家思路</strong></p>
+<p>姑且称作钻石玩家吧，王者玩家本人还没达到那种意识。需要优化的地方主要在 性能问题 ：<br>首先是 缓存 上面提到了缓存。但做的还不够。这个阶段的高级开发者，首先会综合考虑 dataWithContentsOfURL：这个方法的性能怎样，他是同步还是异步的。处理小资源文件效率怎样。是否需要使用多线程，GCD，NSOperation，去处理。我综合考虑后认为处理icon这些小的图片资源影响不是很大，你当然可以使用更高级的多线程去异步下载图片资源，成功后统一缓存。我这里就不涉及了。在我决定使用 dataWithContentsOfURL：后。我会重新考虑缓存问题。如果每次有新的资源进来就缓存，那之前旧的缓存icon已经没用了却还站着内存。有的人说直接缓存到一定大小后，统一清除缓存。那么我要说，缓存多少后清除，清除时机又要放在哪里合适。就是这俩个问题都搞定了，这也不是最优方案，在清除缓存前，没用的icon仍然占用着内存。我是这样想的，由于此需求是真对tabbarItem的，我们是确定有几个item的，假如是四个，那么需要缓存的图片就是8个 选中和未选择两种状态的icon。再有新的icon需要替换时，我们只需获取到缓存icon文件下的子文件个数，如果为8个，就把这8个旧的icon给清除了，重新缓存新的icon。这样以来就完美了。没用的缓存icon会第一时间被清除。说到这里缓存是说完了。<br>替换时机 ，指的是拉取到配置图标后何时替换，是获取一个就替换还是8个都获取完成了在替换。这就涉及到两个问题。首先就算你拉取接口成功，返回给你了8个图标url，但也可能在调用 dataWithContentsOfURL：失败返回nil对象。url可能不合法，当然这是后台数据问题，但我们也要兼容考虑。我们可以这样处理，由于dataWithContentsOfURL：失败返回nil，我们可以在获取到图标资源url地址后，通过遍历，如果8个图标url都能成功生成UIImage对象，就代表此时可对tabbar图标替换，只要有任何一个返回nil就不替换使用默认图标。以免造成有的item的图标是旧的有的是新的不统一的bug。</p>
+<p>下面把主要代码贴出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">网络图片存入沙盒并返回（针对tabBarIcon使用）</span><br><span class="line">@param imageUrl 网络图片地址</span><br><span class="line">@<span class="built_in">return</span> 沙盒图片返回</span><br><span class="line">*/</span><br><span class="line">+ (UIImage *)tabBarItemImageUrl:(NSString *)imageUrl &#123;</span><br><span class="line">  NSArray *stringArr = [imageUrl componentsSeparatedByString:@<span class="string">&quot;/&quot;</span>];</span><br><span class="line">  NSString *imageName = stringArr.lastObject;</span><br><span class="line">  NSString *name = [[imageName componentsSeparatedByString:@<span class="string">&quot;.&quot;</span>] firstObject];</span><br><span class="line">  imageName = [NSString stringWithFormat:@<span class="string">&quot;%@@2x.png&quot;</span>,name];</span><br><span class="line">  NSString *path =   [NSSearchPathForDirectoriesInDomains(NSCachesDirectory,NSUserDomainMask,YES)   lastObject];</span><br><span class="line">  NSLog(@<span class="string">&quot;%@&quot;</span>,path);</span><br><span class="line">  NSString *iconFilePath = [path stringByAppendingPathComponent:@<span class="string">&quot;tabbarIcon&quot;</span>];</span><br><span class="line">  NSFileManager *fileManager = [NSFileManager defaultManager];</span><br><span class="line">  NSString *fullPath = [iconFilePath stringByAppendingPathComponent:imageName];</span><br><span class="line">  // 判断文件是否已存在，存在直接读取</span><br><span class="line">  <span class="keyword">if</span> ([[NSFileManager defaultManager] fileExistsAtPath:fullPath]) &#123;</span><br><span class="line">     NSLog(@<span class="string">&quot;存在了&quot;</span>);</span><br><span class="line">     <span class="built_in">return</span> [UIImage imageWithContentsOfFile:fullPath];</span><br><span class="line">  &#125;</span><br><span class="line">  //获取iconFilePath下文件个数</span><br><span class="line">  NSArray *subPathArr = [[NSFileManager defaultManager]   contentsOfDirectoryAtPath:iconFilePath error:nil];</span><br><span class="line">  //超过8个说明icon需要更换清除iconFilePath文件</span><br><span class="line">  <span class="keyword">if</span> (subPathArr.count &gt;= 8) &#123;</span><br><span class="line">     [fileManager removeItemAtPath:iconFilePath error:nil];</span><br><span class="line">  &#125;</span><br><span class="line">  //再从新创建iconFilePath文件</span><br><span class="line">  BOOL isDir = NO;</span><br><span class="line">  // fileExistsAtPath 判断一个文件或目录是否有效，isDirectory判断是否一个目录</span><br><span class="line">  BOOL existed = [fileManager fileExistsAtPath:iconFilePath isDirectory:&amp;isDir];</span><br><span class="line">  <span class="keyword">if</span> ( !(isDir == YES &amp;&amp; existed == YES) ) &#123;</span><br><span class="line">     // 在 Caches 目录下创建一个 tabbarIcon 目录</span><br><span class="line">     [fileManager createDirectoryAtPath:iconFilePath withIntermediateDirectories:YES      attributes:nil error:nil];</span><br><span class="line">  &#125;</span><br><span class="line">  NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageUrl]];</span><br><span class="line">  UIImage *image = [UIImage imageWithData:data];</span><br><span class="line">  // 将image写入沙河</span><br><span class="line">  <span class="keyword">if</span> ( [UIImagePNGRepresentation(image) writeToFile:fullPath atomically:YES]) &#123;</span><br><span class="line">     <span class="built_in">return</span> [UIImage imageWithContentsOfFile:fullPath];</span><br><span class="line">  &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">return</span> nil;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用时直接调用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">item.image=[[UIImage tabBarItemImageUrl:self.imagesUrlArr[i]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];</span><br></pre></td></tr></table></figure>
+<p>好了，以上是本人的拙见，如有不足之处还请指出。</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/lpfRoc" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2022 Roc<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

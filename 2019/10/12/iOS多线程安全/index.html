@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!--Description-->
+
+    
+
+    
+        <meta name="description" content="由于工作变动，停更了很久，现在安定下后，总结下iOS多线程安全的思考。
+为什么要用多线程多线程，作为实现软件并发执行的一个重要的方法,它能够在时间片里被CPU快速切换，来提高cup资源利用率，但多线程常常伴有资源抢夺的问题，作为一个高级开发人员并发编程那是必须要的，同时解决线程安全也成了我们必须要要"/>
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Roc"/>
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="iOS多线程安全"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="由于工作变动，停更了很久，现在安定下后，总结下iOS多线程安全的思考。
+为什么要用多线程多线程，作为实现软件并发执行的一个重要的方法,它能够在时间片里被CPU快速切换，来提高cup资源利用率，但多线程常常伴有资源抢夺的问题，作为一个高级开发人员并发编程那是必须要的，同时解决线程安全也成了我们必须要要"/>
+    
+
+    <!--Open Graph Site Name-->
+        <meta property="og:site_name" content="Roc的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article"/>
+    
+
+    <!--Page Cover-->
+    
+    
+        <meta property="og:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+        <meta name="twitter:card" content="summary_large_image"/>
+
+    
+
+    
+        <meta name="twitter:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+    <!-- Title -->
+    
+    <title>iOS多线程安全 - Roc的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet"/>
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="images/logo.jpg"/>
+    
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://github.com/lpfRoc">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/images/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>iOS多线程安全</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2019-10-12
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>由于工作变动，停更了很久，现在安定下后，总结下iOS多线程安全的思考。</p>
+<h3 id="为什么要用多线程"><a href="#为什么要用多线程" class="headerlink" title="为什么要用多线程"></a>为什么要用多线程</h3><p>多线程，作为实现软件并发执行的一个重要的方法,它能够在时间片里被CPU快速切换，来提高cup资源利用率，但多线程常常伴有资源抢夺的问题，作为一个高级开发人员并发编程那是必须要的，同时解决线程安全也成了我们必须要要掌握的基础。</p>
+<h3 id="多线程安全"><a href="#多线程安全" class="headerlink" title="多线程安全"></a>多线程安全</h3><p>当我们在讨论多线程安全的时候，具体讨论的是什么？</p>
+<p>当我们讨论多线程安全的时候，其实是在讨论多个线程同时访问一个内存区域(非数值类型及指针类型)的安全问题。下面我主要从以下两方面阐述：</p>
+<h4 id="一，线程同步安全方案"><a href="#一，线程同步安全方案" class="headerlink" title="一，线程同步安全方案"></a>一，线程同步安全方案</h4><p>本质是不让多个线程同时访问同一个资源，只要按顺序访问资源</p>
+<p><strong>1.iOS中的锁</strong></p>
+<ul>
+<li>自旋锁和互斥锁</li>
+</ul>
+<p>自旋锁等待的时候，会忙等，消耗CPU。<br>互斥锁等待的时候，会休眠，不消耗CPU。<br>(互斥锁申请加锁时会使得线程阻塞，阻塞的过程又分两个阶段，第一阶段是会先空转，可以理解成跑一个while循环，不断地去申请锁，在空转一定时间之后，线程会进入waiting休眠状态，此时线程就不占用CPU资源了)<br>为什么会有这两个阶段呢？<br>如果单纯在申请锁失败之后，立刻将线程状态挂起，会带来context切换的开销<br>如果单纯在申请锁失败之后，不断轮询申请加锁，很久很久才能可用，浪费了宝贵的CPU时间</p>
+<ul>
+<li><p>自旋锁：<br>OSSpinLock<br>自旋锁，目前已经不再安全，可能会出现优先级反转问题。<br>如果等待锁的线程优先级较高，它会一直占用着CPU资源，优先级低的线程就无法释放锁</p>
+</li>
+<li><p>互斥锁：<br>os_unfair_lock<br>os_unfair_lock用于取代不安全的OSSpinLock<br>pthread_mutex（普通锁，递归锁，或者条件锁）<br>NSLock<br>对pthread_mutex普通互斥锁进行了面向对象的封装。</p>
+</li>
+<li><p>@synchronized<br>结构在工作时为传入的对象分配了一个递归锁。它需要使用一个唯一的标识用来区分保护锁.<br>优点：使用起来十分简单不需要在代码中显式的创建锁对象，便可以实现锁的机制，并且不用担心忘记解锁的情况出现。同时synchronized不需要像NSLock一样需要考虑在加解锁时需要在同一线程中的问题，也不需要考虑同一个线程中连续加锁的问题。<br>缺点：性能较差，一般用在多线程情况下访问属性的情况</p>
+</li>
+<li><p>NSRecursiveLock<br>对mutex递归锁的封装,在被同一线程重复获取时不会产生死锁。它会记录上锁和解锁的次数，当二者平衡的时候，才会释放锁，其它线程才可以上锁成功<br>dispatch_semaphore<br>dispatch_queue(DISPATCH_QUEUE_SERIAL)<br>GCD的串行队列，也是可以实现线程同步的</p>
+</li>
+</ul>
+<p>下面我看下同步方案性能从高到低排序：</p>
+<p><img src="/resource/thread01.png" alt="图片"></p>
+<p><strong>死锁问题：</strong><br>设置关于attr，避免死锁</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">void <span class="function"><span class="title">thread_function</span></span>()</span><br><span class="line">&#123;</span><br><span class="line">    pthread_mutex_lock(&amp;mutex);</span><br><span class="line">    foo();</span><br><span class="line">    pthread_mutex_unlock(&amp;mutex);</span><br><span class="line">&#125;</span><br><span class="line">void <span class="function"><span class="title">foo</span></span>()</span><br><span class="line">&#123;</span><br><span class="line">    pthread_mutex_lock(&amp;mutex);</span><br><span class="line">    pthread_mutex_unlock(&amp;mutex);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码看着很正常是吧？但由于在调用foo之前，mutex已经被锁住了，于是foo就停在那边等待thread_function释放mutex。但是！thread_function必须要等foo跑完才能解锁，然后现在foo被卡住了。。。<br>如果type设置为PTHREAD_MUTEX_ERRORCHECK，那在foo里面的pthread_mutex_lock就会返回EDEADLK。如果你要求执行foo的时候一定要处于mutex的临界区，那就要这么判断。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pthread_mutexattr_t attr;</span><br><span class="line">pthread_mutexattr_init (&amp;attr);</span><br><span class="line">pthread_mutexattr_settype(&amp;attr, PTHREAD_MUTEX_ERRORCHECK);</span><br><span class="line">pthread_mutex_init(&amp;_lock, &amp;attr);</span><br></pre></td></tr></table></figure>
+<p><img src="/resource/thread02.png" alt="图片"></p>
+<ul>
+<li>PTHREAD_MUTEX_NORMAL，这是缺省值，也就是普通锁不提供死锁检测。当一个线程加锁以后，其余请求锁的线程将形成一个等待队列，并在解锁后按优先级获得锁。这种锁策略保证了资源分配的公平性。</li>
+<li>PTHREAD_MUTEX_RECURSIVE，嵌套锁(递归)，允许同一个线程对同一个锁成功获得多次，并通过多次unlock解锁。如果是不同线程请求，则在加锁线程解锁时重新竞争。</li>
+<li>PTHREAD_MUTEX_ERRORCHECK，检错锁，如果同一个线程请求同一个锁，则返回EDEADLK，否则与PTHREAD_MUTEX_NORMAL类型动作相同。这样就保证当不允许多次加锁时不会出现最简单情况下的死锁。</li>
+</ul>
+<p><strong>2.atomic属性</strong><br>atomic用于保证属性setter、getter的原子性操作，相当于在getter和setter内部加了线程同步的锁(使用了自旋锁，iOS 10以后，底层换成了os_unfair_lock)。<br>atomic是线程安全的吗？<br>这样说是片面的不准确的。<br>首先我们要了解：<br>64位系统的地址总线对于读写指令可以支持8个字节的长度，所以对于BOOL的读和写操作我们可以认为是原子的，所以当我们声明BOOL类型的property的时候，从原子性的角度看，使用atomic和nonatomic并没有实际上的区别<br>如果读写（load or store）的内存长度小于等于地址总线的长度，那么读写的操作是原子的，一次完成。比如bool，int，long在64位系统下的单次读写都是原子操作。<br>很多文章谈到atomic和nonatomic的区别时,都说atomic是线程安全,其实这个说法是不准确的.<br>atomic属性保证的属性的值修改(包括数值类型及指针类型)线程安全，但不保证指针指向的内存的安全及多部操作的原子性<br>atomic只是对属性的getter&#x2F;setter方法进行了加锁操作,这种安全仅仅是set&#x2F;get的读写安全,并非真正意义上的线程安全,因为线程安全还有读写之外的其他操作(比如:如果当一个线程正在get或set时,又有另一个线程同时在进行release操作,可能会直接crash，又比如一个属性array，atomic的话只能保证在外面set和get的时候线程安全，但是不能保证array addObject、removeObject线程安全)<br>简而言之，atomic的作用只是给getter和setter加了个锁，atomic只能保证代码进入getter或者setter函数内部时是安全的，一旦出了getter和setter，多线程安全只能靠程序员自己保障了</p>
+<p><strong>锁的粒度</strong><br>同时我们还需要注意锁定粒度，粒度过大，造成不必要的性能损失，粒度过小，锁失效。</p>
+<h4 id="二，资源读写安全方案"><a href="#二，资源读写安全方案" class="headerlink" title="二，资源读写安全方案"></a>二，资源读写安全方案</h4><p>本质就是多读单写，单位时间内读写操作只允许存在一种。<br><strong>读写锁 （共享锁）-&gt; pthread_rwlock</strong></p>
+<ul>
+<li>当读写锁被一个线程以读模式占用的时候，写操作的其他线程会被阻塞，读操作的其他线程还可以继续进行。</li>
+<li>当读写锁被一个线程以写模式占用的时候，写操作的其他线程会被阻塞，读操作的其他线程也被阻塞。</li>
+</ul>
+<p><strong>异步栅栏调用 -&gt; dispatch_barrier_async</strong><br>这个函数传入的必须是自己通过dispatch_queue_cretate创建的DISPATCH_QUEUE_CONCURRENT并发队列，如果传入的是一个<br>串行或是一个全局的并发队列，那这个函数便等同于dispatch_async函数的效果</p>
+<p><strong>避免写线程饥饿：</strong><br>读写锁必须要等到所有读锁都释放之后，才能成功申请写锁，只要有读锁在，写锁就无法申请，然而读锁可以一直申请成功，就导致所谓的插队现象。<br>那么写线程就不知道什么时候才能申请成功写锁了，然后它就饿死了。<br>为了控制写线程饥饿，必须要在创建读写锁的时候设置属性PTHREAD_RWLOCK_PREFER_WRITER_NONRECURSIVE，默认是PTHREAD_RWLOCK_PREFER_READER_NP。<br>总的来说，这样的锁建立之后一定要设置优先级，不然就容易出现写线程饥饿。而且读写锁适合读多写少的情况，如果读、写一样多，那这时候还是用mutex锁比较合理。<br>接口简洁但是却不友好，需要注意pthread_rwlock_t是值类型，用&#x3D;赋值会直接拷贝，不小心就会浪费内存，另外用完后还需要记得销毁，容易出错，有没有更高级更易用的API呢？</p>
+<p>异步栅栏调用 -&gt; dispatch_barrier_async(GCD的barrier属于写者优先的实现)<br>这个函数传入的必须是自己通过dispatch_queue_cretate创建的DISPATCH_QUEUE_CONCURRENT并发队列，如果传入的是一个串行或是一个全局的并发队列，那这个函数便等同于dispatch_async函数的效果</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dispatch_queue_t queue = dispatch_queue_create(<span class="string">&quot;top.istones.rwQueue&quot;</span>, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line">// 读</span><br><span class="line">dispatch_async(queue, ^&#123;</span><br><span class="line">&#125;);</span><br><span class="line">// 写</span><br><span class="line">dispatch_barrier_async(queue, ^&#123;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>使用GCD还有个潜在优势：GCD面向队列而非线程，dispatch至某一队列的任务，可能在任一线程上执行，这些对开发者是透明的，这样设计的好处显而易见，GCD可以根据实际情况从自己管理的线程池中挑选出开销最小的线程来执行任务，最大程度减小context切换次数。</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/lpfRoc" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2022 Roc<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

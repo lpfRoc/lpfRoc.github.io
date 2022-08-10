@@ -13,6 +13,10 @@
     
 
     
+        <meta name="description" content="此篇文章使用Swift简单实现了统一定制多样导航栏样式的功能， 而不必每次都在对应的导航控制器内对导航栏就行重复样式操作。
+实现思路如标题所示，关键功能在统一和多样。那么下面就具体说说如何实现统一和多样功能。
+统一要做到统一处理导航栏，首先会想到自定义一个导航控制器继承自UINavigationCo"/>
+    
 
     <!--Author-->
     
@@ -21,10 +25,14 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="Roc的博客"/>
+        <meta property="og:title" content="统一定制多样导航栏样式"/>
     
 
     <!--Open Graph Description-->
+    
+        <meta property="og:description" content="此篇文章使用Swift简单实现了统一定制多样导航栏样式的功能， 而不必每次都在对应的导航控制器内对导航栏就行重复样式操作。
+实现思路如标题所示，关键功能在统一和多样。那么下面就具体说说如何实现统一和多样功能。
+统一要做到统一处理导航栏，首先会想到自定义一个导航控制器继承自UINavigationCo"/>
     
 
     <!--Open Graph Site Name-->
@@ -32,7 +40,7 @@
 
     <!--Type page-->
     
-        <meta property="og:type" content="website"/>
+        <meta property="og:type" content="article"/>
     
 
     <!--Page Cover-->
@@ -51,7 +59,7 @@
 
     <!-- Title -->
     
-    <title>Archives: 2016/9 - Roc的博客</title>
+    <title>统一定制多样导航栏样式 - Roc的博客</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
@@ -125,88 +133,71 @@
 </nav>
 
     <!-- Main Content -->
-    
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
 
-<!-- Page Header -->
-<!-- Set your background image for this header in the theme's configuration: index_cover -->
 <header class="intro-header" style="background-image: url('/images/home-bg.jpg')">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="site-heading">
-                    <h1>2016/9</h1>
+                <div class="post-heading">
+                    <h1>统一定制多样导航栏样式</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2017-01-05
+                        
+                    </span>
                 </div>
             </div>
         </div>
     </div>
 </header>
 
-<!-- Main Content -->
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+
+            <!-- Gallery -->
             
-                <div class="post-preview">
-    <a href="/2016/09/10/About Me/">
-        <h1 class="post-title archive">
-            About Me
-        </h1>
-    </a>
-    <p class="post-meta archive">
-        <!-- Date and Author -->
-        
-        2016-09-10
-    </p>
-</div>
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>此篇文章使用Swift简单实现了统一定制多样导航栏样式的功能， 而不必每次都在对应的导航控制器内对导航栏就行重复样式操作。</p>
+<h2 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h2><p>如标题所示，关键功能在统一和多样。那么下面就具体说说如何实现统一和多样功能。</p>
+<h3 id="统一"><a href="#统一" class="headerlink" title="统一"></a>统一</h3><p>要做到统一处理导航栏，首先会想到自定义一个导航控制器继承自UINavigationController，然后在自定义的导航控制器内统一设置导航栏。这样仅仅做到了统一设置固定的导航栏样式，还无法实现根据不同控制器定制不同样式的导航栏。</p>
+<h3 id="多样"><a href="#多样" class="headerlink" title="多样"></a>多样</h3><p>上面做到了统一处理导航栏，那么多样怎么做呢？在实现多样之前，我先介绍下导航控制器push和pop的机制：</p>
+<p>（1）导航控制器初始化的时候一般都有一个根视图控制器，导航控制器相当于一个栈，里面装的是视图控制器，最先进去的在最下面，最后进去的在最上面。在最上面的那个视图控制器的视图就是这个导航控制器对外展示的界面，也就是用户看到的界面。</p>
+<p>（2）我们需要把导航控制器加载到APP中，需要把这个导航控制器设置为window的根视图控制器（都是控制器类，可以赋值），这样就相当于加载到了window里。</p>
+<p>（3）我们要在栈中新增或者删除一个视图控制器，就需要得到导航控制器，一般在栈中得所有视图控制器都有一个self.navigationController，意思是我的导航控制器，也就是这个视图控制器所在的导航控制器，这样就拿到了导航控制器。</p>
+<p>（4）栈中新增视图控制器用pushViewController，其实就是push进去一个，这样对于用户而言就是打开一个新界面了。</p>
+<p>（5）栈中删除一个视图控制器用popViewControllerAnimated，当然这个pop只能pop最上面的那个，对于用户而言相当于从当前视图回到上一级视图。</p>
+<p>（6）其实这个push和pop对于用户而言都是打开和跳转页面的一个操作。而pop由更多地操作方法，如一下子pop掉只剩下一个根视图控制器，那么就相当于从好几层直接回到最原始的主页面。也可以指定pop几个，以跳转到指定的页面。</p>
+<p>（7）最重要的应该就是这个push和pop方法，push只有一种而pop有很多种。</p>
+<p>经过以上的讲解，我们就不难想到如何多样的处理导航控制器导航栏的样式了。没错，我们可以重写系统导航控制器push和pop方法，在方法内部根据self.childViewControllers.count的个数以及与跟控制器的比较来区分不同的视图控制器，做到多样定制。值得注意的是对于pop操作我们需要分别重写popViewController，popToRootViewController，popToViewController三个方法（函数）。</p>
+<p>多说无益，代码链接奉上：<a target="_blank" rel="noopener" href="https://github.com/lpfRoc/LPFRootNav">LPFNavigationController</a></p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
             
-                <div class="post-preview">
-    <a href="/2016/09/10/初见Swift之我不懂的副本12/">
-        <h1 class="post-title archive">
-            初见Swift之我不懂
-        </h1>
-    </a>
-    <p class="post-meta archive">
-        <!-- Date and Author -->
-        
-        2016-09-10
-    </p>
-</div>
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
             
-                <div class="post-preview">
-    <a href="/2016/09/10/初见Swift之我不懂的副本13/">
-        <h1 class="post-title archive">
-            初见Swift之我不懂
-        </h1>
-    </a>
-    <p class="post-meta archive">
-        <!-- Date and Author -->
-        
-        2016-09-10
-    </p>
-</div>
-            
-                <div class="post-preview">
-    <a href="/2016/09/10/初见Swift之我不懂的副本14/">
-        <h1 class="post-title archive">
-            初见Swift之我不懂
-        </h1>
-    </a>
-    <p class="post-meta archive">
-        <!-- Date and Author -->
-        
-        2016-09-10
-    </p>
-</div>
-            
-            <div class="archive-before-pagination"></div>
-            <ul class="pager">
-    
-    
-</ul>
         </div>
     </div>
-</div>
-
+</article>
 
     <!-- Footer -->
     <hr />

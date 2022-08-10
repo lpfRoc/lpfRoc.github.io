@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!--Description-->
+
+    
+
+    
+        <meta name="description" content="对于iOS开发者，UITableViewCell的重用是最基本的技能，初学者都应该掌握的。对于它的原理我就不在此啰嗦了，这里我重点说下，如何以正确的姿态来重用多类型的UITableViewCell，正确重用cell不仅仅要重用cell视图，还需要好好重用cell的子视图。你是否做到了呢？
+单一类型c"/>
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Roc"/>
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="多类型UITableViewCell重用的正确姿态"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="对于iOS开发者，UITableViewCell的重用是最基本的技能，初学者都应该掌握的。对于它的原理我就不在此啰嗦了，这里我重点说下，如何以正确的姿态来重用多类型的UITableViewCell，正确重用cell不仅仅要重用cell视图，还需要好好重用cell的子视图。你是否做到了呢？
+单一类型c"/>
+    
+
+    <!--Open Graph Site Name-->
+        <meta property="og:site_name" content="Roc的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article"/>
+    
+
+    <!--Page Cover-->
+    
+    
+        <meta property="og:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+        <meta name="twitter:card" content="summary_large_image"/>
+
+    
+
+    
+        <meta name="twitter:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+    <!-- Title -->
+    
+    <title>多类型UITableViewCell重用的正确姿态 - Roc的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet"/>
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="images/logo.jpg"/>
+    
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://github.com/lpfRoc">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/images/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>多类型UITableViewCell重用的正确姿态</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2017-05-10
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>对于iOS开发者，UITableViewCell的重用是最基本的技能，初学者都应该掌握的。对于它的原理我就不在此啰嗦了，这里我重点说下，如何以正确的姿态来重用多类型的UITableViewCell，正确重用cell不仅仅要重用cell视图，还需要好好重用cell的子视图。你是否做到了呢？</p>
+<h2 id="单一类型cell重用"><a href="#单一类型cell重用" class="headerlink" title="单一类型cell重用"></a>单一类型cell重用</h2><p>对于简单单一cell的tableView来讲，它的重用我们大多会在代理方法里这样写：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath &#123;</span><br><span class="line">  //设置重用标识符</span><br><span class="line">  static NSString * Identifier = @<span class="string">&quot;MineCell&quot;</span>;</span><br><span class="line">  //通过Identifier取到cell</span><br><span class="line">  MineTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:Identifier];</span><br><span class="line">  //若cell不存在，在进行创建</span><br><span class="line">  <span class="keyword">if</span> (!cell) &#123;</span><br><span class="line">     cell =[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:   Identifier];</span><br><span class="line">  &#125;</span><br><span class="line">  //用<span class="built_in">set</span>方法取到对应的model对cell赋值</span><br><span class="line">  [cell cellModel:self.cellModelArr[indexPath.row]];</span><br><span class="line">  <span class="built_in">return</span> cell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>或者使用需要注册cell的写法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath &#123;</span><br><span class="line">  //设置重用标识符</span><br><span class="line">  static NSString *Identifier = @<span class="string">&quot;MineCell&quot;</span>;</span><br><span class="line">  MineTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: CellIdentifier forIndexPath:indexPath];</span><br><span class="line">  //通过协议绑定VM和cell</span><br><span class="line">  cell.bind(self.cellModelArr[indexPath.row]);</span><br><span class="line">  <span class="built_in">return</span> cell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的两种写法都很简单，由于是单一类型的cell重用，不会涉及到子视图的重用，所以没什么可讲的。</p>
+<h3 id="多类型cell重用"><a href="#多类型cell重用" class="headerlink" title="多类型cell重用"></a>多类型cell重用</h3><p>在很多情况下，UITableView并不是单一的一种cell，而会包含多种cell，每种cell类型样式布局都有明显区别。这样来我们就不能用上面单一的cell重用方式了。 对于多类型cell你当然可以对每个类型的cell创建对应的.h .m文件，并在使用时引入该 cell的头文件即可。但可能是出于偷懒，我更习惯统一处理这些cell。把这些cell都写在一个.h .m文件内，通过对不同类型cell设置对应对cellStyle枚举状态来辨别他们，这样以来，一个文件就足够了。</p>
+<p>下面就重点说下单文件下多类型cell的重用。主要代码如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath &#123;</span><br><span class="line">  static NSString * MineCellIdentifier = @<span class="string">&quot;MineCellIdentifier&quot;</span>;</span><br><span class="line">  //通过注册的cell获取MineTableViewCell</span><br><span class="line">  MineTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:MineCellIdentifier   forIndexPath:indexPath];</span><br><span class="line">  //根据不同row或者也可以根据model内容来区分cellStyle</span><br><span class="line">  <span class="keyword">if</span> (indexPath.row == 0) &#123;</span><br><span class="line">  //通过setMineCellStyle:方法对cell就行类型赋值，我们会在 setMineCellStyle:方法里对cell就行布局等定制化处理。</span><br><span class="line">  cell.mineCellStyle = MineTableViewCellStyleOne;</span><br><span class="line">  &#125;<span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">  cell.mineCellStyle = MineTableViewCellStyleTow;</span><br><span class="line">  &#125;</span><br><span class="line">  //通过协议绑定VM和cell</span><br><span class="line">  cell.bind(self.cellModelArr[indexPath.row]);</span><br><span class="line">  <span class="built_in">return</span> cell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们一般会在MineTableViewCell.h里定义类似MineTableViewCellStyle的枚举类型，并实现mineCellStyle属性，这样就可以在对应的tableView代理方法里通过setMineCellStyle：方法来针对不同cellStyle布局了。setMineCellStyle：方法内部实现大概如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">- (void)setMineCellStyle:(MineTableViewCellStyle)mineCellStyle &#123;</span><br><span class="line">_mineCellStyle = mineCellStyle;</span><br><span class="line">  //为了避免cell重用引起的子视图错乱，我们会先把cell的子视图给全不移除，下面会在对应的cellStyle内重新创建并添加到cell的contentView内  。</span><br><span class="line">  <span class="keyword">for</span> (UIView *view <span class="keyword">in</span> self.contentView.subviews) &#123;</span><br><span class="line">      [view removeFromSuperview];</span><br><span class="line">    &#125;</span><br><span class="line">  //对不同的类型进行针对性的布局绘制操作</span><br><span class="line">  switch (mineCellStyle) &#123;</span><br><span class="line">  <span class="keyword">case</span> MineTableViewCellStyleOne:</span><br><span class="line">  &#123;</span><br><span class="line">    //这里省略了布局约束的代码</span><br><span class="line">    NSArray *viewArray = @[self.bankNumTitleLb, self.bankNumLb];</span><br><span class="line">    <span class="keyword">for</span> (UIView *view <span class="keyword">in</span> viewArray) &#123;</span><br><span class="line">        [self.contentView addSubview:view];</span><br><span class="line">      &#125;</span><br><span class="line">    //进行布局操作（此处省略不是本文重点）</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">break</span>;</span><br><span class="line">  <span class="keyword">case</span> MineTableViewCellStyleTow:</span><br><span class="line">  &#123;</span><br><span class="line">    //这里省略了布局约束的代码</span><br><span class="line">    NSArray *viewArray = @[self.phoneNumTitleLb, self.phoneNumTextField];</span><br><span class="line">    <span class="keyword">for</span> (UIView *view <span class="keyword">in</span> viewArray) &#123;</span><br><span class="line">    [self.contentView addSubview:view];</span><br><span class="line">  &#125;</span><br><span class="line">  //进行布局操作（此处省略不是本文重点）</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">break</span>;</span><br><span class="line">  <span class="keyword">case</span> MineTableViewCellStyleDefault:</span><br><span class="line">  &#123;</span><br><span class="line">    //这里省略了布局约束的代码</span><br><span class="line">    NSArray *viewArray = @[self.verificationCodeTitleLb,</span><br><span class="line">    self.phoneNumTextField,self.verificationCodeButton];</span><br><span class="line">    <span class="keyword">for</span> (UIView *view <span class="keyword">in</span> viewArray) &#123;</span><br><span class="line">        [self.contentView addSubview:view];</span><br><span class="line">    &#125;</span><br><span class="line">  //进行布局操作（此处省略不是本文重点）</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>到这里也许你觉得一切都没什么问题。但有经验的开发者可能已经看出来问题所在。问题出在setMineCellStyle:方法里的这句代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (UIView *view <span class="keyword">in</span> self.contentView.subviews) &#123;</span><br><span class="line">    [view removeFromSuperview];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这句代码很简单，就是前面说到为了解决cell重用时会出现子视图的重用。可是”解决”了子视图的重用问题，那么新问题来了，每次都把子视图移除，重新创建既消耗内存还占用时间，严重会出现滑动出现卡顿现象，而且都删除了重建还能叫重用吗？最多是只是留了个cell的’壳’,里面的’肉’可都是新建的啊。<br>因此：在通过设置多种CELL枚举类型来实现多样式CELL布局时，要先判断当前重用的CELLSTYLE 和 需要设置的CELLSTYLE是否一致，不一致时，才需要重新布局绘制。<br>修改后的主要代码如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath &#123;</span><br><span class="line">  static NSString * MineCellIdentifier = @<span class="string">&quot;MineCellIdentifier&quot;</span>;</span><br><span class="line">  UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:MineCellOneIdentifier   forIndexPath:indexPath];</span><br><span class="line">  //获取当前重用cell的类型cellStyle</span><br><span class="line">  MineCellStyle cellStyle = cell.mineCellStyle;</span><br><span class="line">  switch (indexPath.section) &#123;</span><br><span class="line">  <span class="keyword">case</span> 0:</span><br><span class="line">  &#123;</span><br><span class="line">  //如果当前重用的cellStyle 和 需要设置的cellStyle不一致时，才进行类型重制！</span><br><span class="line">    <span class="keyword">if</span> (cellStyle != MineTableViewCellStyleOne) &#123;</span><br><span class="line">       cell.mineCellStyle = MineTableViewCellStyleOne;</span><br><span class="line">    &#125;</span><br><span class="line">    cell.bind(self.cellModelArr[indexPath.row]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">break</span>;</span><br><span class="line">  <span class="keyword">case</span> 1:</span><br><span class="line">  &#123;</span><br><span class="line">    switch (indexPath.row) &#123;</span><br><span class="line">    <span class="keyword">case</span> 0:</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span> (cellStyle != MineTableViewCellStyleTow) &#123;</span><br><span class="line">          cell.mineCellStyle = MineTableViewCellStyleTow;</span><br><span class="line">        &#125;</span><br><span class="line">       cell.bind(self.cellModelArr[indexPath.row]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">break</span>;</span><br><span class="line">    <span class="keyword">case</span> 1:</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span> (cellStyle != MineTableViewCellStyleThree) &#123;</span><br><span class="line">         cell.mineCellStyle = MineTableViewCellStyleThree;</span><br><span class="line">       &#125;</span><br><span class="line">      cell.bind(self.cellModelArr[indexPath.row]);</span><br><span class="line">      &#125;</span><br><span class="line">    <span class="built_in">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">return</span> cell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样以来即实现了单文件下实现多cell类型的功能，又完美的解决了多cell的重用及性能问题。但是如果cell比较复杂，后续业务变动大还是建议不同cell单独定义，方便后续拓展维护。</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/lpfRoc" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2022 Roc<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

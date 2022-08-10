@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!--Description-->
+
+    
+
+    
+        <meta name="description" content="“Optional”译为可选择的，随意的。但在Swift里，我认为它是必不可少的。在项目里往往对各种值为”空”的情况处理不当，就会出现各种bug。而当我们访问一个变量时，我们有太多情况无法意识到一个变量有可能为空，进而最终在程序中埋藏了一个个闪退的隐患。因此，Swift里，明确区分了”变量”和”值有"/>
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Roc"/>
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="必不可少的Optional"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="“Optional”译为可选择的，随意的。但在Swift里，我认为它是必不可少的。在项目里往往对各种值为”空”的情况处理不当，就会出现各种bug。而当我们访问一个变量时，我们有太多情况无法意识到一个变量有可能为空，进而最终在程序中埋藏了一个个闪退的隐患。因此，Swift里，明确区分了”变量”和”值有"/>
+    
+
+    <!--Open Graph Site Name-->
+        <meta property="og:site_name" content="Roc的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article"/>
+    
+
+    <!--Page Cover-->
+    
+    
+        <meta property="og:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+        <meta name="twitter:card" content="summary_large_image"/>
+
+    
+
+    
+        <meta name="twitter:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+    <!-- Title -->
+    
+    <title>必不可少的Optional - Roc的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet"/>
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="images/logo.jpg"/>
+    
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://github.com/lpfRoc">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/images/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>必不可少的Optional</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2018-03-10
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>“Optional”译为可选择的，随意的。但在Swift里，我认为它是必不可少的。在项目里往往对各种值为”空”的情况处理不当，就会出现各种bug。而当我们访问一个变量时，我们有太多情况无法意识到一个变量有可能为空，进而最终在程序中埋藏了一个个闪退的隐患。因此，Swift里，明确区分了”变量”和”值有可能为空的变量”这两种情况，以时刻警告你：”哦，它的值有可能为空，我应该谨慎处理它。而对于后者，谨慎不仅仅是精神层面的，Swift还从语法层面上，帮助你在处理空值时，游刃有余。那就是今天主角Optional</p>
+<h3 id="未必安全的“哨兵值”"><a href="#未必安全的“哨兵值”" class="headerlink" title="未必安全的“哨兵值”"></a>未必安全的“哨兵值”</h3><p>在编程中，无论是编写还是调用函数，一个最普遍的情况，就是在某些情况下，函数并不总是可以返回我们期望的值。我们不妨先来看个Objective-C的例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">NSString *tmp = nil;</span><br><span class="line"><span class="keyword">if</span> ([tmp rangeOfString: @<span class="string">&quot;Swift&quot;</span>].location != NSNotFound) &#123;</span><br><span class="line">  // Will <span class="built_in">print</span> out <span class="keyword">for</span> nil string</span><br><span class="line">  NSLog(@<span class="string">&quot;Something about swift&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在我们的例子里，尽管tmp的值是nil，但调用tmp的rangeOfString方法却是合法的，它会返回一个值为0的NSRange，因此，location的值也是0。<br>但是，NSNotFound的值却是NSIntegerMax。于是，尽管tmp的值为nil，我们还可以在控制台看到Something about swift这样的输出。<br>怎么样？现在你应该彻底对这个“哨兵值”没什么好感了吧。<br>既然“哨兵值”不是一个好方法，又该如何解决函数有可能返回错误的情况呢？一个思路：让编译器强制我们处理可能发生错误的情况。为了做到这点，我们得满足下面这几个条件：<br>首先，作为一个函数的返回值，它仍旧得是一个独立的类型；</p>
+<p>其次，对于所有成功的情况，这个类型得有办法包含正确的结果；</p>
+<p>最后，对于所有错误的情况，这个类型得有办法用一个和正确情况类型不同的值来表达；</p>
+<p>做到这些，当我们把一个错误情况的值用在正常的业务逻辑之后，编译器就可以由于类型错误，给我们予以警告了。</p>
+<p>幸运的是Swift中Optional内部已经帮我们实现了上述功能。下面我们就来看下optional类型在Swift中的常用使用范式。</p>
+<h3 id="optional使用范式"><a href="#optional使用范式" class="headerlink" title="optional使用范式"></a>optional使用范式</h3><p>既然optional类型表达了有可能失败这样含义，因此，它最频繁出现的场景当然就是各种条件分支和循环语句。</p>
+<p><strong>if let</strong><br>如果我们要表达“当optional不等于nil时，则执行某些操作”这样的语义，最朴素的写法，是这样的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> number: Int? = 1</span><br><span class="line"><span class="keyword">if</span> number != nil &#123;</span><br><span class="line">   <span class="built_in">print</span>(number!)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中，number!这样的写法叫做force unwrapping，用于强行读取optional变量中的值，此时，如果optional的值为nil就会触发运行时错误。所以，通常，我们会事先判断optional的值是否为nil。<br>但这样写有一个弊端，如果我们需要在if代码块中包含多个访问number的语句，就要在每一处使用number!，这显得很啰嗦。我们明知此时number的值不为nil，应该可以直接使用它的值才对。为此，Swift提供了if let的方式，像这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">let</span> number = number &#123;</span><br><span class="line">   <span class="built_in">print</span>(number)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面的代码里，我们使用if let直接在if代码块内部，定义了一个新的变量number，它的值是之前number?的值。然后，我们就可以在if代码块内部，直接通过新定义的number来访问之前number?的值了。<br>这里用了一个小技巧，就是在if let后面新定义变量的名字，和之前的optional是一样的。这不仅让代码看上去就像是访问optional自身一样，而且，通常为一个optional的值另取一个新的名字，也着实没什么必要。<br>除了可以直接在if let中绑定optional的value，我们还可以通过布尔表达式进一步约束optional的值，这也是一个常见的用法，例如，我们希望number为奇数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">let</span> number = number, number % 2 != 0 &#123;</span><br><span class="line">    <span class="built_in">print</span>(number)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们之前讲到过逗号操作符在if中的用法，在这里，number % 2 !&#x3D; 0中的number，指的是在if代码块中新定义的变量，理解了这点，上面的代码就不存在任何问题了。<br>有了optional的这种用法之后，对于那些需要一连串有可能失败的行为都成功时才执行的动作，只要这些行为都返回optional，我们就有了一种非常漂亮的解决方法。<br>例如，为了从某个url加载一张jpg的图片，我们可以这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">let</span> url = URL(string: imageUrl), url.pathExtension == <span class="string">&quot;jpg&quot;</span>,</span><br><span class="line">   <span class="built_in">let</span> data = try? Data(contentsOf: url),</span><br><span class="line">   <span class="built_in">let</span> image = UIImage(data: data) &#123;</span><br><span class="line">     <span class="built_in">let</span> view = UIImageView(image: image)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面的例子里，从生成URL对象，到根据url创建Data，到用data创建一个UIImage，每一步的继续都依赖于前一步的成功，而每一步调用的方法又都返回一个optional，因此，通过串联多个if let，我们就把每一步成功的结果绑定在了一个新的变量上并传递给下一步，这样比我们在每一步不断的去判断optional是否为nil简单多了。</p>
+<p><strong>while let</strong><br>除了在条件分支中使用let绑定optional，我们也可以在循环中，使用类似的形式。例如，为了遍历一个数组，我们可以这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> numbers = [1, 2, 3, 4, 5, 6]</span><br><span class="line">var iterator = numbers.makeIterator()</span><br><span class="line"><span class="keyword">while</span> <span class="built_in">let</span> element = iterator.<span class="function"><span class="title">next</span></span>() &#123;</span><br><span class="line">   <span class="built_in">print</span>(element)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这里，iterator.next()会返回一个Optional，直到数组的最后一个元素遍历完之后，会返回nil。然后，我们用while let绑定了数组中的每一个值，并把它们打印在了控制台上。<br>在这里强调一下：在Swift里，for…in循环是其实是通过while模拟出来的。这也就意味着，for循环中的循环变量在每次迭代的时候，都是一个全新的对象，而不是对上一个循环变量的修改。</p>
+<h3 id="guard的使用"><a href="#guard的使用" class="headerlink" title="guard的使用"></a>guard的使用</h3><p>通常情况下，我们只能在optional被unwrapping的作用域内，来访问它的值。</p>
+<p><strong>理解optional unwrapping的作用域</strong><br>例如，在下面这个arrayProcess函数里：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">func arrayProcess(array: [Int]) &#123;</span><br><span class="line">  <span class="keyword">if</span> <span class="built_in">let</span> first = array.first &#123;</span><br><span class="line">     <span class="built_in">print</span>(first)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们只能在if代码块内部，访问被unwrapping之后的值。但这样做有一个麻烦，就是如果我们要在函数内部的多个地方使用array.first，就要在每个地方都进行某种形式的unwrapping，这不仅写起来很麻烦，还会让代码看上去非常凌乱。<br>实际上，面对这种在多处访问同一个optional的情况，更多的时候，我们需要的是一个确保optional一定不为nil的环境。如果，我们能在一个地方统一处理optional为nil的情况，就可以在这个地方之外，安全的访问optional的值了。<br>好在，Swift在语法上，对这个操作进行了支持，这就是guard的用法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">func arrayProcess(array: [Int]) &#123;</span><br><span class="line">  guard <span class="built_in">let</span> first = array.first <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">return</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">print</span>(first)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面的例子里，我们使用guard let绑定了array.first的非nil值。如果array.first为nil，就会转而执行else代码块里的内容。这样，我们就可以在else内部，统一处理array.first为nil的情况。在这里，我们可以编写任意多行语句，唯一的要求，就是else的最后一行必须离开当前作用域，对于函数来说，就是从函数返回，或者调用fatalError表示一个运行时错误。<br>而这，也是为数不多的，我们可以在value binding作用域外部，来访问optional value的情况。</p>
+<p><strong>一个特殊情况</strong><br>在Swift里，有一类特殊的函数，它们返回Never，表示这类方法直到程序执行结束都不会返回。Swift管这种类型叫做uninhabited type。<br>什么情况会使用Never呢？其实并不多，一种是崩溃前，例如，使用fatalError返回一些用于排错的消息；另一种，是类似dispatchMain这样，在进程生命周期中一直需要执行的方法。<br>当我们在返回Never的函数中，使用guard时，else语句并不需要离开当前作用域，而是最后一行必须调用另外一个返回Never的函数就好了。例如下面的例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">func toDo(item: String?) -&gt; Never &#123;</span><br><span class="line">  guard <span class="built_in">let</span> item = item <span class="keyword">else</span> &#123;</span><br><span class="line">    fatalError(<span class="string">&quot;Nothing to do&quot;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  fatalError(<span class="string">&quot;Implement \(item) later&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在toDo的实现里，如果我们没有指定要完成的内容，就在else里调用fatalError显示一个错误。在这里，fatalError也是一个返回Never的函数。<br><strong>一个伪装的optional</strong><br>除了使用真正的optional变量之外，有时，我们还是利用编译器对optional的识别机制来为变量的访问创造一个安全的使用环境。例如，为了把数组中第一个元素转换为String，我们可以这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">func arrayProcess(array: [Int]) -&gt; String? &#123;</span><br><span class="line">  <span class="built_in">let</span> firstNumber: Int</span><br><span class="line">  <span class="keyword">if</span> <span class="built_in">let</span> first = array.first &#123;</span><br><span class="line">    firstNumber = first</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">return</span> nil</span><br><span class="line">  &#125;</span><br><span class="line">  // `firstNumber` could be used here safely</span><br><span class="line">  <span class="built_in">return</span> String(firstNumber)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在上面的代码里，有两点值得说明：<br>首先，我们使用了Swift中延迟初始化的方式，在if let中，才初始化常量firstNumber；</p>
+<p>其次，从程序的执行路径分析，对于firstNumber来说，要不我们已经在if let中完成了初始化；要不，我们已经从else返回。因此，只要程序的执行逻辑来到了if…else…之后，访问firstNumber就一定是安全的了。<br>实际上，Swift编译器也可以识别这样的执行逻辑。firstNumber就像一个伪装的optional一样，在if let分支里被初始化成具体的值，在else分支里，被认为值是nil。因此，在else代码块之后，就像在之前guard语句之后一样，我们也可以认为firstNumber一定是包含值的，因此安全的访问它。<br>以上，就是在各种不同的作用域，访问optional unwrapping结果的话题。</p>
+<h3 id="map和flatMap的应用和实现"><a href="#map和flatMap的应用和实现" class="headerlink" title="map和flatMap的应用和实现"></a>map和flatMap的应用和实现</h3><p>在之前的内容里，我们提到过，当我们要在optional的值不为nil时，执行一些操作，可以使用if let绑定optional的值，然后，就可以在if语句内部，直接访问它了，例如，我们要把一个String?的内容在非空时，转换为大写，可以这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> swift: String? = <span class="string">&quot;swift&quot;</span></span><br><span class="line">var SWIFT: String? = nil</span><br><span class="line"><span class="keyword">if</span> <span class="built_in">let</span> swift = swift &#123;</span><br><span class="line">  SWIFT = swift.uppercased()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后，一个似曾相识的问题就来了，如果需要SWIFT是一个常量怎么办呢？如果，你把一个optional理解为是一个包含值和nil的集合类型，就自然会有更好的解决办法了。</p>
+<p><strong>Optional map</strong></p>
+<p>既然map可以用在集合类型里转换元素，当然也可以用在Optional类型上：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> SWIFT = swift.map &#123; <span class="variable">$0</span>.uppercased() &#125;</span><br><span class="line">// Optional(<span class="string">&quot;SWIFT&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>这样，我们就得到了一个新的Optional，值是“SWIFT”。对于optional类型来说，如果它的值非nil，map就会把unwrapping的结果传递给它的closure参数，否则，就直接返回nil。我们完全可以按照这个思路，自己给Optional实现一个myMap：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">extension Optional &#123;</span><br><span class="line">  func myMap&lt;T&gt;(_ transform: (Wrapped) -&gt; T) -&gt; T? &#123;</span><br><span class="line">  <span class="keyword">if</span> <span class="built_in">let</span> value = self &#123;</span><br><span class="line">    <span class="built_in">return</span> transform(value)</span><br><span class="line">  &#125;</span><br><span class="line">    <span class="built_in">return</span> nil</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这个实现里，唯一要说明的，就是Wrapped，这是Optional类型的泛型参数，表示optional实际包装的值的类型。理解了这个之后，myMap的实现就完全都是套路了。<br>然后，我们用之前的例子试一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> SWIFT = swift.myMap &#123; <span class="variable">$0</span>.uppercased() &#125;</span><br><span class="line">// Optional(<span class="string">&quot;SWIFT&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>结果和之前，应该是一样的。<br>理解了这个方式之后，当你再要返回一个optional的时候，除了使用if…else…对非空情况单独处理之外，直接使用map通常会是个更好的方法。</p>
+<p><strong>Optional flatMap</strong><br>介绍完了map，我们不难联想到，如果map方法返回的也是一个optional，我们是否也应该有flatMap来处理双层嵌套optional类型的变换呢？<br>当然，Swift已经在标准库中，为你实现了一个。来看下面的例子</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> stringOne: String? = <span class="string">&quot;1&quot;</span></span><br><span class="line"><span class="built_in">let</span> ooo = stringOne.map &#123; Int(<span class="variable">$0</span>) &#125;</span><br><span class="line"><span class="built_in">type</span>(of: ooo) // Optional&lt;Optional&lt;Int&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>此时，由于Int($0)返回一个Int?，而map又会返回一个optional类型，因此，ooo的类型，就变成了Int??，也就是Optional&gt;。但我们只是尝试把stringOne变成一个整数，因此，应该是一个把Optional变成Optional的操作。这时，flatMap就派上用场了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> oo = stringOne.flatMap &#123; Int(<span class="variable">$0</span>) &#125;</span><br><span class="line"><span class="built_in">type</span>(of: oo) // Optional&lt;Int&gt;</span><br></pre></td></tr></table></figure>
+<p>相比于map来说，flatMap会对它的closure参数的返回值进行处理，当返回非nil时，就直接把这个返回值返回；否则，就返回nil。这样，我们就获得了一个新的单层optional对象。<br>当然，为了避免双层嵌套的optional，我们也可以用if let来实现类似的效果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">let</span> stringOne = stringOne, <span class="built_in">let</span> o = Int(stringOne) &#123;</span><br><span class="line"><span class="built_in">print</span>(o) // 1</span><br><span class="line"><span class="built_in">type</span>(of: o) // Int</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面的代码里，我们用第一个if let绑定了stringOne中的非nil值，并尝试把这个值转换成整数。由于这个转换结果也是一个optional，我们再次使用了if let绑定了转换后的非nil结果。<br>实际上，Optional.flatMap就完全是基于if let来实现的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">extension Optional &#123;</span><br><span class="line">  func myFlatMap&lt;T&gt;(_ transform: (Wrapped) -&gt; T?) -&gt; T? &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">let</span> value = self,</span><br><span class="line">    <span class="built_in">let</span> mapped = transform(value) &#123;</span><br><span class="line">      <span class="built_in">return</span> mapped</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">return</span> nil</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看到了吧，flatMap和if let简直如出一辙。</p>
+<p><strong>遍历一个包含optional的集合</strong><br>在理解了集合和optional类型各自的map和flatMap之后，我们来看一个稍复杂一些的例子：如何遍历一个包含optional的数组，并对每个元素做一些操作呢？<br>假设，我们有一个包含数字的字符串数组：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> ints = [<span class="string">&quot;1&quot;</span>, <span class="string">&quot;2&quot;</span>, <span class="string">&quot;3&quot;</span>, <span class="string">&quot;4&quot;</span>, <span class="string">&quot;five&quot;</span>]</span><br></pre></td></tr></table></figure>
+<p>现在，要把ints中的元素转换成Int然后求和，该怎么做呢？最“朴素”的做法，当然是先对ints调用map把[String]变成[Int?]<br>ints.map ({ Int($0) })<br>然后，在for…in中，使用value binding读取数组中的每一个非nil值，并且求和：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var all = 0</span><br><span class="line"><span class="keyword">for</span> <span class="keyword">case</span> <span class="built_in">let</span> int? <span class="keyword">in</span> ints.map(&#123; Int(<span class="variable">$0</span>) &#125;) &#123;</span><br><span class="line">  all += int</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>仔细分析上面的过程，实际上分成四个独立的步骤：<br>把ints中所有的元素变形，形成新的序列；</p>
+<p>在第一步的结果中剔除所有的nil；</p>
+<p>在第二步的结果中unwrapping所有的optional；</p>
+<p>对第三步的结果执行reduce求和；<br>实际上，Swift标准库中，已经为序列类型提供了一个flatMap方法，专门用来处理“在序列中变换并筛选所有非nil元素”的任务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> intOnes = ints.flatMap &#123; Int(<span class="variable">$0</span>) &#125;.reduce(0, +)</span><br><span class="line">//10</span><br></pre></td></tr></table></figure>
+<p>以上，就是针对optional类型map和flatMap的常见应用场景以及实现原理，对map和flatMap还想深入了解的同学可参考 唐巧博客。<br>在下一篇博客里，我会更深入的介绍optional的其他使用。<em>（此篇博客是学习 泊学网站的总结）</em></p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/lpfRoc" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2022 Roc<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
