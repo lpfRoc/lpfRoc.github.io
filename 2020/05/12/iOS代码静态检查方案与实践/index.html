@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!--Description-->
+
+    
+
+    
+        <meta name="description" content="背景工程代码质量，一个永恒的话题。随着业务开发迭代速度越来越快，完全依赖人工保证工程质量也变得越来越不牢靠。所以，静态分析，这种可以帮助我们在编写代码的阶段就能及时发现代码错误，从而在根儿上保证工程质量的技术，就成为了 iOS 开发者最常用到的一种代码调试技术。Xcode 自带的静态分析工具 Ana"/>
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Roc"/>
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="iOS代码静态检查方案与实践"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="背景工程代码质量，一个永恒的话题。随着业务开发迭代速度越来越快，完全依赖人工保证工程质量也变得越来越不牢靠。所以，静态分析，这种可以帮助我们在编写代码的阶段就能及时发现代码错误，从而在根儿上保证工程质量的技术，就成为了 iOS 开发者最常用到的一种代码调试技术。Xcode 自带的静态分析工具 Ana"/>
+    
+
+    <!--Open Graph Site Name-->
+        <meta property="og:site_name" content="Roc的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article"/>
+    
+
+    <!--Page Cover-->
+    
+    
+        <meta property="og:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+        <meta name="twitter:card" content="summary_large_image"/>
+
+    
+
+    
+        <meta name="twitter:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+    <!-- Title -->
+    
+    <title>iOS代码静态检查方案与实践 - Roc的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet"/>
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="images/logo.jpg"/>
+    
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://github.com/lpfRoc">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/images/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>iOS代码静态检查方案与实践</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2020-05-12
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>工程代码质量，一个永恒的话题。随着业务开发迭代速度越来越快，完全依赖人工保证工程质量也变得越来越不牢靠。所以，静态分析，这种可以帮助我们在编写代码的阶段就能及时发现代码错误，从而在根儿上保证工程质量的技术，就成为了 iOS 开发者最常用到的一种代码调试技术。Xcode 自带的静态分析工具 Analyze，通过静态语法分析能够找出在代码层面就能发现的内存泄露问题，还可以通过上下文分析出是否存在变量无用等问题。但是，Analyze 的功能还是有限，还是无法帮助我们在编写代码的阶段发现更多的问题。所以，这才诞生出了功能更全、定制化高、效率高的第三方静态检查工具。比如，OCLint、Infer、Clang 静态分析器等。 目前项目是以Objective-C语言编写，使用OCLint工具进行静态检查十分合适。本文主要讲解OCLint在工程中的应用，我会从如下几方面阐述从0到1实现iOS端代码静态检测的实践。</p>
+<h3 id="一，OCLint简介"><a href="#一，OCLint简介" class="headerlink" title="一，OCLint简介"></a>一，OCLint简介</h3><p><strong>一，什么是OCLint？</strong><br>OCLint 是基于Clang的前端编译的，把我们的源码编译为了抽象语法树AST和llvm的字节码，并对其进行分析。它可应用于 C，C++，Objective-C 等语言，目的是提高软件质量并且减少代码中存在的潜在问题，是侦测编译器不可见的潜在缺陷的关键技术。 OCLint 旨于分析以下潜在问题：</p>
+<ol>
+<li>可能出现的 bug：if&#x2F;else&#x2F;try&#x2F;catch 等条件语句空的声明。</li>
+<li>未使用的代码： 未使用的局部变量以及参数。</li>
+<li>复杂的代码逻辑：高循环复杂度、NP 复杂度（懵）、 高 NCSS（懵）。</li>
+<li>冗余代码：冗余的条件表达式以及无效的括号。</li>
+<li>代码嗅觉：方法代码行过长或者参数过多。</li>
+<li>不好的代码习惯：颠倒的逻辑和参数的错误分配。</li>
+<li>自定义的规范</li>
+</ol>
+<p>OCLint 具有以下先进的代码检验特性：</p>
+<ol>
+<li>依靠源码的抽象语法树来提高分析的精确度以及效率，误报率低。</li>
+<li>动态规则。</li>
+<li>灵活可扩展的配置，确保用户可以自定义分析行为。</li>
+<li>命令行式的调用使持续集成成为可能。</li>
+</ol>
+<p><strong>二，安装与使用：</strong><br>三种安装方式：<br>1，HomeBrew安装 安装简单快捷，缺点是目前只支持安装0.13版本，无法安装最新0.15版本， 且不支持自定义规则。<br>2，安装包安装 进入 OCLint 在 Github 中的地址，选择 Release。选择最新版本的安装即可，缺点不支持自定义规则。<br>3，源码编译安装 和第二种安装方式一样，先下载最新安装包，不同之处在于需要执行.&#x2F;make脚本命令来下载自定义规则所用相关的配置和工具。</p>
+<p><strong>三，OCLint 工具的组成：</strong></p>
+<ul>
+<li>oclint oclint 是 OCLint 工具集最主要的指令，主要作用是规则加载、编译分析选项以及生成分析报告</li>
+<li>oclint-xcodebuild 用于将 xcodebuild 生成的 log 文件 xcodebuild.log 转换为 JSON Compilation Database format 类型,推荐直接使用xcpretty，直接将编译结果输出为 compile_commands.json。</li>
+<li>oclint-json-compilation-databases作用是在 JSON Compilation Database format类型的编译文件 compile_commands.json 中提取必要的信息。<br>可以使用时序图来概括我们使用这几个指令的场景：</li>
+</ul>
+<p><img src="/resource/oclint01.png" alt="图片"></p>
+<p><strong>四，主要命令：</strong><br>1.xcodebuild 命令编译工程</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">xcodebuild -workspace       OCLintDemo.xcworkspace \</span><br><span class="line">                 -scheme          OCLintDemo \</span><br><span class="line">                 -configuration   Debug \</span><br><span class="line">                 -sdks            iphonesimulator \</span><br><span class="line">                 COMPILER_INDEX_STORE_ENABLE=NO | xcpretty -r json-compilation-database \</span><br><span class="line">                 -o compile_commands.json</span><br></pre></td></tr></table></figure>
+<p>2.oclint-json-compilation-database 指令来解析 compile_commands.json:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">oclint-json-compilation-database -e Pods -- -o=report.html \</span><br><span class="line"> -rc LONG_LINE=200 \</span><br><span class="line"> -disable-rule ShortVariableName \</span><br><span class="line"> -disable-rule ObjCAssignIvarOutsideAccessors \</span><br><span class="line"> -disable-rule AssignIvarOutsideAccessors \</span><br><span class="line"> -max-priority-1=100000 \</span><br></pre></td></tr></table></figure>
+
+<h3 id="二，如何自定义检测规则"><a href="#二，如何自定义检测规则" class="headerlink" title="二，如何自定义检测规则"></a>二，如何自定义检测规则</h3><p><strong>前言：</strong><br>整个自定义规则是使用c++编写，官方提供了对应接口及脚手架供我们使用，要实现自定义规则，必须实现OCLint提供的RuleBase类或其派生的抽象类。不同的规则有专用不同的抽象级别。</p>
+<ul>
+<li>通用规则<br>编写通用规则，我们需要实现RuleBase接口。OCLint已经实现了很多通用规则，而且派生的抽象类都继承RuleBase，直接操作抽象类更加灵活方便。因此建议直接操作以下的抽象类来实现自定义规则。</li>
+<li>源代码读取器规则<br>AbstractSourceCodeReaderRule提供了一种eachLine方法。我们可以获取每行的文本和当前行号。然后，我们可以处理文本。例如，我们可以计算文本的长度，可以理解它是否为注释，可以确定是否存在空格和制表符的混合使用，等等。</li>
+<li>AST访问者规则<br>AbstractASTVisitorRule遵循访客模式。在规则中，我们仅针对感兴趣的节点类型编写方法。OCLint提供了很多对应的visit方法，这些visit方法的返回布尔值用于控制遍历。AST访问者在访问当前节点时返回true时将继续其子节点或同级节点，反之亦然，当前visit方法返回false时它将停止。就是一个递归查询的操作。</li>
+<li>AST匹配器规则<br>AST匹配器规则都从AbstractASTMatcherRule类继承。我们需要添加合适的匹配器，找到匹配项后以当前AST节点为参数回调给我们。</li>
+</ul>
+<p><strong>准备工作：</strong><br>首先我们要知道自定义规则是使用C++来写的，并最终以动态连结库来存储。要编写自定义规则还需要了解了一下clang AST的知识。<br>本质是OCLint调用clang 的API把一个个源文件生成一个一个AST，然后遍历树中的每个节点传入各个规则的一个过程。<br>我们可以使用如下命令查看某个文件的 AST 结构：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clang -Xclang -ast-dump -fsyntax-only ./testOCLint/XXXTest.m</span><br></pre></td></tr></table></figure>
+<p>解析后的AST终端输出：</p>
+<p><img src="/resource/oclint02.png" alt="图片"></p>
+<p>获取到AST语法树后，需要根据目标找到关键节点进行自定义规则编码。刚开始我们可以参考官方已有的源码或OCLint 自定义规则。</p>
+<p><strong>生成源码文件：</strong><br>进入如下目录找到脚手架工程：</p>
+<p><img src="/resource/oclint03.png" alt="图片"></p>
+<p>我们通过他传入要生成的规则名，级别，类型，脚本就会在目录oclint-rules&#x2F;rules&#x2F;custom&#x2F;自动帮我们生成一个模板代码,并且加入编译路径中，执行脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./scaffoldRule xxxRule -t ASTVisitor</span><br></pre></td></tr></table></figure>
+<p>这里我们自定义的规则继承自ASTVisitor，他会帮我们自动生成两个文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#CMakeLists.txt 是对规则XXTestRule的编译描述，由make程序在编译时使用。xxxRule.cpp就是我们要写自定义规则代码的地方</span></span><br><span class="line">├── custom</span><br><span class="line">│   ├── CMakeLists.txt</span><br><span class="line">│   └── xxxRule.cpp</span><br></pre></td></tr></table></figure>
+<p>一个简单的自定义规则代码如下：</p>
+<p><img src="/resource/oclint04.png" alt="图片"></p>
+<p>前面已经讲到OCLint的Rule都是以动态库的形式存储的，官方提供了，脚手架工程及命令工具方便我们生成动态库。也提供了测试机制。由于篇幅原因且接入较复杂且坑很多，这里就不再详细阐述。<br>在我们生成了动态库后，只需把动态库拷贝到OCLint的Rule文件下即可生效。自己生成的规则，同样支持-disable-rule 来禁止规则生效。</p>
+<h3 id="三-增量检测方案"><a href="#三-增量检测方案" class="headerlink" title="三,增量检测方案"></a>三,增量检测方案</h3><p>由于OCLint本身不支持增量检查。为了实现静态检测接入CI发版流程。需要把发版和检测同步串行执行。但现有针对组件全文件检测，耗时严重影响发版进度。为了解决耗时瓶颈，提出增量检测方案。 oclint-json-compilation-database，提供了 -i 参数，可以传入要检测文件的路径，我们就从这里作为突破口。 方案如下：<br>比较最近两次或多次发版差异，提取修改的文件路径。只对修改的文件就行检测。可大幅度减少检测耗时，几乎做到对发版无影响。<br>大概git命令如下：<br>1.获取提交tag</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag -l --<span class="built_in">sort</span>=-version:refname <span class="string">&quot;8.5*&quot;</span> &gt; tag.txt </span><br></pre></td></tr></table></figure>
+<p>按倒序获取8.5分支(分支可指定)下的所有tag写入文件中。通过文件生成tags数组。<br>2.获取diff文件路径</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --name-only <span class="variable">$&#123;tags[0]&#125;</span> <span class="variable">$&#123;tags[1]&#125;</span> &gt; full_diff.txt</span><br></pre></td></tr></table></figure>
+<p>比较最近两个或多个tag差异，提取出修改的文件路径并写入文件。通过文件生成paths数组，如果paths为空，兜底全量检测。<br>3.运用OCLint支持分析指定文件路径下源码。把得到的文件路径传入即可。</p>
+<h3 id="四-OCLint自动化部署"><a href="#四-OCLint自动化部署" class="headerlink" title="四,OCLint自动化部署"></a>四,OCLint自动化部署</h3><p>由于最初的oclint不管是环境安装还是自定义规则编写及发布，都没有规范化。尤其是环境配置还依赖于本地环境，导致服务地址变更都需要重新配置，浪费人力。为了统一及规范化管理iOS静态代码检测，在基础平台的支持下实现了oclint环境自动化，脚本一键安装再无本地概念。OCLint自定义规则流程自动化，通过脚本拉取规则，本地编写规则，脚本编译及发布规则，最终生成二进制安装包。用时只需下载解压即可。<br><strong>OCLint自定义规则发布自动化</strong><br>1.克隆托管到我们仓库的oclint源码<br>2.checkout最新分支，在oclint&#x2F;oclint-rules&#x2F;rules&#x2F;custom路径下 修改编写.cpp源码及CMakeLists文件，提交相应MR同步到远端仓库。<br>3.执行编译脚本，根据源码自动生成动态库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./build.sh</span><br></pre></td></tr></table></figure>
+<p>4.执行脚本上传最新规则包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./publish.sh </span><br></pre></td></tr></table></figure>
+<p>会生成最新的环境安装包：oclint-release-xxxxxx.tar.xz<br><strong>OCLint环境配置自动化</strong><br>通过规则自动化我们已经生成了环境安装包，接下来只需下载解压即可脚本如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;下载并解压oclint环境&quot;</span></span><br><span class="line">curl -o oclint.tar.xz xxxxx/oclint/oclint-release-xxx.tar.xz</span><br><span class="line">tar xvJf oclint.tar.xz</span><br><span class="line"><span class="keyword">if</span> [[ -d oclint-release ]]; <span class="keyword">then</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;oclint环境解压成功&quot;</span></span><br><span class="line"><span class="built_in">cd</span> oclint-release</span><br><span class="line"><span class="built_in">pwd</span></span><br><span class="line">OCLint_PATH=$(<span class="built_in">pwd</span>)</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;OCLint_PATH: <span class="variable">$&#123;OCLint_PATH&#125;</span>&quot;</span></span><br><span class="line">PATH=<span class="variable">$&#123;OCLint_PATH&#125;</span>/bin:<span class="variable">$PATH</span> //修改环境变量</span><br><span class="line"><span class="built_in">which</span> oclint //查看环境变量是否修改成功</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;oclint环境解压失败&quot;</span></span><br><span class="line"><span class="built_in">exit</span> 64</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<p>需要用到oclint的地方只需调用上面脚本即可完成环境配置。</p>
+<h3 id="写到最后"><a href="#写到最后" class="headerlink" title="写到最后"></a>写到最后</h3><p>目前安卓与iOS双端检测方案不同，Infer 是 Facebook 开源的、使用 OCaml 语言编写的静态分析工具，可以对 C、Java 和 Objective-C代码进行静态分析。支持增量分析，但可定制性不强，未来可考虑尝试双端统一使用Infer，但需要考量双端实践难易及成本。</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/lpfRoc" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2022 Roc<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
