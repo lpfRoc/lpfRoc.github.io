@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!--Description-->
+
+    
+
+    
+        <meta name="description" content="背景目前关于app crash的处理系统，大致都是crash产生了，统计crash信息并且上报到MAT平台这么一个流程。关于app 运行时的crash，我们是不是可以做的更多？是否可以做到实时抓取app运行时产生的crash，然后直接自动修复它，从而不让app crash呢？动态Crash防御就是干"/>
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Roc"/>
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="iOS动态化Crash防御"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="背景目前关于app crash的处理系统，大致都是crash产生了，统计crash信息并且上报到MAT平台这么一个流程。关于app 运行时的crash，我们是不是可以做的更多？是否可以做到实时抓取app运行时产生的crash，然后直接自动修复它，从而不让app crash呢？动态Crash防御就是干"/>
+    
+
+    <!--Open Graph Site Name-->
+        <meta property="og:site_name" content="Roc的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article"/>
+    
+
+    <!--Page Cover-->
+    
+    
+        <meta property="og:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+        <meta name="twitter:card" content="summary_large_image"/>
+
+    
+
+    
+        <meta name="twitter:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+    <!-- Title -->
+    
+    <title>iOS动态化Crash防御 - Roc的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet"/>
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="images/logo.jpg"/>
+    
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://github.com/lpfRoc">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/images/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>iOS动态化Crash防御</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2020-03-10
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>目前关于app crash的处理系统，大致都是crash产生了，统计crash信息并且上报到MAT平台这么一个流程。<br>关于app 运行时的crash，我们是不是可以做的更多？是否可以做到实时抓取app运行时产生的crash，然后直接自动修复它，从而不让app crash呢？<br>动态Crash防御就是干这件事的，APP运行时Crash自动防护功能，为app的流程顺利运行保驾护航！<br>所有防御的Crash都会上报到后端，并及时通知到owner，快速在版本迭代过程中fix。</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>为了降低app的crash率。利用Objective-C语言的动态特性，采用AOP面向切面编程的设计思想，做到无痕植入。能够自动在app运行时实时捕获导致app崩溃的破环因子，然后通过特定的技术手段去化解这些破坏因子，使app免于崩溃，照样可以继续正常运行，再将crash的具体信息提取出来，实时上报给开发者，为app的持续运转保驾护航。<br>目前防护系统可以覆盖到8种常见类型的Crash，分别为：</p>
+<ul>
+<li>unrecognized selector crash (函数没实现)</li>
+<li>AddSelfSubView (添加自己作为subview)</li>
+<li>ArrayContainer (数组越界）</li>
+<li>DictionarContainer crash（字典插nil等）</li>
+<li>NSString crash （字符串操作的crash）</li>
+<li>Bad Access crash （野指针）</li>
+<li>UI not on Main Thread Crash (非主线程刷UI )</li>
+<li>List View Refresh Crash (列表刷新时，cell不存在)<br>NSNotification 因为iOS9以上系统有优化，所有暂不需要保护<br>NSTimer iOS10系统提供了block方式，弱引用方式比较成熟，暂不考虑保护<br>KVO iOS11以后系统有优化，且目前都是用RAC，有保护。暂不处理</li>
+</ul>
+<p><strong>一，ArrayContainer和DictionarContainer</strong></p>
+<p>Container类型的crash 指的是容器类的crash，常见的有NSArray／NSMutableArray／NSDictionary／NSMutableDictionary／NSCache &#x2F;NSSet 的crash。一些常见的越界，插入nil，等错误操作均会导致此类crash发生。<br>该类crash虽然比较容易排查，但是其在app crash概率总比还是挺高。<br><strong>防护：</strong><br>Container crash 类型的防护方案也比较简单，针对于NSArray／NSMutableArray／NSDictionary／NSMutableDictionary／NSCache的一些常用的会导致崩溃的API进行method swizzling，然后在swizzle的新方法中加入一些条件限制和判断，从而让这些API变的安全。</p>
+<p><strong>二，unrecognized selector crash</strong><br>unrecognized selector类型的crash在app众多的crash类型中占着比较大的成分，通常是因为一个对象调用了一个不属于它方法的方法，或者不存在的方法导致的。<br>拦截调用的整个流程即Objective——C的消息转发机制。其具体流程如下图：<br><img src="/resource/crash01.png" alt="图片"></p>
+<p>由上图可见，在一个函数找不到时，runtime提供了三种方式去补救：<br>1、调用resolveInstanceMethod给个机会让类添加这个实现这个函数<br>2、调用forwardingTargetForSelector让别的对象去执行这个函数<br>3、调用forwardInvocation（函数执行器）灵活的将目标函数以其他形式执行。<br>如果都不中，调用doesNotRecognizeSelector抛出异常。</p>
+<p><strong>unrecognized selector crash 防护方案：</strong></p>
+<ol>
+<li>resolveInstanceMethod 需要在类的本身上动态添加它本身不存在的方法，这些方法对于该类本身来说冗余的</li>
+<li>forwardInvocation可以通过NSInvocation的形式将消息转发给多个对象，但是其开销较大，需要创建新的NSInvocation对象，并且forwardInvocation的函数经常被使用者调用，来做多层消息转发选择机制，不适合多次重写</li>
+<li>forwardingTargetForSelector可以将消息转发给一个对象，开销较小，并且被重写的概率较低，适合重写<br>所以最终要Hook以下两个函数:</li>
+</ol>
+<ul>
+<li>methodSignatureForSelector:(SEL)aSelector</li>
+<li>forwardInvocation:(NSInvocation *)anInvocation<br>会出现三种情况:</li>
+</ul>
+<ol>
+<li>正常有方法签名的，按照正常方法调用流程走</li>
+<li>没有方法签名的，没有实现，给出一个我们自定义的签名v@:@，并走到forwardInvocation方法记录错误</li>
+<li>有方法签名，但是没有实现，用自己的方法签名，并走到forwardInvocation方法记录错误</li>
+</ol>
+<p><strong>三，String crash</strong><br>和Container的防护方案类似，这里也不展开来描述了。</p>
+<p><strong>四，Bad Access crash</strong><br>1.Hook住dealloc方法<br>2.如果当前示例在黑名单里，就把当前示例加入集合，并把当前对象objc_destructInstance清理引用关系，并未真正释放内存，并将object_setClass设置成自己的中间对象<br>3.Hook中间对象的方法，收到的消息都由中间对象来处理<br>4.维护的野指针集合，要么根据个数来维护，要么根据总大小来维护，当满了，就需要真正释放对象内存free(obj)<br>存在的问题:</p>
+<ul>
+<li>需要单独的内存那些问题对象</li>
+<li>最后释放内存后，再访问时会闪退，这个方法只是一定程度延迟了闪退时间</li>
+<li>需要后台维护黑名单机制，来指定那些问题对象</li>
+</ul>
+<p><strong>五，UI not on Main Thread Crash</strong><br>在非主线程刷UI将会导致app运行crash，有必要对其进行处理。<br>目前初步的处理方案是swizzle UIView类的以下三个方法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)setNeedsLayout;</span><br><span class="line">- (void)setNeedsDisplay;</span><br><span class="line">- (void)setNeedsDisplayInRect:(CGRect)rect;</span><br></pre></td></tr></table></figure>
+<p>在这三个方法调用的时候判断一下当前的线程，如果不是主线程的话，直接利用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dispatch_async(dispatch_get_main_queue(), ^&#123; </span><br><span class="line">           //调用原本方法      </span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<p>来将对应的刷UI的操作转移到主线程上，同时统计错误信息。</p>
+<p><strong>六，List View Refresh Crash和AddSelfSubView</strong><br>和Container的防护方案类似，hook函数reloadSections和AddSubview等，这里也不展开来描述了。</p>
+<h3 id="数据收集结果"><a href="#数据收集结果" class="headerlink" title="数据收集结果"></a>数据收集结果</h3><p><img src="/resource/crash02.png" alt="图片"></p>
+<p><img src="/resource/crash03.jpeg" alt="图片"></p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/lpfRoc" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2022 Roc<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
