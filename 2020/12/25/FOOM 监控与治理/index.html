@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!--Description-->
+
+    
+
+    
+        <meta name="description" content="问题背景随着功能迭代，项目越来越庞大，需要一套内存监控体系，来及时的上报线上内存问题，帮助定位问题原因。
+oomout-of-memory 简称。iOS app中内存占用超出一定上限后，系统会把app直接杀死。oom发生时从现象上看，与普通的Crash 并不区别，不过设备的设置-隐私-分析与改进中生"/>
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Roc"/>
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="FOOM 监控与治理"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="问题背景随着功能迭代，项目越来越庞大，需要一套内存监控体系，来及时的上报线上内存问题，帮助定位问题原因。
+oomout-of-memory 简称。iOS app中内存占用超出一定上限后，系统会把app直接杀死。oom发生时从现象上看，与普通的Crash 并不区别，不过设备的设置-隐私-分析与改进中生"/>
+    
+
+    <!--Open Graph Site Name-->
+        <meta property="og:site_name" content="Roc的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article"/>
+    
+
+    <!--Page Cover-->
+    
+    
+        <meta property="og:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+        <meta name="twitter:card" content="summary_large_image"/>
+
+    
+
+    
+        <meta name="twitter:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+    <!-- Title -->
+    
+    <title>FOOM 监控与治理 - Roc的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet"/>
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="images/logo.jpg"/>
+    
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://github.com/lpfRoc">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/images/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>FOOM 监控与治理</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2020-12-25
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h3 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h3><p>随着功能迭代，项目越来越庞大，需要一套内存监控体系，来及时的上报线上内存问题，帮助定位问题原因。</p>
+<h3 id="oom"><a href="#oom" class="headerlink" title="oom"></a>oom</h3><p>out-of-memory 简称。iOS app中内存占用超出一定上限后，系统会把app直接杀死。oom发生时从现象上看，与普通的Crash 并不区别，不过设备的设置-隐私-分析与改进中生成的并不是普通类型的Crash日志，而是JetsamEvent 开头的日志。</p>
+<h3 id="foom"><a href="#foom" class="headerlink" title="foom"></a>foom</h3><p>JetsamEvent发生时，可能会杀死多个app，杀死的app可能在前台也可能在后台。发生在前台的oom,简称为foom。一般而言，前台运行的app闪退时会极大的影响到用户体验，所以我们需要筛选出FOOM。</p>
+<h3 id="LPOOMDetector-核心功能及原理简介"><a href="#LPOOMDetector-核心功能及原理简介" class="headerlink" title="LPOOMDetector 核心功能及原理简介"></a>LPOOMDetector 核心功能及原理简介</h3><p>LPOOMDetector 的核心功能主要参考腾讯开源库Tencent&#x2F;OOMDetector，在落地项目之后，也在不断的功能增加和完善中，后续不排除采用其他的监控方案。</p>
+<ul>
+<li>FOOM 发生检测</li>
+<li>问题堆栈聚集上报</li>
+<li>大内存上报</li>
+<li>NSObject存活对象个数上报</li>
+<li>其他功能</li>
+</ul>
+<h3 id="原理简介"><a href="#原理简介" class="headerlink" title="原理简介"></a>原理简介</h3><p><strong>foom发生检测原理</strong></p>
+<p>苹果官方没有提供检测 foom 发生的方法，所以并没有统一的检测方式。目前采用的是FB的排除法。每次 APP 冷启动时，判断上次 APP 运行过程中记录的特定值，排除掉其他崩溃原因后，得出上次发生了FOOM 的结论。<br><img src="/resource/oom01.jpg" alt="图片"></p>
+<p>问题堆栈聚集上报原理<br>问题堆栈聚集上报是一个笼统的概念，简单理解就是上报有问题的内存分配时的堆栈信息。<br>首先看两个 libmalloc 源码中stack_logging_disk.c定义的两个接口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// We <span class="built_in">set</span> malloc_logger to NULL to <span class="built_in">disable</span> logging, <span class="keyword">if</span> we encounter errors</span><br><span class="line">// during file writing</span><br><span class="line">typedef void (malloc_logger_t)(uint32_t <span class="built_in">type</span>, uintptr_t arg1, uintptr_t arg2, uintptr_t arg3, uintptr_t result, uint32_t num_hot_frames_to_skip);</span><br><span class="line">extern malloc_logger_t *malloc_logger;</span><br><span class="line">extern malloc_logger_t *__syscall_logger; // use this to <span class="built_in">set</span> up syscall logging (e.g., vm_allocate, vm_deallocate, mmap, munmap)</span><br></pre></td></tr></table></figure>
+<p>当malloc_logger和__syscall_logger函数指针不为空时，malloc&#x2F;free、vm_allocate&#x2F;vm_deallocate等内存分配&#x2F;释放通过这两个指针通知上层。<br>根据这两个指针可以记录到对象的内存分配信息（地址，大小，类型），同时配合backtrace函数捕获当前的堆栈信息。（这里捕获到的地址是虚拟内存地址，不能从符号表dsym解析符号，还需要记录每个image加载时的偏移slide,堆栈地址减去slide就是符号表能解析的地址）<br><em>malloc_logger</em><br>在 libmalloc库中的以下关于内存相关的方法 malloc_zone_malloc, malloc_zone_calloc, malloc_zone_valloc, malloc_zone_realloc, malloc_zone_free, malloc_zone_free_definite_size, malloc_zone_memalign等函数内部都会调用malloc_logger，所以我们只需要监控malloc_logger就可以实现对于内存的alloc与free的监控。<br><em>__syscall_logger</em><br>__syscall_logger可以实现对于vm_allocate, vm_deallocate, mmap, munmap的监控。但是__syscall_logger是私有方法，只能在debug 环境下使用</p>
+<p><a target="_blank" rel="noopener" href="https://opensource.apple.com/source/libmalloc/libmalloc-53.1.1/src/">libmalloc开源文档</a></p>
+<p>malloc_logger 和 __syscall_logger 这里举两个简单的例子：NSArray的创建及CALayer 渲染</p>
+<p><img src="/resource/oom02.png" alt="图片"></p>
+<p><img src="/resource/oom03.png" alt="图片"></p>
+<p>有了系统底层的函数回调后，加上backtrace 获取到的堆栈地址，我们就可以根据这些参数设计一套堆栈聚集上报体系。问题堆栈聚集上报总的来说就是当内存分配的堆栈相同，且同堆栈的内存大小累积值达到设定好的阈值时，写入本地mmap文件，下次冷启动时，判断是否发生了FOOM，确认发生FOOM 时 上报该堆栈。<br>核心数据流向如下图：<br><img src="/resource/oom04.png" alt="图片"></p>
+<h3 id="大内存上报"><a href="#大内存上报" class="headerlink" title="大内存上报"></a>大内存上报</h3><p>大内存是指单次开辟的内存大于设定好的阈值。<br>大内存的监控方式共用问题堆栈聚集上报的逻辑，通过malloc_logger 和 __syscall_logger 拿到内存分配信息，通过backtrace获取到堆栈详情。</p>
+<h3 id="NSObject-存活对象个数上报"><a href="#NSObject-存活对象个数上报" class="headerlink" title="NSObject 存活对象个数上报"></a>NSObject 存活对象个数上报</h3><p>项目的编程语言是OC，记录NSObject的存活对象，可以帮助我们更加细致的排查可疑代码，尤其是ViewController的上报，针对聊天室这样的特定页面可以清晰的观察是否存在内存泄漏。<br>NSObject 存活对象的数据采集通过 hook alloc 和 dealloc方法，记录方式同堆栈上报记录方式基本一致，内存中通过ClassName的hash值来写入自实现的字典中，对于达到特定条件的数据写入mmap文件中，等待上报。</p>
+<h3 id="SDK-其他功能"><a href="#SDK-其他功能" class="headerlink" title="SDK 其他功能"></a>SDK 其他功能</h3><p><strong>内存占用足迹</strong><br>SDK 会在控制器的生命周期方法 viewDidLoad 及 viewDidApper 记录APP 此刻占用的内存，但是 SDK只会保留最后记录的20个页面，其余的可在用户日志中查询。同时，如果下次冷启判断上次APP运行有发生foom时，会用最后记录到的ViewController当做 foom的reason,并且JIRA会创建foom 任务分配给该页面所属模块的负责人</p>
+<p><strong>SVGA 内存占用</strong><br>当前的 SVGA 播放库会通过UIImage 缓存播放过的文件，且存在内存占用特别大的SVGA动画，故增加该项的数据监控。针对内存占用过大的文件，可以和UI部门沟通，优化对应的动效</p>
+<p><strong>iOS 14以上 Metric 性能事件上报（cpu 异常，I&#x2F;O异常，无响应异常，crash）</strong><br>通过排除法判断上次是否发生foom会有一个漏洞。当页面发生卡死时，watchdog主动杀死APP或者用户手动杀掉APP，均会被误判为foom。(线上也有很多的上报数据显示，虽然记录到有发生foom，但是APP崩溃时占用的内存并不高，并且也没有内存警告)<br>这里通过metric上报无响应异常的数据，先尝试确认该种场景的发生次数,后续版本再单独把卡死场景标识上报。</p>
+<h3 id="内存优化常见方案"><a href="#内存优化常见方案" class="headerlink" title="内存优化常见方案"></a>内存优化常见方案</h3><p>当前整理的内存优化方案主要是三个方向：<br>1、避免内存泄漏<br>2、移除未使用的内存。例如消息列表中已不可见的消息数据<br>3、优化图片使用<br>这里着重列举下避免内存泄漏 和 优化图片使用：</p>
+<p><strong>避免内存泄漏</strong><br>内存泄漏是指申请的内存空间使用完毕之后未回收。<br>造成内存泄漏的原因有很多，各个场景也不尽相同。这里列举聊天室页面的相关内存泄漏处理作为范例：<br>1、常见的block 内直接使用了self 导致的循环引用及隐含的循环引用。<br>2、driver的某些关闭房间逻辑释放的资源不够全面，收归了一下，把离开&#x2F;关闭&#x2F;关闭房间并关闭当前页面 等场景，最终都调同一个,避免不规范导致有些资源释放，有的资源不放。<br>3、子线线程的runloop没有被停掉，子线程一直存活，后面在stop的时候，同时停止runloop从而使得线程正常退出。</p>
+<p><strong>优化图片使用</strong><br>    1、 避免将图片放在内存里<br>    （1）解码后的UIImage 占用的内存比较大，如果当前不需要显示时，可以不放在内存里<br>    （2）同一个页面使用重复资源时，避免重复创建（YYImage）<br>    （3）批量使用图片的场景，推荐使用autoreleasepool等方式及时释放内存<br>    2、图片裁剪<br>    （1）大多情况下业务场景需要显示的图片尺寸小于图片的原始尺寸<br>    3、图片绘制及缩放使用 UIGraphicsImageRenderer 和 ImageIO</p>
+<p><em>备注：<br>常见的UIGraphicsBeginImageContextWithOptions绘图方式会有两个问题：<br>1、默认是 SRGB 的格式，也就是说每个像素需要占 4 个 bytes 的空间，对于一些黑白或者仅有 alpha 通道的数据来说是没有必要的。<br>2、需要将原图片完全解码后渲染出来，原图片的解码会造成内存占用的高峰。<br>iOS 12之后，使用UIGraphicsImageRenderer绘图。系统会自动选择合适的颜色格式，避免不必要的内存消耗。<br>对于原方法需要解码原图造成内存暴涨的问题，可以考虑用ImageIO来解决。ImageIO可以直接读取图像大小和元数据信息，不会带来额外的内存开销.</em></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>SDK已经能够通过上报的数据来帮助分析解决一些内存问题，但是存在的问题还是比较多，比如SDK的核心思路是基于OOMDetector的内存信息聚集，这种方式导致SDK在运行时本身需要常驻内存且对CPU有较大的消耗。此外通用的内存堆栈上报（比如这边上报的YYImage 相关的堆栈）无法准确的定位出实际的内存使用场景，且很多低内存情况下的崩溃也无法提供任何帮助。</p>
+<h3 id="未来展望："><a href="#未来展望：" class="headerlink" title="未来展望："></a>未来展望：</h3><p>1、内存监控的方案还在不断的探索中，不排除后续会采用其他的监控方式<br>2、APP 卡死导致的 数据误报应当筛选出，单独解决</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/lpfRoc" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2022 Roc<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
