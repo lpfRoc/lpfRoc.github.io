@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!--Description-->
+
+    
+
+    
+        <meta name="description" content="在iOS项目开发中，静态库和动态库我们时刻都在使用，离开了库的支持，我们将会举步维艰。比如，你要画界面，总离不开UIKit这个库吧，你要使用的各种基础数据结构，如NSString，NSArray等，也离不开Foundation这个基础库。除了官方的库外，开发中我们也会从Github等开源社区下载第三"/>
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Roc"/>
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="谈谈静态库与动态库"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="在iOS项目开发中，静态库和动态库我们时刻都在使用，离开了库的支持，我们将会举步维艰。比如，你要画界面，总离不开UIKit这个库吧，你要使用的各种基础数据结构，如NSString，NSArray等，也离不开Foundation这个基础库。除了官方的库外，开发中我们也会从Github等开源社区下载第三"/>
+    
+
+    <!--Open Graph Site Name-->
+        <meta property="og:site_name" content="Roc的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article"/>
+    
+
+    <!--Page Cover-->
+    
+    
+        <meta property="og:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+        <meta name="twitter:card" content="summary_large_image"/>
+
+    
+
+    
+        <meta name="twitter:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+    <!-- Title -->
+    
+    <title>谈谈静态库与动态库 - Roc的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet"/>
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="images/logo.jpg"/>
+    
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://github.com/lpfRoc">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/images/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>谈谈静态库与动态库</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2019-05-13
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>在iOS项目开发中，静态库和动态库我们时刻都在使用，离开了库的支持，我们将会举步维艰。比如，你要画界面，总离不开UIKit这个库吧，你要使用的各种基础数据结构，如NSString，NSArray等，也离不开Foundation这个基础库。除了官方的库外，开发中我们也会从Github等开源社区下载第三方的开源库进行使用。一般我们使用的第三方库或自己开发的库都采用静态库的方式使用，而系统提供的库大多是动态库，方便多进程共享。虽然我们天天在用库，但你对静态库和动态库真的了解么？静态库和动态库的结构是怎样的？静态库和动态库有什么区别？它们又是怎么应用的？这篇学习笔记，我们就来聊一聊这些问题。</p>
+<h3 id="1-引言"><a href="#1-引言" class="headerlink" title="1.引言"></a>1.引言</h3><p>静态库与动态库有很多相似之处，当然也有很多差异。<br>从后缀名来说，.a为后缀名的库文件是静态库，.dylib为后缀名的库文件是动态库。在iOS开发中，更多时候我们使用的库是以.framework为后缀的。framework可以是静态库，也可以是动态库，framework本身是一种打包方式。我们知道，我们在编写代码时，编写的都是“源码”，而要让计算机理解这些源码，就需要编译器对源码进行编译，将其编译成计算机可理解的“机器码”，我们每编写的一个源码文件都会被编译成一个二进制的.o文件，无论静态库还是动态库，都是.o文件的合集。仅仅只有.o文件集合而成的库文件，对于开发者来说是不够的，在开发时我们不可能在没有头文件的情况下方便的调用库中的方法，因此还需要有头文件将库中提供的接口暴露出来，还有时候，可能还需要一些其他资源，比如和页面相关的库会有内置一些图片资源等，framework的功能就是将库文件，头文件，资源文件打包在一起，方便我们进行使用。下图描述了framework文件与库文件的关系：</p>
+<p><img src="/resource/dy01.png" alt="图片"></p>
+<h3 id="2-创建一个静态库"><a href="#2-创建一个静态库" class="headerlink" title="2.创建一个静态库"></a>2.创建一个静态库</h3><p>更深入的了解静态库之前，我们可以先创建一个静态库体验下，首先使用Xcode创建一个新的工程，选择Framework，如下图所示：<br><img src="/resource/dy02.png" alt="图片"></p>
+<p>创建好的framework工程模板，会生成一个和工程名相同的头文件，以及一个Resources资源文件夹，我们可以创建新的功能类文件，例如可以新建一个命名为MyLog的类和一个MyTool的类，代码如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">MyLog.h</span><br><span class="line">// MyLog.h</span><br><span class="line"><span class="comment">#import &lt;Foundation/Foundation.h&gt;</span></span><br><span class="line"></span><br><span class="line">@interface MyLog : NSObject</span><br><span class="line"></span><br><span class="line">+ (void)<span class="built_in">log</span>:(NSString *)str;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line">MyLog.m</span><br><span class="line"><span class="comment">#import &quot;MyLog.h&quot;</span></span><br><span class="line"></span><br><span class="line">@implementation MyLog</span><br><span class="line"></span><br><span class="line">+ (void)<span class="built_in">log</span>:(NSString *)str &#123;</span><br><span class="line">    NSLog(@<span class="string">&quot;MyLog:%@&quot;</span>,str);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line">MyTool.h</span><br><span class="line"><span class="comment">#import &lt;Foundation/Foundation.h&gt;</span></span><br><span class="line"></span><br><span class="line">@interface MyTool : NSObject</span><br><span class="line"></span><br><span class="line">+ (NSInteger)add:(NSInteger)a another:(NSInteger)b;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line">MyTool.m</span><br><span class="line"><span class="comment">#import &quot;MyTool.h&quot;</span></span><br><span class="line"></span><br><span class="line">@implementation MyTool</span><br><span class="line"></span><br><span class="line">+ (NSInteger)add:(NSInteger)a another:(NSInteger)b &#123;</span><br><span class="line">    <span class="built_in">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>在默认生成的库头文件中，引入这两个功能头文件，如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">//! Project version number <span class="keyword">for</span> MyStatic.</span><br><span class="line">FOUNDATION_EXPORT double MyStaticVersionNumber;</span><br><span class="line"></span><br><span class="line">//! Project version string <span class="keyword">for</span> MyStatic.</span><br><span class="line">FOUNDATION_EXPORT const unsigned char MyStaticVersionString[];</span><br><span class="line"></span><br><span class="line"><span class="comment">#import &quot;MyLog.h&quot;</span></span><br><span class="line"><span class="comment">#import &quot;MyTool.h&quot;</span></span><br></pre></td></tr></table></figure>
+<p>在构建framewrok前，我们可以设置此framework构建成动动态库还是静态库，我们先将其构建成静态库，设置编译选项的Mach-o Type为Static Library，之后，可以让Xcode进行Build，之后在对应的Products文件夹中可以找到生成的framework文件，如下图所示：<br><img src="/resource/dy03.png" alt="图片"><br><img src="/resource/dy04.png" alt="图片"></p>
+<p>如果你查看此framework文件的包内容，会发现其中有5类文件，如下：</p>
+<p><img src="/resource/dy05.png" alt="图片"></p>
+<p>其中，_CodeSignature中存放的是framework的签名文件。<br>Headers中存放的是头文件，需要注意，在编译framework工程时，要将需要暴露的头文件设置为public。<br>Info.plist文件是当前framework的配置文件。<br>Modules中的modulemap文件用来管理LLVM的module map，定义组件结构。<br>下面，我们可以尝试使用下此静态库，使用Xcode新建一个名为LibDemo的iOS工程，将前面构建的MyStatic.framework文件直接拖入此工程中，在工程的编译选项中，找到Framework Search Paths和Header Search Paths中分别将此framework的路径与头文件的路径进行配置，如下图所示：</p>
+<p><img src="/resource/dy06.png" alt="图片"></p>
+<p>修改测试项目的ViewController.m文件如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#import &quot;ViewController.h&quot;</span></span><br><span class="line"><span class="comment">#import &quot;MyStatic.framework/Headers/MyStatic.h&quot;</span></span><br><span class="line"></span><br><span class="line">@interface ViewController ()</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation ViewController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    NSInteger a = 100;</span><br><span class="line">    NSInteger b = 200;</span><br><span class="line">    NSInteger c = [MyTool add:a another:b];</span><br><span class="line">    [MyLog <span class="built_in">log</span>:[NSString stringWithFormat:@<span class="string">&quot;%ld&quot;</span>, c]];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>运行代码，从控制台可以看到，我们的静态库已经可以正常工作了。你可能会觉得上面的头文件引入方式非常的丑陋，你完全可以在工程中新建一个文件夹，将framework包内的头文件拷贝过来，如下图：</p>
+<p><img src="/resource/dy07.png" alt="图片"></p>
+<p>这样你就可以像引用工程内的头文件一样的使用framework中的功能了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#import &quot;ViewController.h&quot;</span></span><br><span class="line"><span class="comment">#import &quot;MyStatic.h&quot;</span></span><br><span class="line"></span><br><span class="line">@interface ViewController ()</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation ViewController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    NSInteger a = 100;</span><br><span class="line">    NSInteger b = 200;</span><br><span class="line">    NSInteger c = [MyTool add:a another:b];</span><br><span class="line">    [MyLog <span class="built_in">log</span>:[NSString stringWithFormat:@<span class="string">&quot;%ld&quot;</span>, c]];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-动态库"><a href="#3-动态库" class="headerlink" title="3.动态库"></a>3.动态库</h3><p>静态库的构建和使用过程看上去非常容易，动态库应该也与其类似。我们现在就来试试吧，使用Xcode新建一个命名为MyDylib的framework工程，将编译选项中的Mach-O Type 改为Dynamic Library，创建一些简单的测试类如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">MyObjectOne.h</span><br><span class="line"><span class="comment">#import &lt;Foundation/Foundation.h&gt;</span></span><br><span class="line"></span><br><span class="line">@interface MyObjectOne : NSObject</span><br><span class="line"></span><br><span class="line">@property(copy) NSString *name;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line">MyObjectOne.m</span><br><span class="line"><span class="comment">#import &quot;MyObjectOne.h&quot;</span></span><br><span class="line"></span><br><span class="line">@implementation MyObjectOne</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line">MyObjectTwo.h</span><br><span class="line"><span class="comment">#import &lt;Foundation/Foundation.h&gt;</span></span><br><span class="line"></span><br><span class="line">@interface MyObjectTwo : NSObject</span><br><span class="line"></span><br><span class="line">@property(copy) NSString *title;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line">MyObjectTwo.m</span><br><span class="line"><span class="comment">#import &quot;MyObjectTwo.h&quot;</span></span><br><span class="line"></span><br><span class="line">@implementation MyObjectTwo</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>按照同样的方式，将构建好的framework文件拖入到测试工程中，配置头文件路径，添加测试代码如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#import &quot;ViewController.h&quot;</span></span><br><span class="line"><span class="comment">#import &quot;MyStatic.h&quot;</span></span><br><span class="line"><span class="comment">#import &quot;MyDylib.framework/Headers/MyDylib.h&quot;</span></span><br><span class="line"></span><br><span class="line">@interface ViewController ()</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation ViewController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    NSInteger a = 100;</span><br><span class="line">    NSInteger b = 200;</span><br><span class="line">    NSInteger c = [MyTool add:a another:b];</span><br><span class="line">    [MyLog <span class="built_in">log</span>:[NSString stringWithFormat:@<span class="string">&quot;%ld&quot;</span>, c]];</span><br><span class="line">    </span><br><span class="line">    MyObjectOne *one = [[MyObjectOne alloc] init];</span><br><span class="line">    one.name = @<span class="string">&quot;Hello&quot;</span>;</span><br><span class="line">    [MyLog <span class="built_in">log</span>:one.name];</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>试下编译运行，目前为止，看上去一切正常，但是当程序运行起来后会崩溃，控制台会输出如下信息：<br><em>dyld[72035]: Library not loaded: @rpath&#x2F;MyDylib.framework&#x2F;MyDylib</em><br>产生这个异常的原因是没有找到动态库文件，静态库的动态库的区别出现了，怎么解决这个问题呢，其实很简单，我们找到当前测试工程编译的产出可执行文件，点击显示包内容，在其中新建一个Frameworks的文件夹，将MyDylib.framework文件拷贝进入，如下图所示：</p>
+<p><img src="/resource/dy08.png" alt="图片"></p>
+<p>现在再运行工程，你会发现程序已经可以正常执行了。但是手动拷贝动态库到可执行文件的操作非常不优雅，如果真的要在项目中使用动态库，我们更多时候会通过自动化的脚本来实现复制库文件这一步操作。<br>通过这些实践，我们好像能感觉到静态库和动态库之间有些什么不同，但究竟哪里不同呢？我们带着疑问继续探索。</p>
+<h3 id="4-静态库和动态库的不同之处"><a href="#4-静态库和动态库的不同之处" class="headerlink" title="4.静态库和动态库的不同之处"></a>4.静态库和动态库的不同之处</h3><ul>
+<li><p>Ⅰ. 载入的方式<br>出现前面动态库无法找到的原因其实是动态库与静态库的载入方式不同。<br>静态库：静态库在链接时，会被完整的复制到可执行文件中，如果有多个应用使用了相同的静态库，每个应用的二进制文件中都会有一份完整的静态库代码。<br>动态库：程序在链接时，动态库并不会被复制进二进制文件，而是在程序运行时由系统动态加载到内存供程序进行调用。由于这种特性，动态库系统可以只加载一次，应用程序共享。<br>对于静态库动态库载入方式来说，我们可以再深一步。首先，静态库会被完整复制进可执行文件中，这里的完整其实是不精准的，我们在引入第三方库时，往往需要在工程的Other Linker Flags中配置-Objc选项，这一项的作用是对链接优化做设置。<br>默认情况下，静态库在链接的时候，并不会把所有代码都复制到可执行文件，其只会复制使用到的代码，这样可以减少最终应用包的体积，但是OC语言的动态性决定了并非代码直接引用才算使用，这种连接方式经常会产生运行时的问题。<br>设置-Objc选项后，链接器不管代码中有没有使用，都会将OC类和其对应的Category全部加载进来。<br>设置-all_load选项后，链接器会把所有目标文件都加载进来，不止局限与OC文件。<br>设置-force_load参数可以指定强制加载某个静态库的所有目标文件，对这个静态库来说，作用与-all_load一样。<br>对于动态库来说，链接器就没有办法做这样的优化动作了，因为动态库是运行时加载的，链接器不知道哪些代码会被用到，因此从这一个方面来说，静态库对包大小的优化貌似会比动态库更加优异，但是真的是这样么？我们先留下个伏笔，后面再分析。</p>
+</li>
+<li><p>Ⅱ.文件结构不同<br>静态库和动态库的本质区别还是在于构建出的文件结构完全不同。可以使用MachOView工具来查看库文件。<br>我们先说静态库，MachOView打开的静态库结构如下：</p>
+</li>
+</ul>
+<p><img src="/resource/dy09.png" alt="图片"></p>
+<p>可以看到，静态库的结构其实是比较简单的，除了库本身的一些描述文件，符号表外，基本就是其他可执行文件的集合了，在图中可以看到，每个可执行文件都会有一些头数据，这些头数据记录了可执行未见的名字，大小等信息。可以点开任意一个可执行文件，其中就是我们熟悉的各种代码段，数据段等数据了：</p>
+<p><img src="/resource/dy10.png" alt="图片"></p>
+<p>我们再来看动态库，其结构如下：</p>
+<p><img src="/resource/dy11.png" alt="图片"></p>
+<p>可以看到动态库本身就是一个可执行文件，其并不是将内部的所有.o文件做简单的集合，而是一个最终链接完成的镜像文件。由于动态库是运行时进行链接的，其无法做编译时的优化，看上去可能会增加应用包的大小，但是实际应用中，我们大多会采用-Objc参数来强制静态库链接所有OC文件，并且静态库中每一个.o文件都会有一个头信息，而动态库则省略了这部分信息，因此最终对影响应用包大小这一方面来说，并不一定静态库更优。但是有一点是确定了，静态库是编译时链接，会节省应用启动时间。往往在做优化类的项目时，没有固定的方案，我们要根据实际情况，选择最合适自己的方案。</p>
+<h3 id="5-动态库与运行时"><a href="#5-动态库与运行时" class="headerlink" title="5.动态库与运行时"></a>5.动态库与运行时</h3><ul>
+<li>Ⅰ. 动态库的加载<br>只要说到运行时，对开发者来说就大有可为之处。首先，我们先思考下，前面的测试工程，如果我们不拷贝动态库文件到IPA包内的时候，为什么程序运行会找不到这个库文件？又为什么我们需要将动态库拷贝进IPA包的Frameworks文件夹才行？别的文件夹不行么？<br>要解释上面的问题，我们还是要从动态库的加载原理上来看，可以用MachOView打开测试应用包的可执行文件，找到其中的Load Commands段，如下图所示：</li>
+</ul>
+<p><img src="/resource/dy12.png" alt="图片"><br>可以看到，其中有一些动态库的加载指令，Foundation，UIKit等都是系统的动态库，我们可以在其详情中看到详细的加载路径，如下：</p>
+<p><img src="/resource/dy13.png" alt="图片"><br>对于我们自己的MyDylib库，其加载路径如下：</p>
+<p><img src="/resource/dy14.png" alt="图片"><br>可以看到，这个动态库是从@rpath&#x2F;MyDylib.framework&#x2F;MyDylib这个路径来加载的，这个加载路径的设置在动态库编译时就已经确定，我们可以看下MyDylib这个工程，在Xcode的编译配置选项中，找到Dynamic Library Install Name选项，如下所示：</p>
+<p><img src="/resource/dy15.png" alt="图片"><br>这里的@rpath实际上是一个环境变量，在应用工程中可以配置@rpath的值，在LibDemo工程的编译选项中搜rpath，可以看到这个环境变量的配置：</p>
+<p><img src="/resource/dy16.png" alt="图片"></p>
+<p>现在我们清楚了，其实动态库文件不一定要放入Frameworks文件夹下，修改@rpath变量的路径即可修改动态库的加载路径。<br>对于动态库的这种加载方式，原则上，我们可以修改此二进制文件的加载路径，也可以直接替换包内的动态库文件，实现一些逆向注入的功能，非常酷。</p>
+<ul>
+<li>Ⅱ. 代码载入动态库<br>动态库是在运行时被加载的，我们也可以在运行时使用代码动态的控制动态库的载入。可以将测试工程中引用MyDylib的地方全部删掉，将配置的头文件路径也去掉，我们将这个动态库拷贝进工程的Bundle中，如下：</li>
+</ul>
+<p><img src="/resource/dy17.png" alt="图片"></p>
+<p>修改ViewController类的代码如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#import &quot;ViewController.h&quot;</span></span><br><span class="line"><span class="comment">#import &quot;MyStatic.h&quot;</span></span><br><span class="line"><span class="comment">#import &lt;dlfcn.h&gt;</span></span><br><span class="line"></span><br><span class="line">@interface ViewController ()</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation ViewController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    NSInteger a = 100;</span><br><span class="line">    NSInteger b = 200;</span><br><span class="line">    NSInteger c = [MyTool add:a another:b];</span><br><span class="line">    [MyLog <span class="built_in">log</span>:[NSString stringWithFormat:@<span class="string">&quot;%ld&quot;</span>, c]];</span><br><span class="line">    </span><br><span class="line">    NSString *path = [[[NSBundle mainBundle] pathForResource:@<span class="string">&quot;MyDylib&quot;</span> ofType:@<span class="string">&quot;framework&quot;</span>] stringByAppendingString:@<span class="string">&quot;/MyDylib&quot;</span>];</span><br><span class="line">    // 载入动态库</span><br><span class="line">    void * p = dlopen([path cStringUsingEncoding:NSUTF8StringEncoding], RTLD_LAZY);</span><br><span class="line">    <span class="keyword">if</span> (p) &#123;</span><br><span class="line">        // 加载动态库成功 直接使用</span><br><span class="line">        Class cls = NSClassFromString(@<span class="string">&quot;MyObjectOne&quot;</span>);</span><br><span class="line">        NSObject *obj = [[cls alloc] init];</span><br><span class="line">        [obj performSelector:@selector(setName:) withObject:@<span class="string">&quot;Hello&quot;</span>];</span><br><span class="line">        [MyLog <span class="built_in">log</span>:[obj performSelector:@selector(name)]];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>此时，再次编译运行此工程，如果你观察测试项目的二进制文件，里面的加载命令中已经没有了MyDylib的加载，但是程序依然可以正常的执行，dlopen函数的作用就是在运行时载入动态链接库，载入成功后，我们可以借助OC的运行时方法，直接调用到动态库中的代码。通过这种方式，我们实际上可以实现插件动态下载与使用，使得应用有非常高的热更新能力，但是需要注意，动态下载动态库的方式并不允许在AppStore上架，我们只能在测试的App或企业的App中使用。<br>再进一步说，其实动态库的读取并不一定是从本地沙盒中，在本地调试时，你可以从任何位置读取动态库文件进行加载，这可以在本地实现很多非常酷的功能，比如Injection工具，它通过一个服务监听代码文件的变化，之后将其打包成动态库注入到程序中，再通过运行时替换类和方法，从而实现本地开发iOS项目的热更新效果，非常好用。</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/lpfRoc" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2022 Roc<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

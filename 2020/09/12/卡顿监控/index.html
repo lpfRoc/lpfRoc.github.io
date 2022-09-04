@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!--Description-->
+
+    
+
+    
+        <meta name="description" content="一、背景描述卡顿就是在应用使用过程中出现界面不响应或者界面渲染粘滞的情况。而应用界面的渲染以及事件响应是在主线程完成的，出现卡顿的原因可以归结为主线程阻塞。在开发过程中，遇到的造成主线程阻塞的原因可能是：
+
+主线程在进行大量I&amp;#x2F;O操作：为了方便代码编写，直接在主线程去写入大量数据；
+主线程"/>
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Roc"/>
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="卡顿监控"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="一、背景描述卡顿就是在应用使用过程中出现界面不响应或者界面渲染粘滞的情况。而应用界面的渲染以及事件响应是在主线程完成的，出现卡顿的原因可以归结为主线程阻塞。在开发过程中，遇到的造成主线程阻塞的原因可能是：
+
+主线程在进行大量I&amp;#x2F;O操作：为了方便代码编写，直接在主线程去写入大量数据；
+主线程"/>
+    
+
+    <!--Open Graph Site Name-->
+        <meta property="og:site_name" content="Roc的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article"/>
+    
+
+    <!--Page Cover-->
+    
+    
+        <meta property="og:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+        <meta name="twitter:card" content="summary_large_image"/>
+
+    
+
+    
+        <meta name="twitter:image" content="https://lpfRoc.github.ioimages/home-bg.jpg"/>
+    
+
+    <!-- Title -->
+    
+    <title>卡顿监控 - Roc的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet"/>
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="images/logo.jpg"/>
+    
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://github.com/lpfRoc">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/images/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>卡顿监控</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2020-09-12
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h3 id="一、背景描述"><a href="#一、背景描述" class="headerlink" title="一、背景描述"></a>一、背景描述</h3><p>卡顿就是在应用使用过程中出现界面不响应或者界面渲染粘滞的情况。而应用界面的渲染以及事件响应是在主线程完成的，出现卡顿的原因可以归结为主线程阻塞。在开发过程中，遇到的造成主线程阻塞的原因可能是：</p>
+<ul>
+<li>主线程在进行大量I&#x2F;O操作：为了方便代码编写，直接在主线程去写入大量数据；</li>
+<li>主线程在进行大量计算：代码编写不合理，主线程进行复杂计算；</li>
+<li>主线程在等锁：主线程需要获得锁A，但是当前某个子线程持有这个锁A，导致主线程不得不等待子线程完成任务。<br>针对这些问题，如果我们能够捕获得到卡顿当时应用的主线程堆栈，那么问题就迎刃而解了。有了堆栈，就可以知道主线程在什么函数哪一行代码卡住了，是在等什么锁，还是在进行I&#x2F;O操作，或者是进行复杂计算。有了堆栈，就可以对问题进行针对性解决。</li>
+</ul>
+<h3 id="二、常用方案"><a href="#二、常用方案" class="headerlink" title="二、常用方案"></a>二、常用方案</h3><p><strong>1. 起一个子线程”ping”主线程</strong><br>Doraemon使用此方法。<br>原理：<br>我们经常会通过如下方法：<br>dispatch_async(dispatch_get_main_queue(), ^{});<br>向主线程派发任务，正常情况下，派发的block会在下一次runloop中执行，但如果主线程被卡住，则该block不会被执行，由此来判断主线程是否出现了卡顿存在的问题：<br>获取的堆栈可能不准确。因为检测到卡顿时获取的堆栈只能表示当前执行到最后一个调用时超过了阈值，但可能是堆栈列表其他方法的执行时间过长。<br>所以需要根据堆栈信息上下文来分析可能存在的卡顿点，不能只看最后一个调用栈。<br><strong>2. 通过runloop observer监控</strong><br>matrix使用此方法。原理:<br>通过向主线程runloop关键的位置注册observer，当runloop执行到相应位置时，会向注册的observer通知相应的事件。具体主要是两个时机：</p>
+<ul>
+<li>afterwaiting，此时runloop被唤醒，作为统计本次runloop时长的起始点</li>
+<li>beforewaiting，此时runloop即将陷入休眠，表示主线程没有处于卡顿的状态，可以清空统计时长<br>每隔一定时间间隔（例如1s），获取一次runloop状态，如果获取到本次runloop的运行时长超过一定阈值（例如2s），则认定主线程出现卡顿。<br>如果检测到出现卡顿后再获取调用栈，那就存在和”ping”方案相同的问题，为了解决这个问题，matrix使用了如下方法来提高卡顿堆栈的准确性：<br>为了准确获取卡顿时的调用栈，子线程每1秒都会保存主线程调用栈，具体是每隔50ms将堆栈保存到一个先进先出的队列中，最多保存20组，当检测到卡顿时，将保存的堆栈队列取出来进行分析，通过判断堆栈顶部重复的次数来判断卡顿出现的位置。例如20次记录中，有连续15个记录的堆栈顶完全相同，则认为此栈顶方法即是出现卡顿的方法。</li>
+</ul>
+<h3 id="三、选定方案"><a href="#三、选定方案" class="headerlink" title="三、选定方案"></a>三、选定方案</h3><p>因为”ping”的方案中存在问题，目前倾向于使用runloop observer的方案，但也可以考虑将”ping”和matrix中获取堆栈的方法结合起来。</p>
+<h3 id="四、数据收集"><a href="#四、数据收集" class="headerlink" title="四、数据收集"></a>四、数据收集</h3><p>收集到卡顿的堆栈后，通过接口进行上报，并根据堆栈进行合并，具体做法可以参考crash统计的方法，看看是否可以根据堆栈划分到具体的模块和人员.</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/lpfRoc" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2022 Roc<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
